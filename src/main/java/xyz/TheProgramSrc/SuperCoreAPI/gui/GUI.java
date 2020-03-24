@@ -22,7 +22,10 @@ import xyz.TheProgramSrc.SuperCoreAPI.events.timer.Time;
 import xyz.TheProgramSrc.SuperCoreAPI.events.timer.TimerEvent;
 import xyz.TheProgramSrc.SuperCoreAPI.gui.buttons.GUIButton;
 import xyz.TheProgramSrc.SuperCoreAPI.gui.buttons.actions.ClickAction;
-import xyz.TheProgramSrc.SuperCoreAPI.gui.events.*;
+import xyz.TheProgramSrc.SuperCoreAPI.gui.events.GUIClickEvent;
+import xyz.TheProgramSrc.SuperCoreAPI.gui.events.GUIEmptyClickEvent;
+import xyz.TheProgramSrc.SuperCoreAPI.gui.events.GUIEvent;
+import xyz.TheProgramSrc.SuperCoreAPI.gui.events.GUIOutsideClickEvent;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.XMaterial;
 
@@ -138,7 +141,6 @@ public abstract class GUI extends SuperModule {
                     this.getTaskUtil().runTask(()->{
                         HandlerList.unregisterAll(this);
                         this.inventory = null;
-                        this.player.closeInventory();
                     });
                 }
             }
