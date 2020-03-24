@@ -5,14 +5,12 @@
 
 package xyz.TheProgramSrc.SuperCoreAPI.translation;
 
-import org.apache.commons.io.FileUtils;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperModule;
 import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
 
 import java.io.File;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +43,7 @@ public class TranslationManager extends SuperModule {
                 String lang = pack.getLanguage();
                 String name = pack.getName();
                 File file = new File(this.getTranslationsFolder(), name + "_" + lang + ".lang");
-                if(file.exists()){
-                    file.delete();
-                }
+                if(file.exists()) file.delete();
                 YAMLConfig cfg = new YAMLConfig(file);
                 translations.forEach(t-> cfg.set(t.getId(), t.getContent()));
                 this.loadTranslations();
@@ -71,9 +67,8 @@ public class TranslationManager extends SuperModule {
                         }
                         TranslationTemplate template = this.translations.get(name);
                         HashMap<String, String> phrases = new HashMap<>();
-                        FileUtils.readLines(file, Charset.defaultCharset()).stream().filter(s-> !s.startsWith("#") && s.contains(":")).forEach(s->{
-                            phrases.put(s.split(": ")[0], s.split(": ")[1]);
-                        });
+                        YAMLConfig cfg = new YAMLConfig(file);
+                        cfg.getKeys(false).forEach(s-> phrases.put(s, cfg.getString(s)));
                         template.addPhrases(lang, phrases);
                         this.translations.put(name, template);
                     }
