@@ -7,7 +7,6 @@ package xyz.TheProgramSrc.SuperCoreAPI.translation;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Base implements TranslationPack{
@@ -95,6 +94,11 @@ public enum Base implements TranslationPack{
     @Override
     public String getLanguage() {
         return "English";
+    }
+
+    @Override
+    public String getName() {
+        return "Base";
     }
 
     @Override

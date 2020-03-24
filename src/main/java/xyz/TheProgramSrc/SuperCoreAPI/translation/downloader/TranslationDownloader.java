@@ -34,7 +34,7 @@ public class TranslationDownloader {
                     for (JsonElement jsonElement : availableFiles) {
                         JsonObject json = jsonElement.getAsJsonObject();
                         String name = json.get("name").getAsString();
-                        if(name.endsWith(".lang")){
+                        if(name.endsWith(".lang") && name.contains("_")){
                             String download = json.get("download_url").getAsString();
                             File file = new File(core.getTranslationsFolder(), name);
                             file.delete();

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TranslationPack {
 
+    String getName();
+
     String getLanguage();
 
     Translation get();

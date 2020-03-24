@@ -26,7 +26,7 @@ public abstract class LanguageSelector extends SettingCategoryGUI {
     @Override
     public GUIButton[] getObjects() {
         List<GUIButton> list = new ArrayList<>();
-        this.getTranslationManager().getLanguages().forEach(lang->{
+        this.getTranslationManager().getAvailableLanguages().forEach(lang->{
             SimpleItem item = new SimpleItem(XMaterial.BOOK).setDisplayName("&a" + lang);
             if(this.getLanguage().equals(lang)){
                 item.setLore(Base.LANGUAGE_SELECTED_DESCRIPTION).addEnchantment(Enchantment.DURABILITY).setShowEnchantments(false);
