@@ -29,7 +29,7 @@ public abstract class SettingsGUI extends GUI {
 
     public SettingsGUI(SuperCore core, Player player) {
         super(core, player);
-        this.availableSlots = new int[]{10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34};
+        this.availableSlots = new int[]{10,11,12,13,14,15,16,19,20,21,22,23,24,25,28,29,30,31,32,33,34};
         this.categories = this.getCategories();
     }
 
@@ -47,7 +47,7 @@ public abstract class SettingsGUI extends GUI {
         for(int i = 0; i < this.categories.length; ++i){
             slot = this.availableSlots[i];
             SettingCategory category = this.categories[i];
-            list.add(new GUIButton(slot, new SimpleItem(category.getMaterial()).setDisplayName(category.getName()).setLore("&7").addLoreLines(Utils.split(category.getDescription(),26))).setAction(category::onClick));
+            list.add(new GUIButton(slot, new SimpleItem(category.getMaterial()).setDisplayName(category.getName()).setLore("&7").addLoreLines(Utils.split(category.getDescription(),36))).setAction(category::onClick));
         }
 
         if(this.categories.length < this.availableSlots.length){
@@ -80,7 +80,7 @@ public abstract class SettingsGUI extends GUI {
                     public void onBack(ClickAction action) {
                         SettingsGUI.this.open();
                     }
-                };
+                }.open();
             }
         };
     }
@@ -100,7 +100,7 @@ public abstract class SettingsGUI extends GUI {
                     public void onBack(ClickAction action) {
                         SettingsGUI.this.open();
                     }
-                };
+                }.open();
             }
         };
     }
