@@ -61,6 +61,10 @@ public class SystemSettings {
         return this.config.getBoolean("Updater.Enabled", true);
     }
 
+    public void setUpdaterEnabled(boolean enabled){
+        this.config.set("Updater.Enabled", enabled);
+    }
+
     public boolean isSQLEnabled(){
         return this.config.getBoolean("SQL.Enabled", false);
     }

@@ -47,6 +47,10 @@ public enum Base implements TranslationPack{
     DIALOG_SEARCH_SUBTITLE("&7Write a search term"),
     DIALOG_SEARCH_ACTIONBAR("&aWrite in the chat a search term to find a object"),
 
+    DIALOG_CHANGE_VALUE_TITLE("&9New Value"),
+    DIALOG_CHANGE_VALUE_SUBTITLE("&7Write the new Value"),
+    DIALOG_CHANGE_VALUE_ACTIONBAR("&aCurrent Value: &r{CurrentValue}"),
+
 
     /* GUIs */
 
