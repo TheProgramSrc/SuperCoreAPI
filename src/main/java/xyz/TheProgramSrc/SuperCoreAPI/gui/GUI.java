@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -52,22 +53,18 @@ public abstract class GUI extends SuperModule {
     }
 
     public void open(){
-        this.getTaskUtil().runTask(()->{
-            if(this.inventory == null){
-                this.listener(this);
-            }
-            this.inventory = Bukkit.createInventory(null, this.getSize(), this.apply(Utils.ct(this.getTitle())));
-            this.loadUI();
-            this.player.openInventory(this.inventory);
-        });
+        if(this.inventory == null){
+            this.listener(this);
+        }
+        this.inventory = Bukkit.createInventory(null, this.getSize(), this.apply(Utils.ct(this.getTitle())));
+        this.loadUI();
+        this.player.openInventory(this.inventory);
     }
 
     public void close(){
-        this.getTaskUtil().runTask(()->{
-            HandlerList.unregisterAll(this);
-            this.inventory = null;
-            this.player.closeInventory();
-        });
+        HandlerList.unregisterAll(this);
+        this.inventory = null;
+        this.getTaskUtil().runTask(()->this.player.closeInventory());
     }
 
     public int getSize(){
@@ -103,32 +100,18 @@ public abstract class GUI extends SuperModule {
     public void syncItems(TimerEvent event){
         if(event.getTime() == Time.TICK){
             if(this.inventory != null){
-                this.buttons = new HashMap<>();
-                GUIButton[] buttons = this.getButtons();
-                if(buttons == null) return;
-                for (GUIButton b : buttons) {
-                    int slot = b.getSlot();
-                    if (slot == -1) {
-                        for(slot = 0; this.buttons.containsKey(slot); ++slot);
-                    }
+                loadGUIButtonsAndInventory();
+            }
+        }
+    }
 
-                    this.buttons.put(slot, b);
+    @EventHandler
+    public void onOpen(InventoryOpenEvent event){
+        if(this.inventory != null){
+            if(event.getInventory().equals(this.inventory)){
+                if(event.getPlayer().equals(this.player)){
+                    loadGUIButtonsAndInventory();
                 }
-
-                this.inventory.clear();
-
-                for(GUIButton b : this.buttons.values()){
-                    int slot = b.getSlot();
-                    ItemStack item = b.getItemStack();
-                    if(item != null){
-                        if(slot <= this.getSize() && slot >= 0){
-                            this.inventory.setItem(slot, item);
-                        }
-                    }
-                }
-
-
-                this.player.updateInventory();
             }
         }
     }
@@ -218,6 +201,37 @@ public abstract class GUI extends SuperModule {
         AtomicReference<String> r = new AtomicReference<>(text);
         this.placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
         return r.get();
+    }
+
+
+
+    private void loadGUIButtonsAndInventory() {
+        this.buttons = new HashMap<>();
+        GUIButton[] buttons = this.getButtons();
+        if(buttons == null) return;
+        for (GUIButton b : buttons) {
+            int slot = b.getSlot();
+            if (slot == -1) {
+                for(slot = 0; this.buttons.containsKey(slot); ++slot);
+            }
+
+            this.buttons.put(slot, b);
+        }
+
+        this.inventory.clear();
+
+        for(GUIButton b : this.buttons.values()){
+            int slot = b.getSlot();
+            ItemStack item = b.getItemStack();
+            if(item != null){
+                if(slot <= this.getSize() && slot >= 0){
+                    this.inventory.setItem(slot, item);
+                }
+            }
+        }
+
+
+        this.player.updateInventory();
     }
 
 }

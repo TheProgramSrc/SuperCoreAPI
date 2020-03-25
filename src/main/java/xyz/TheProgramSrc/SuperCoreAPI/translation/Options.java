@@ -36,10 +36,7 @@ public class Options {private String content;
     }
 
     public Options variables(String format, String... vars){
-        for(int i = 0; i < vars.length; ++i){
-            String replace = format.replace("INDEX", (i+1)+"");
-            this.content = this.content.replaceAll(replace, vars[i]);
-        }
+        this.content = Utils.vars(this.content, format, vars);
         return this;
     }
 

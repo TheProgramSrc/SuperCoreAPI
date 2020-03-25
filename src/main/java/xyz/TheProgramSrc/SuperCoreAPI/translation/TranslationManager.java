@@ -53,7 +53,7 @@ public class TranslationManager extends SuperModule {
         }
     }
 
-    private void loadTranslations() {
+    public void loadTranslations() {
         try{
             File[] files = this.getTranslationsFolder().listFiles();
             if(files != null){
