@@ -56,7 +56,10 @@ public abstract class Dialog extends SuperModule {
             HandlerList.unregisterAll(this);
             Title.clearTitle(this.getPlayer());
             Actionbar.clearActionbar(this.getPlayer());
-            this.recall.run(this.getPlayer());
+            this.onDialogClose();
+            if(this.recall != null){
+                this.recall.run(this.getPlayer());
+            }
         });
     }
 
