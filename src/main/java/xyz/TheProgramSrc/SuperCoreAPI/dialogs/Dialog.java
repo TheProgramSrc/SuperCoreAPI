@@ -29,7 +29,6 @@ public abstract class Dialog extends SuperModule {
     private Recall<Player> recall;
     private HashMap<String, String> placeholders;
     private String closeWord;
-    private boolean opened;
 
     public Dialog(SuperCore core, Player player){
         super(core, false);
@@ -46,8 +45,9 @@ public abstract class Dialog extends SuperModule {
             this.getPlayer().closeInventory();
             Title.sendFullTitle(this.getPlayer(), 0, 999, 0, this.apply(Utils.ct(this.getTitle() != null ? this.getTitle() : "")), this.apply(Utils.ct(this.getSubtitle() != null ? this.getSubtitle() : "")));
             Actionbar.sendActionbar(this.getPlayer(), this.apply(Utils.ct(this.getActionbar() != null ? this.getActionbar() : "")));
-            Utils.sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString().replace("{CloseWord}", this.closeWord));
-            this.opened = true;
+            if(this.canClose()){
+                Utils.sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString().replace("{CloseWord}", this.closeWord));
+            }
         });
     }
 
@@ -56,7 +56,6 @@ public abstract class Dialog extends SuperModule {
             HandlerList.unregisterAll(this);
             Title.clearTitle(this.getPlayer());
             Actionbar.clearActionbar(this.getPlayer());
-            this.opened = false;
             this.recall.run(this.getPlayer());
         });
     }
@@ -64,15 +63,14 @@ public abstract class Dialog extends SuperModule {
     @EventHandler
     public void syncMessages(TimerEvent event){
         if(event.getTime() == Time.TICK){
-            if(!this.opened) this.opened = true;
             Title.sendFullTitle(this.getPlayer(), 0, 999, 0, this.apply(Utils.ct(this.getTitle() != null ? this.getTitle() : "")), this.apply(Utils.ct(this.getSubtitle() != null ? this.getSubtitle() : "")));
             Actionbar.sendActionbar(this.getPlayer(), this.apply(Utils.ct(this.getActionbar() != null ? this.getActionbar() : "")));
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event){
-        if(this.opened){
+        if(this.canClose()){
             if(this.getPlayer().equals(event.getPlayer())){
                 Utils.sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString().replace("{CloseWord}", this.closeWord));
             }
@@ -82,19 +80,17 @@ public abstract class Dialog extends SuperModule {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event){
         if(event.getPlayer().equals(this.getPlayer())){
-            if(this.opened){
-                event.setCancelled(true);
-                String close = this.closeWord;
-                String message = event.getMessage();
-                if(new String(message.getBytes()).toLowerCase().equals(close.toLowerCase())){
-                    if(this.canClose()){
-                        this.close();
-                    }
-                }else{
-                    boolean result = this.onResult(message);
-                    if(result){
-                        this.close();
-                    }
+            event.setCancelled(true);
+            String close = this.closeWord;
+            String message = event.getMessage();
+            if(message.toLowerCase().equals(close.toLowerCase())){
+                if(this.canClose()){
+                    this.close();
+                }
+            }else{
+                boolean result = this.onResult(message);
+                if(result){
+                    this.close();
                 }
             }
         }
