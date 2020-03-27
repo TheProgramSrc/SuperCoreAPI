@@ -278,7 +278,7 @@ public class SimpleItem {
     }
 
     public ItemStack build(){
-        ItemStack item = new ItemStack(this.material.parseMaterial());
+        ItemStack item = this.material.parseItem();
         if(this.skinTexture != null){
             SkullMeta meta = ((SkullMeta)item.getItemMeta());
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");

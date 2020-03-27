@@ -40,10 +40,10 @@ public class TranslationDownloader {
                         }
                     }
                 }
+                core.getTranslationManager().loadTranslations();
             }catch (Exception ex){
                 core.debug(ex);
             }
         });
-        core.getTranslationManager().loadTranslations();
     }
 }

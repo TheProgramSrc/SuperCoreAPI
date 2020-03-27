@@ -11,7 +11,8 @@
 
     <groupId>xyz.TheProgramSrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>2.1.6</version>
+    <version>2.1.7</version>
+    <!-- TODO: Edit Settings Editor -->
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
