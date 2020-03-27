@@ -36,9 +36,6 @@ public enum Base implements TranslationPack{
     DIALOG_HOW_TO_CLOSE("&7To close the dialog write &c{CloseWord} &7in the chat."),
     DIALOG_CLOSED("&7You &cclosed &7this dialog."),
 
-    TRANSLATION_DOWNLOAD_SUCCESS("&aSuccessfully downloaded Translations from the Cloud"),
-    TRANSLATION_DOWNLOAD_FAILED("&cCannot fetch translations from the cloud."),
-
     /* DIALOGS */
     DIALOG_SEARCH_TITLE("&9Search"),
     DIALOG_SEARCH_SUBTITLE("&7Write a search term"),
