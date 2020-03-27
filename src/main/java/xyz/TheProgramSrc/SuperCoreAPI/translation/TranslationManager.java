@@ -24,17 +24,29 @@ public class TranslationManager extends SuperModule {
         super(core);
     }
 
-    public String translate(String id){
-        Locale locale = new Locale(this.getLanguage().split("_")[0], this.getLanguage().split("_")[1]);
+    public String translate(String lang, String id){
+        Locale locale = new Locale(lang.split("_")[0], lang.split("_")[1]);
         if(!this.phrases.containsKey(locale)){
-            throw new NullPointerException("Cannot find TranslationPack '" + locale.toString() + "'");
+            if(!lang.equals("en_US")){
+                return this.translate("en_US", id);
+            }else{
+                throw new NullPointerException("Cannot find translate '"+id+"' from '" + locale.toString() + "'");
+            }
         }else{
             if(!this.phrases.get(locale).containsKey(id)){
-                throw new NullPointerException("Cannot find Translation '" + id + "' in '" + this.getLanguage() + "'");
+                if(!this.getLanguage().equals("en_US")){
+                    return this.translate("en_US", id);
+                }else{
+                    throw new NullPointerException("Cannot find Translation '" + id + "' in '" + lang + "'");
+                }
             }else{
                 return this.phrases.get(locale).get(id);
             }
         }
+    }
+
+    public String translate(String id){
+        return this.translate(this.getLanguage(), id);
     }
 
     @Override

@@ -14,12 +14,10 @@ import xyz.TheProgramSrc.SuperCoreAPI.utils.FileUtils;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 import java.io.File;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class TranslationDownloader {
 
-    public static boolean downloadFromGitHub(final SuperCore core, final String username, final String repository, final String folder){
-        AtomicReference<Boolean> result = new AtomicReference<>(false);
+    public static void downloadFromGitHub(final SuperCore core, final String username, final String repository, final String folder){
         JsonParser parser = new JsonParser();
         core.getTaskUtil().runTaskLater(0,()->{
             try{
@@ -41,15 +39,11 @@ public class TranslationDownloader {
                             FileUtils.downloadUsingCommons(download, file);
                         }
                     }
-                    result.set(true);
-                }else{
-                    result.set(false);
                 }
             }catch (Exception ex){
                 core.debug(ex);
-                result.set(false);
             }
         });
-        return result.get();
+        core.getTranslationManager().loadTranslations();
     }
 }

@@ -489,6 +489,10 @@ public class Utils {
         return r;
     }
 
+    public static Locale fromDisplayLanguage(String displayLanguage){
+        return Arrays.stream(Locale.getAvailableLocales()).filter(l-> l.getDisplayLanguage().equals(displayLanguage)).findFirst().orElse(null);
+    }
+
 
 
 }
