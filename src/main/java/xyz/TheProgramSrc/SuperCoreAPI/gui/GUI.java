@@ -57,6 +57,7 @@ public abstract class GUI extends SuperModule {
             this.listener(this);
         }
         this.inventory = Bukkit.createInventory(null, this.getSize(), this.apply(Utils.ct(this.getTitle())));
+        loadGUIButtonsAndInventory();
         this.loadUI();
         this.player.openInventory(this.inventory);
     }
