@@ -9,6 +9,7 @@ import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperModule;
 import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
+import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -103,6 +104,6 @@ public class TranslationManager extends SuperModule {
     }
 
     public List<String> getAvailableLanguages(){
-        return this.phrases.keySet().stream().map(Locale::getDisplayLanguage).collect(Collectors.toList());
+        return this.phrases.keySet().stream().map(l-> l.getDisplayLanguage(Utils.toLocale(this.getLanguage()))).collect(Collectors.toList());
     }
 }

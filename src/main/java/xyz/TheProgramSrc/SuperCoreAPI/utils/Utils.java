@@ -490,10 +490,12 @@ public class Utils {
     }
 
     public static Locale fromDisplayLanguage(String displayLanguage){
-        return Arrays.stream(Locale.getAvailableLocales()).filter(l-> l.getDisplayLanguage().equals(displayLanguage)).findFirst().orElse(null);
+        return Arrays.stream(Locale.getAvailableLocales()).filter(l-> l.getDisplayLanguage(Locale.getDefault()).equals(displayLanguage)).findFirst().orElse(new Locale("en","US"));
     }
 
 
-
+    public static Locale toLocale(String language) {
+        return new Locale(language.split("_")[0], language.split("_")[1]);
+    }
 }
 

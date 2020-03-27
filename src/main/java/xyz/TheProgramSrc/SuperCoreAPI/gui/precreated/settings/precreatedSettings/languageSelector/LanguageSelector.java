@@ -17,7 +17,6 @@ import xyz.TheProgramSrc.SuperCoreAPI.utils.XMaterial;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class LanguageSelector extends SettingCategoryGUI {
 
@@ -30,14 +29,13 @@ public abstract class LanguageSelector extends SettingCategoryGUI {
         List<GUIButton> list = new ArrayList<>();
         this.getTranslationManager().getAvailableLanguages().forEach(lang->{
             SimpleItem item = new SimpleItem(XMaterial.BOOK).setDisplayName("&a" + lang);
-            if(this.getLanguage().equals(lang)){
+            if(this.getLanguage().equals(Utils.fromDisplayLanguage(lang).toString())){
                 item.setLore(Base.LANGUAGE_SELECTED_DESCRIPTION).addEnchantment(Enchantment.DURABILITY).setShowEnchantments(false);
             }else{
                 item.setLore(Base.LANGUAGE_SELECT_DESCRIPTION);
             }
             list.add(new GUIButton(item).setAction(a->{
-                Locale l = Utils.fromDisplayLanguage(lang);
-                this.getSystemSettings().setLanguage(l != null ? l.toString() : "en_US");
+                this.getSystemSettings().setLanguage(Utils.fromDisplayLanguage(lang).toString());
                 this.open();
             }));
         });
