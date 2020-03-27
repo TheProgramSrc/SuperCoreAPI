@@ -12,6 +12,7 @@ import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -105,5 +106,9 @@ public class TranslationManager extends SuperModule {
 
     public List<String> getAvailableLanguages(){
         return this.phrases.keySet().stream().map(l-> l.getDisplayLanguage(Utils.toLocale(this.getLanguage()))).collect(Collectors.toList());
+    }
+
+    public List<Locale> getLocales(){
+        return new ArrayList<>(this.phrases.keySet());
     }
 }
