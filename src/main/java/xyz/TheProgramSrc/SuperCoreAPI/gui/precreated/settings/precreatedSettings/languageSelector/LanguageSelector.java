@@ -12,6 +12,7 @@ import xyz.TheProgramSrc.SuperCoreAPI.gui.buttons.GUIButton;
 import xyz.TheProgramSrc.SuperCoreAPI.gui.precreated.settings.categories.SettingCategoryGUI;
 import xyz.TheProgramSrc.SuperCoreAPI.items.SimpleItem;
 import xyz.TheProgramSrc.SuperCoreAPI.translation.Base;
+import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.XMaterial;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public abstract class LanguageSelector extends SettingCategoryGUI {
     public GUIButton[] getObjects() {
         List<GUIButton> list = new ArrayList<>();
         this.getTranslationManager().getLocales().forEach(l->{
-            SimpleItem item = new SimpleItem(XMaterial.BOOK).setDisplayName("&a" + l.getDisplayLanguage());
+            SimpleItem item = new SimpleItem(XMaterial.BOOK).setDisplayName("&a" + Utils.capitalize(l.getDisplayLanguage()));
             if(this.getLanguage().equals(l.toString())){
                 item.setLore(Base.LANGUAGE_SELECTED_DESCRIPTION).addEnchantment(Enchantment.DURABILITY).setShowEnchantments(false);
             }else{
@@ -35,6 +36,7 @@ public abstract class LanguageSelector extends SettingCategoryGUI {
             }
             list.add(new GUIButton(item).setAction(a->{
                 this.getSystemSettings().setLanguage(l.toString());
+                this.getTranslationManager().loadTranslations();
                 this.open();
             }));
         });
