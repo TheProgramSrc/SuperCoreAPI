@@ -7,6 +7,7 @@ package xyz.TheProgramSrc.SuperCoreAPI.translation;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public enum Base implements TranslationPack{
@@ -14,10 +15,9 @@ public enum Base implements TranslationPack{
     /* WORDS */
     CONFIRM("Confirm"),
     DECLINE("Decline"),
-    CLICK("Click"),
-    LEFT("Left"),
-    MIDDLE("Middle"),
-    RIGHT("Right"),
+    LEFT_CLICK("Left Click"),
+    MIDDLE_CLICK("Middle Click"),
+    RIGHT_CLICK("Right Click"),
     LANGUAGES("Languages"),
     SELECT("Select"),
     SETTINGS("Settings"),
@@ -26,9 +26,6 @@ public enum Base implements TranslationPack{
     PLAYER("Player"),
     PLAYERS("Players"),
     CONSOLE("Console"),
-
-    /* PHRASES */
-    CLICK_TO("Click to"),
 
     /* MESSAGES */
     NO_PERMISSION("&cYou dont have permission."),
@@ -53,7 +50,6 @@ public enum Base implements TranslationPack{
 
 
     /* GUIs */
-
     SETTINGS_EDITOR_NAME("&aSettings Editor"),
     SETTINGS_EDITOR_DESCRIPTION("&7Click to edit some settings"),
     LANGUAGE_SELECTOR_DESCRIPTION("&7Click to select a new Language."),
@@ -96,13 +92,8 @@ public enum Base implements TranslationPack{
     }
 
     @Override
-    public String getLanguage() {
-        return "English";
-    }
-
-    @Override
-    public String getName() {
-        return "Base";
+    public Locale getLanguage() {
+        return new Locale("en","US");
     }
 
     @Override

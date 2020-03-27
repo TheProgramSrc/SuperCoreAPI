@@ -13,6 +13,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JSONConfig {
     private File file;
@@ -50,22 +53,27 @@ public class JSONConfig {
 
     public void add(String key, JsonElement value){
         this.json.add(key, value);
+        this.save();
     }
 
     public void addProperty(String key, Number value){
         this.json.addProperty(key, value);
+        this.save();
     }
 
     public void addProperty(String key, String value){
         this.json.addProperty(key, value);
+        this.save();
     }
 
     public void addProperty(String key, Boolean value){
         this.json.addProperty(key, value);
+        this.save();
     }
 
     public void addProperty(String key, Character value){
         this.json.addProperty(key, value);
+        this.save();
     }
 
     public JsonObject getJSON() {
@@ -82,6 +90,14 @@ public class JSONConfig {
 
     public String getAsString(String key) {
         return this.contains(key) ? this.json.get(key).getAsString() : null;
+    }
+
+    public Set<String> keySet(){
+        return this.json.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toSet());
+    }
+
+    public JsonElement get(String key){
+        return this.json.get(key);
     }
 
     public void save() {

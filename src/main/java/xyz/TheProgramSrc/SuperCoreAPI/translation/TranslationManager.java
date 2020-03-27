@@ -11,41 +11,55 @@ import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class TranslationManager extends SuperModule {
 
-    private HashMap<String, TranslationTemplate> translations;
+    private LinkedHashMap<Locale, LinkedHashMap<String, String>> phrases;
 
-    public TranslationManager(SuperCore core) {
+    public TranslationManager(SuperCore core){
         super(core);
+    }
+
+    public String translate(String id){
+        Locale locale = new Locale(this.getLanguage().split("_")[0], this.getLanguage().split("_")[1]);
+        if(!this.phrases.containsKey(locale)){
+            throw new NullPointerException("Cannot find TranslationPack '" + locale.toString() + "'");
+        }else{
+            if(!this.phrases.get(locale).containsKey(id)){
+                throw new NullPointerException("Cannot find Translation '" + id + "' in '" + this.getLanguage() + "'");
+            }else{
+                return this.phrases.get(locale).get(id);
+            }
+        }
     }
 
     @Override
     public void onModuleLoad() {
-        this.translations = new HashMap<>();
+        super.onModuleLoad();
+        this.phrases = new LinkedHashMap<>();
         this.register(Base.class);
     }
 
-    public String translate(String name, String identifier){
-        return this.translations.get(name).getPhrase(this.getLanguage(), identifier);
-    }
-
-    public void register(Class<? extends TranslationPack> clazz){
+    public void register(Class<? extends TranslationPack> tpack){
         try{
-            TranslationPack pack = ((TranslationPack) InstanceCreator.create(clazz));
+            TranslationPack pack = ((TranslationPack) InstanceCreator.create(tpack));
             if(pack != null){
-                List<Translation> translations = pack.getTranslations();
-                translations.forEach(t-> t.getPack().setManager(this));
-                String lang = pack.getLanguage();
-                String name = pack.getName();
-                File file = new File(this.getTranslationsFolder(), name + "_" + lang + ".lang");
-                if(file.exists()) file.delete();
+                pack.getTranslations().forEach(t-> t.getPack().setManager(this));
+                File file = new File(this.getTranslationsFolder(), pack.getLanguage().toString()+".lang");
+                LinkedHashMap<String, String> map = new LinkedHashMap<>();
+                if(file.exists()){
+                    YAMLConfig cfg = new YAMLConfig(file);
+                    cfg.getKeys(false).forEach(s-> map.put(s, cfg.getString(s)));
+                    file.delete();
+                }
+                file.createNewFile();
+                pack.getTranslations().forEach(t-> map.put(t.getId(), t.getContent()));
                 YAMLConfig cfg = new YAMLConfig(file);
-                translations.forEach(t-> cfg.set(t.getId(), t.getContent()));
+                map.forEach(cfg::set);
                 this.loadTranslations();
             }
         }catch (Exception ex){
@@ -53,38 +67,30 @@ public class TranslationManager extends SuperModule {
         }
     }
 
-    public void loadTranslations() {
+    public void loadTranslations(){
         try{
             File[] files = this.getTranslationsFolder().listFiles();
-            if(files != null){
-                for(File file : files){
-                    if(file.getName().contains(".lang") && file.getName().contains("_")){
-                        String fullName = file.getName().replace(".lang", "");
-                        String name = fullName.split("_")[0];
-                        String lang = fullName.split("_")[1];
-                        if(!this.translations.containsKey(name)){
-                            this.translations.put(name, new TranslationTemplate(lang+"", name+""));
-                        }
-                        TranslationTemplate template = this.translations.get(name);
-                        HashMap<String, String> phrases = new HashMap<>();
+            if(files != null && files.length != 0){
+                for (File file : files) {
+                    if(file.isDirectory()) continue;
+                    if(file.getName().endsWith(".lang") && file.getName().contains("_")){
+                        String name = file.getName().replace(".lang","");
+                        Locale locale = new Locale(name.split("_")[0], name.split("_")[1]);
+                        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+                        this.phrases.remove(locale);
                         YAMLConfig cfg = new YAMLConfig(file);
-                        cfg.getKeys(false).forEach(s-> phrases.put(s, cfg.getString(s)));
-                        template.addPhrases(lang, phrases);
-                        this.translations.put(name, template);
+                        cfg.getKeys(false).forEach(s-> map.put(s, cfg.getString(s)));
+                        this.phrases.put(locale, map);
                     }
-
                 }
             }
+            Locale.setDefault(new Locale(this.getLanguage().split("_")[0], this.getLanguage().split("_")[1]));
         }catch (Exception ex){
             this.debug(ex);
         }
     }
 
-    public List<String> getTemplatesNames(){
-        return new ArrayList<>(this.translations.keySet());
-    }
-
     public List<String> getAvailableLanguages(){
-        return this.translations.values().stream().flatMap((t) -> t.getLanguages().stream()).distinct().sorted().collect(Collectors.toList());
+        return this.phrases.keySet().stream().map(Locale::getDisplayLanguage).collect(Collectors.toList());
     }
 }

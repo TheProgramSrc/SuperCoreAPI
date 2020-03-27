@@ -29,8 +29,8 @@ public abstract class ConfirmationGUI extends GUI {
     public GUIButton[] getButtons() {
         return new GUIButton[]{
                 new GUIButton(26, this.getPreloadedItems().getBackItem()).setAction(this::onBack),
-                new GUIButton(11, new SimpleItem(XMaterial.GREEN_WOOL).setDisplayName(Base.CONFIRM).setLore("&7", Base.CLICK_TO + "&a " + Base.CONFIRM)).setAction(this::onConfirm),
-                new GUIButton(15, new SimpleItem(XMaterial.RED_WOOL).setDisplayName(Base.DECLINE).setLore("&7", Base.CLICK_TO + "&c " + Base.DECLINE)).setAction(this::onDecline)
+                new GUIButton(11, new SimpleItem(XMaterial.GREEN_WOOL).setDisplayName(Base.CONFIRM).setLore("&7", "&b",Base.LEFT_CLICK + "&a " + Base.CONFIRM)).setAction(this::onConfirm),
+                new GUIButton(15, new SimpleItem(XMaterial.RED_WOOL).setDisplayName(Base.DECLINE).setLore("&7", "&b"+Base.LEFT_CLICK + "&c " + Base.DECLINE)).setAction(this::onDecline)
         };
     }
 

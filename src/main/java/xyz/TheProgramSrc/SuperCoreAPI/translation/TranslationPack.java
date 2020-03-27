@@ -6,12 +6,11 @@
 package xyz.TheProgramSrc.SuperCoreAPI.translation;
 
 import java.util.List;
+import java.util.Locale;
 
 public interface TranslationPack {
 
-    String getName();
-
-    String getLanguage();
+    Locale getLanguage();
 
     Translation get();
 

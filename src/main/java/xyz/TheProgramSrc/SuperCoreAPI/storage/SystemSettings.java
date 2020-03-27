@@ -42,7 +42,7 @@ public class SystemSettings {
     }
 
     public String getLanguage(){
-        return this.config.getString("Language", "English");
+        return this.config.getString("Language", "en_US");
     }
 
     public void setLanguage(String lang) {

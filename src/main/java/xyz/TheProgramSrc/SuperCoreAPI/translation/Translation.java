@@ -33,7 +33,7 @@ public class Translation {
     }
 
     public String translate(){
-        return this.getPack().getManager().translate(this.getPack().getName()+"", this.getId()+"");
+        return this.getPack().getManager().translate(this.getId()+"");
     }
 
     @Override
