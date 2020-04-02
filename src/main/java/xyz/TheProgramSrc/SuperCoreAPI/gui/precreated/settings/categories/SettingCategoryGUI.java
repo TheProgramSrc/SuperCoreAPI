@@ -24,6 +24,11 @@ public abstract class SettingCategoryGUI extends GUI {
     }
 
     @Override
+    public int getSize() {
+        return 54;
+    }
+
+    @Override
     public GUIButton[] getButtons() {
         List<GUIButton> list = new ArrayList<>();
         list.add(new GUIButton(45, this.getPreloadedItems().getBackItem()).setAction(this::onBack));

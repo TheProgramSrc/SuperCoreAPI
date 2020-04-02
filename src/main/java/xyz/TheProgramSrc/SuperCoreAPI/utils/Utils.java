@@ -470,11 +470,20 @@ public class Utils {
         return new String(Base64.getDecoder().decode(data.getBytes()));
     }
 
-    public static String[] split(String string, int partitionSize) {
+    public static String[] breakText(String string, int partitionSize) {
         List<String> list = new ArrayList<>();
         int len = string.length();
         for (int i = 0; i < len; i += partitionSize) {
             list.add(string.substring(i, Math.min(len, i + partitionSize)));
+        }
+        return toStringArray(list);
+    }
+
+    public static String[] breakText(String string, int partitionSize, String color){
+        List<String> list = new ArrayList<>();
+        int len = string.length();
+        for (int i = 0; i < len; i += partitionSize) {
+            list.add(color + string.substring(i, Math.min(len, i + partitionSize)));
         }
         return toStringArray(list);
     }
@@ -492,7 +501,6 @@ public class Utils {
     public static Locale fromDisplayLanguage(String displayLanguage){
         return Arrays.stream(Locale.getAvailableLocales()).filter(l-> l.getDisplayLanguage(Locale.getDefault()).equals(displayLanguage)).findFirst().orElse(new Locale("en","US"));
     }
-
 
     public static Locale toLocale(String language) {
         return new Locale(language.split("_")[0], language.split("_")[1]);

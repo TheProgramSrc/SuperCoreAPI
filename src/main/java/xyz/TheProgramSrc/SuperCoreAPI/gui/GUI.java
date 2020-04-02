@@ -57,7 +57,34 @@ public abstract class GUI extends SuperModule {
             this.listener(this);
         }
         this.inventory = Bukkit.createInventory(null, this.getSize(), this.apply(Utils.ct(this.getTitle())));
-        loadGUIButtonsAndInventory();
+
+        this.buttons = new HashMap<>();
+        GUIButton[] buttons = this.getButtons();
+        if(buttons == null) return;
+        for (GUIButton b : buttons) {
+            int slot = b.getSlot();
+            if (slot == -1) {
+                for(slot = 0; this.buttons.containsKey(slot); ++slot);
+            }
+
+            this.buttons.put(slot, b);
+        }
+
+        this.inventory.clear();
+
+        for(GUIButton b : this.buttons.values()){
+            int slot = b.getSlot();
+            ItemStack item = b.getItemStack();
+            if(item != null){
+                if(slot <= this.getSize() && slot >= 0){
+                    this.inventory.setItem(slot, item);
+                }
+            }
+        }
+
+
+        this.player.updateInventory();
+
         this.loadUI();
         this.player.openInventory(this.inventory);
     }
@@ -99,9 +126,34 @@ public abstract class GUI extends SuperModule {
 
     @EventHandler
     public void syncItems(TimerEvent event){
-        if(event.getTime() == Time.TICK){
+        if(event.getTime() == Time.SEC){
             if(this.inventory != null){
-                loadGUIButtonsAndInventory();
+                this.buttons = new HashMap<>();
+                GUIButton[] buttons = this.getButtons();
+                if(buttons == null) return;
+                for (GUIButton b : buttons) {
+                    int slot = b.getSlot();
+                    if (slot == -1) {
+                        for(slot = 0; this.buttons.containsKey(slot); ++slot);
+                    }
+
+                    this.buttons.put(slot, b);
+                }
+
+                this.inventory.clear();
+
+                for(GUIButton b : this.buttons.values()){
+                    int slot = b.getSlot();
+                    ItemStack item = b.getItemStack();
+                    if(item != null){
+                        if(slot <= this.getSize() && slot >= 0){
+                            this.inventory.setItem(slot, item);
+                        }
+                    }
+                }
+
+
+                this.player.updateInventory();
             }
         }
     }
@@ -111,7 +163,32 @@ public abstract class GUI extends SuperModule {
         if(this.inventory != null){
             if(event.getInventory().equals(this.inventory)){
                 if(event.getPlayer().equals(this.player)){
-                    loadGUIButtonsAndInventory();
+                    this.buttons = new HashMap<>();
+                    GUIButton[] buttons = this.getButtons();
+                    if(buttons == null) return;
+                    for (GUIButton b : buttons) {
+                        int slot = b.getSlot();
+                        if (slot == -1) {
+                            for(slot = 0; this.buttons.containsKey(slot); ++slot);
+                        }
+
+                        this.buttons.put(slot, b);
+                    }
+
+                    this.inventory.clear();
+
+                    for(GUIButton b : this.buttons.values()){
+                        int slot = b.getSlot();
+                        ItemStack item = b.getItemStack();
+                        if(item != null){
+                            if(slot <= this.getSize() && slot >= 0){
+                                this.inventory.setItem(slot, item);
+                            }
+                        }
+                    }
+
+
+                    this.player.updateInventory();
                 }
             }
         }
@@ -202,37 +279,6 @@ public abstract class GUI extends SuperModule {
         AtomicReference<String> r = new AtomicReference<>(text);
         this.placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
         return r.get();
-    }
-
-
-
-    private void loadGUIButtonsAndInventory() {
-        this.buttons = new HashMap<>();
-        GUIButton[] buttons = this.getButtons();
-        if(buttons == null) return;
-        for (GUIButton b : buttons) {
-            int slot = b.getSlot();
-            if (slot == -1) {
-                for(slot = 0; this.buttons.containsKey(slot); ++slot);
-            }
-
-            this.buttons.put(slot, b);
-        }
-
-        this.inventory.clear();
-
-        for(GUIButton b : this.buttons.values()){
-            int slot = b.getSlot();
-            ItemStack item = b.getItemStack();
-            if(item != null){
-                if(slot <= this.getSize() && slot >= 0){
-                    this.inventory.setItem(slot, item);
-                }
-            }
-        }
-
-
-        this.player.updateInventory();
     }
 
 }

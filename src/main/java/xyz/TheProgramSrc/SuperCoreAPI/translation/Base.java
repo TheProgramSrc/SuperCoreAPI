@@ -56,9 +56,17 @@ public enum Base implements TranslationPack{
     SETTINGS_TOGGLE_UPDATER_NAME("&aToggle Updater"),
     SETTINGS_TOGGLE_UPDATER_DESCRIPTION("&7Current Status: &9$1"),
 
+    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME("&aToggle Translation Downloader"),
+    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("&7Current Status: &9$1"),
+
+    SETTINGS_TOGGLE_SQL_NAME("&aToggle SQL"),
+    SETTINGS_TOGGLE_SQL_DESCRIPTION("&7Current Status: &9$1"),
 
     SET_CLOSE_WORD_NAME("&aSet Close Word"),
     SET_CLOSE_WORD_DESCRIPTION("&7Current Word: &9$1"),
+
+    SET_PREFIX_NAME("&aSet Prefix"),
+    SET_PREFIX_DESCRIPTION("&7Current Prefix: &r$1"),
 
     MATERIAL_SELECTOR_TITLE("&7Select a Material"),
     MATERIAL_SELECTOR_ITEM_NAME("&a{Material}"),

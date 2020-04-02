@@ -28,6 +28,7 @@ public class SystemSettings extends YAMLConfig{
         this.getPrefix();
         this.getLanguage();
         this.getCloseWord();
+        this.isTranslationDownloaderEnabled();
         this.isUpdaterEnabled();
         this.isSQLEnabled();
     }
@@ -91,5 +92,17 @@ public class SystemSettings extends YAMLConfig{
 
     public SuperCore getCore() {
         return core;
+    }
+
+    public boolean isTranslationDownloaderEnabled() {
+        return this.getBoolean("TranslationDownloader", true);
+    }
+
+    public void setTranslationDownloaderEnabled(boolean b) {
+        this.set("TranslationDownloader", b);
+    }
+
+    public void setSQLEnabled(boolean b) {
+        this.set("SQL.Enabled", b);
     }
 }

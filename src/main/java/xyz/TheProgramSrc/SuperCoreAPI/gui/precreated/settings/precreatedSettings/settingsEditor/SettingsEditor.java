@@ -23,8 +23,11 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
     @Override
     public GUIButton[] getObjects() {
         return new GUIButton[]{
-                this.getUpdater(),
-                this.getCloseWord()
+                this.getToggleUpdater(),
+                this.getChangePrefix(),
+                this.getChangeCloseWord(),
+                this.getToggleDownloadTranslations(),
+                this.getToggleSQL()
         };
     }
 
@@ -33,7 +36,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         return Base.SETTINGS.toString();
     }
 
-    private GUIButton getUpdater(){
+    private GUIButton getToggleUpdater(){
         SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
                 .setDisplayName(Base.SETTINGS_TOGGLE_UPDATER_NAME)
                 .setLore(
@@ -48,7 +51,69 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         });
     }
 
-    private GUIButton getCloseWord(){
+    private GUIButton getToggleDownloadTranslations(){
+        SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
+                .setDisplayName(Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME)
+                .setLore(
+                        "&7",
+                        Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION.options()
+                                .vars(this.getSystemSettings().isTranslationDownloaderEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
+                                .get()
+                );
+        return new GUIButton(30,item).setAction(a->{
+            this.getSystemSettings().setTranslationDownloaderEnabled(!this.getSystemSettings().isTranslationDownloaderEnabled());
+            this.open();
+        });
+    }
+
+
+
+    private GUIButton getToggleSQL(){
+        SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
+                .setDisplayName(Base.SETTINGS_TOGGLE_SQL_NAME)
+                .setLore(
+                        "&7",
+                        Base.SETTINGS_TOGGLE_SQL_DESCRIPTION.options()
+                                .vars(this.getSystemSettings().isSQLEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
+                                .get()
+                );
+        return new GUIButton(32,item).setAction(a->{
+            this.getSystemSettings().setSQLEnabled(!this.getSystemSettings().isSQLEnabled());
+            this.open();
+        });
+    }
+
+    private GUIButton getChangePrefix(){
+        SimpleItem item = new SimpleItem(XMaterial.BOOK)
+                .setDisplayName(Base.SET_PREFIX_NAME)
+                .setLore("&7",Base.SET_PREFIX_DESCRIPTION.options().vars(this.getSystemSettings().getPrefix()).get());
+        return new GUIButton(22,item).setAction(a->{
+            new Dialog(getCore(), a.getPlayer()){
+                @Override
+                public String getTitle() {
+                    return Base.DIALOG_CHANGE_VALUE_TITLE.toString();
+                }
+
+                @Override
+                public String getSubtitle() {
+                    return Base.DIALOG_CHANGE_VALUE_SUBTITLE.toString();
+                }
+
+                @Override
+                public String getActionbar() {
+                    return Base.DIALOG_CHANGE_VALUE_ACTIONBAR.toString();
+                }
+
+                @Override
+                public boolean onResult(String playerInput) {
+                    this.getSystemSettings().setPrefix(playerInput);
+                    return true;
+                }
+            }.setRecall(p-> SettingsEditor.this.open()).addPlaceholder("{CurrentValue}", this.getSystemSettings().getPrefix());
+        });
+    }
+
+    private GUIButton getChangeCloseWord(){
         SimpleItem item = new SimpleItem(XMaterial.PAPER)
                 .setDisplayName(Base.SET_CLOSE_WORD_NAME)
                 .setLore("&7",Base.SET_CLOSE_WORD_DESCRIPTION.options().vars(this.getSystemSettings().getCloseWord()).get());
