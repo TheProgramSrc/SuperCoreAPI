@@ -442,6 +442,10 @@ public class Utils {
     }
 
     /* Maths */
+    
+    public static long toTicks(int seconds){
+        return (seconds * 20);
+    }
 
     public static long toMillis(int seconds) {
         return (seconds * 1000);
