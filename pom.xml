@@ -11,7 +11,7 @@
 
     <groupId>xyz.TheProgramSrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>2.2.5</version>
+    <version>2.2.6</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -71,7 +71,7 @@
                                     <shadedPattern>xyz.TheProgramSrc.sqlite</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>com.zaxxer</pattern>
+                                    <pattern>com.zaxxer.hikari</pattern>
                                     <shadedPattern>xyz.TheProgramSrc.hikari</shadedPattern>
                                 </relocation>
                             </relocations>
