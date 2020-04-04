@@ -93,7 +93,7 @@ public class JSONConfig {
     }
 
     public Set<String> keySet(){
-        return this.json.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toSet());
+        return this.getJSON().keySet();
     }
 
     public JsonElement get(String key){
