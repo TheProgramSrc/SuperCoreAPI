@@ -19,6 +19,7 @@ public class SongodaUpdateChecker extends SuperModule {
 
     public SongodaUpdateChecker(SuperCore core, String product) {
         super(core, false);
+        this.product = product;
     }
 
     public String getLastVersion() throws NullPointerException{
