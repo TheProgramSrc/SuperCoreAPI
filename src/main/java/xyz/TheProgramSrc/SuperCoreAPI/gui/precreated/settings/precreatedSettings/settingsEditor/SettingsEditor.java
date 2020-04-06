@@ -37,7 +37,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
     }
 
     private GUIButton getToggleUpdater(){
-        SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
+        SimpleItem item = new SimpleItem(XMaterial.ANVIL)
                 .setDisplayName(Base.SETTINGS_TOGGLE_UPDATER_NAME)
                 .setLore(
                         "&7",
@@ -45,14 +45,14 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
                                 .vars(this.getSystemSettings().isUpdaterEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
                                 .get()
                 );
-        return new GUIButton(20,item).setAction(a->{
+        return new GUIButton(11,item).setAction(a->{
             this.getSystemSettings().setUpdaterEnabled(!this.getSystemSettings().isUpdaterEnabled());
             this.open();
         });
     }
 
     private GUIButton getToggleDownloadTranslations(){
-        SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
+        SimpleItem item = new SimpleItem(XMaterial.CRAFTING_TABLE)
                 .setDisplayName(Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME)
                 .setLore(
                         "&7",
@@ -69,7 +69,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
 
 
     private GUIButton getToggleSQL(){
-        SimpleItem item = new SimpleItem(XMaterial.REDSTONE_TORCH)
+        SimpleItem item = new SimpleItem(XMaterial.TORCH)
                 .setDisplayName(Base.SETTINGS_TOGGLE_SQL_NAME)
                 .setLore(
                         "&7",
@@ -87,7 +87,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         SimpleItem item = new SimpleItem(XMaterial.BOOK)
                 .setDisplayName(Base.SET_PREFIX_NAME)
                 .setLore("&7",Base.SET_PREFIX_DESCRIPTION.options().vars(this.getSystemSettings().getPrefix()).get());
-        return new GUIButton(22,item).setAction(a->{
+        return new GUIButton(13,item).setAction(a->{
             new Dialog(getCore(), a.getPlayer()){
                 @Override
                 public String getTitle() {
@@ -117,7 +117,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         SimpleItem item = new SimpleItem(XMaterial.PAPER)
                 .setDisplayName(Base.SET_CLOSE_WORD_NAME)
                 .setLore("&7",Base.SET_CLOSE_WORD_DESCRIPTION.options().vars(this.getSystemSettings().getCloseWord()).get());
-        return new GUIButton(24,item).setAction(a->{
+        return new GUIButton(15,item).setAction(a->{
             new Dialog(getCore(), a.getPlayer()){
                 @Override
                 public String getTitle() {
