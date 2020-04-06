@@ -10,7 +10,8 @@ import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Options {private String content;
+public class Options {
+    private String content;
 
     public Options(String content){
         this.content = content;
@@ -43,6 +44,12 @@ public class Options {private String content;
     public Options placeholders(HashMap<String, String> placeholders){
         AtomicReference<String> r = new AtomicReference<>(this.content);
         placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
+        this.content = r.get();
+        return this;
+    }
+    
+    public Options placeholder(String key, String value){
+        this.content = this.content.replace(key, value);
         return this;
     }
 
