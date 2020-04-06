@@ -47,7 +47,7 @@ public abstract class SettingsGUI extends GUI {
         for(int i = 0; i < this.categories.length; ++i){
             slot = this.availableSlots[i];
             SettingCategory category = this.categories[i];
-            list.add(new GUIButton(slot, new SimpleItem(category.getMaterial()).setDisplayName(category.getName()).setLore("&7").addLoreLines(Utils.breakText(category.getDescription(),26, "&7"))).setAction(category::onClick));
+            list.add(new GUIButton(slot, new SimpleItem(category.getMaterial()).setDisplayName(category.getName()).setLore("&7").addLoreLines(Utils.breakText(category.getDescription(),50, "&7"))).setAction(category::onClick));
         }
 
         if(this.categories.length < this.availableSlots.length){
