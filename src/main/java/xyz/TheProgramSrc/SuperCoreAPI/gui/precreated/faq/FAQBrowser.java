@@ -21,7 +21,7 @@ public abstract class FAQBrowser extends BrowserGUI<FAQ> {
 
     @Override
     public GUIButton getButton(FAQ faq) {
-        return new GUIButton(new SimpleItem(XMaterial.PAPER).setDisplayName(faq.getQuestion()).setLore("&7").addLoreLines(Utils.breakText(faq.getAnswer(), 26, "&7")));
+        return new GUIButton(new SimpleItem(XMaterial.PAPER).setDisplayName(faq.getQuestion()).setLore("&7").addLoreLines(Utils.breakText(faq.getAnswer(), 36, "&7")));
     }
 
     @Override
