@@ -35,7 +35,8 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
     private PreloadedItems preloadedItems;
     private SkinTextureManager skinManager;
     private boolean firstStart, emergencyStop;
-
+//  private DependencyManager dependencyManager;
+    
     @Override
     public void onLoad() {
         this.serverFolder = new File(".");
@@ -54,6 +55,14 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
     public void onEnable() {
         long start = System.currentTimeMillis();
         this.log("Loading Plugin...");
+        /* Dependencies Load 
+        this.dependencyManager = new DependencyManager();
+        this.getDependencies().forEach(depend->{
+            //TODO: Check if the file exists, if not download, if yes load
+        });
+        
+        */
+        
         this.systemSettings = new SystemSettings(this);
 
         /* Managers */
@@ -166,4 +175,8 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
         HandlerList.unregisterAll(this);
         Bukkit.getPluginManager().disablePlugin(this);
     }
+    
+    /*
+    public abstract List<Dependency> getDependencies();
+    */
 }
