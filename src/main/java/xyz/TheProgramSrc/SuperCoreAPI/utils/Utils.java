@@ -437,11 +437,10 @@ public class Utils {
 
     public static String readWithIO(String url){
         try {
-            System.setProperty("http.agent", "Mozilla/5.0");
             return IOUtils.toString(new URI(url), Charset.defaultCharset());
         }catch (Exception ex){
             ex.printStackTrace();
-            return "Error: " + ex.getMessage();
+            return null;
         }
     }
 

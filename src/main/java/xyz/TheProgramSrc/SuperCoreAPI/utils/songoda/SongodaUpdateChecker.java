@@ -8,19 +8,13 @@ package xyz.TheProgramSrc.SuperCoreAPI.utils.songoda;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
-import xyz.TheProgramSrc.SuperCoreAPI.SuperModule;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 @SuppressWarnings("unused")
-public class SongodaUpdateChecker extends SuperModule {
+public class SongodaUpdateChecker{
 
     private String lastVersion, overrideID;
-    private boolean useIO = true;
-
-    public SongodaUpdateChecker(SuperCore core, String overrideID) {
-        super(core, false);
-    }
+    private boolean useIO = false;
 
     public SongodaUpdateChecker setOverrideID(String overrideID) {
         this.overrideID = overrideID;
@@ -54,8 +48,8 @@ public class SongodaUpdateChecker extends SuperModule {
                     data = Utils.readWithInputStream(url);
                 }
                 if(data == null) return UpdateResult.FAILED;
-                JsonObject json = new JsonParser().parse(data).getAsJsonObject();
-                JsonArray jars = json.get("jars").getAsJsonArray();
+                JsonObject json = new JsonParser().parse(data).getAsJsonObject().get("data").getAsJsonObject();
+                JsonArray jars = json.get("versions").getAsJsonArray();
                 JsonObject jar = jars.get(0).getAsJsonObject();
                 this.lastVersion = jar.get("version").getAsString();
                 return UpdateResult.SUCCESS;
