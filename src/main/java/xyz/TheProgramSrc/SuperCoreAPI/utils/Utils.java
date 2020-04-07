@@ -441,7 +441,7 @@ public class Utils {
             return IOUtils.toString(new URI(url), Charset.defaultCharset());
         }catch (Exception ex){
             ex.printStackTrace();
-            return null;
+            return "Error: " + ex.getMessage();
         }
     }
 

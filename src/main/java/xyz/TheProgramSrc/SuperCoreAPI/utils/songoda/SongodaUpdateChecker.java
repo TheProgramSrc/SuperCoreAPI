@@ -15,11 +15,21 @@ import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 @SuppressWarnings("unused")
 public class SongodaUpdateChecker extends SuperModule {
 
-    private String product, lastVersion;
+    private String lastVersion, overrideID;
+    private boolean useIO = true;
 
-    public SongodaUpdateChecker(SuperCore core, String product) {
+    public SongodaUpdateChecker(SuperCore core, String overrideID) {
         super(core, false);
-        this.product = product;
+    }
+
+    public SongodaUpdateChecker setOverrideID(String overrideID) {
+        this.overrideID = overrideID;
+        return this;
+    }
+
+    public SongodaUpdateChecker setUseIO(boolean useIO) {
+        this.useIO = useIO;
+        return this;
     }
 
     public String getLastVersion() throws NullPointerException{
@@ -35,7 +45,16 @@ public class SongodaUpdateChecker extends SuperModule {
             return UpdateResult.NO_CONNECTION;
         }else{
             try{
-                JsonObject json = new JsonParser().parse(Utils.readWithIO("https://songoda.com/api/products/" + this.product)).getAsJsonObject();
+                String url ="https://songoda.com/api/v2/products/id/{ID}";
+                url = url.replace("{ID}", this.overrideID != null ? this.overrideID : "%%__RESOURCE__%%");
+                String data;
+                if(this.useIO){
+                    data = Utils.readWithIO(url);
+                }else{
+                    data = Utils.readWithInputStream(url);
+                }
+                if(data == null) return UpdateResult.FAILED;
+                JsonObject json = new JsonParser().parse(data).getAsJsonObject();
                 JsonArray jars = json.get("jars").getAsJsonArray();
                 JsonObject jar = jars.get(0).getAsJsonObject();
                 this.lastVersion = jar.get("version").getAsString();
