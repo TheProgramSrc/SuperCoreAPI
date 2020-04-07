@@ -59,6 +59,8 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
         this.dependencyManager = new DependencyManager();
         this.getDependencies().forEach(depend->{
             //TODO: Check if the file exists, if not download, if yes load
+            //maybe something like this:
+            this.dependencyManager.loadDepend(depend);
         });
         
         */
