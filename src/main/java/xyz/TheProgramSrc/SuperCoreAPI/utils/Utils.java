@@ -425,7 +425,10 @@ public class Utils {
 
     public static String readWithInputStream(String url) {
         try{
-            return new BufferedReader(new InputStreamReader(new URL(url).openConnection().getInputStream())).readLine();
+            URL javaURL = new URL(url);
+            URLConnection connection = javaURL.openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            return new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
         }catch (Exception ex){
             ex.printStackTrace();
             return null;
@@ -434,6 +437,7 @@ public class Utils {
 
     public static String readWithIO(String url){
         try {
+            System.setProperty("http.agent", "Mozilla/5.0");
             return IOUtils.toString(new URI(url), Charset.defaultCharset());
         }catch (Exception ex){
             ex.printStackTrace();
