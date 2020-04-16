@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class JSONConfig {
-    private File file;
+    private final File file;
     private JsonObject json;
 
     public JSONConfig(File file){

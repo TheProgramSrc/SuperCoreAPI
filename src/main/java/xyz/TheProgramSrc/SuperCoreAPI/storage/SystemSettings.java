@@ -7,13 +7,12 @@ package xyz.TheProgramSrc.SuperCoreAPI.storage;
 
 import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
 import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
-import xyz.TheProgramSrc.SuperCoreAPI.database.SQLSettings;
 
 import java.io.File;
 
 public class SystemSettings extends YAMLConfig{
 
-    private SuperCore core;
+    private final SuperCore core;
     private String defaultPrefix, defaultCloseWord;
 
     public SystemSettings(SuperCore core) {
@@ -30,7 +29,6 @@ public class SystemSettings extends YAMLConfig{
         this.getCloseWord();
         this.isTranslationDownloaderEnabled();
         this.isUpdaterEnabled();
-        this.isSQLEnabled();
     }
 
     public String getCloseWord(){
@@ -65,31 +63,6 @@ public class SystemSettings extends YAMLConfig{
         this.set("Updater.Enabled", enabled);
     }
 
-    public boolean isSQLEnabled(){
-        return this.getBoolean("SQL.Enabled", false);
-    }
-
-    public void saveSQLSettings(SQLSettings settings){
-        String path = "SQL";
-        this.set(path + ".UseSSL", settings.isUseSSL());
-        this.set(path + ".Host", settings.getHost());
-        this.set(path + ".Port", settings.getPort());
-        this.set(path + ".DataBase", settings.getDatabase());
-        this.set(path + ".Username", settings.getUsername());
-        this.set(path + ".Password", settings.getPassword());
-    }
-
-    public SQLSettings getSQLSettings(){
-        String path = "SQL";
-        boolean useSSL = this.getBoolean(path + ".UseSSL");
-        String host = this.getString(path + ".Host"),
-                port = this.getString(path + ".Port"),
-                database = this.getString(path + ".DataBase"),
-                username = this.getString(path + ".Username"),
-                password = this.getString(path + ".Password");
-        return new SQLSettings(host,port,database,username,password,useSSL);
-    }
-
     public SuperCore getCore() {
         return core;
     }
@@ -100,9 +73,5 @@ public class SystemSettings extends YAMLConfig{
 
     public void setTranslationDownloaderEnabled(boolean b) {
         this.set("TranslationDownloader", b);
-    }
-
-    public void setSQLEnabled(boolean b) {
-        this.set("SQL.Enabled", b);
     }
 }

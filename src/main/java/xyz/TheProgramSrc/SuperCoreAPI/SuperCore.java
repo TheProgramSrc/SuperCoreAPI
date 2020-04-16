@@ -4,11 +4,6 @@
  */
 
 package xyz.TheProgramSrc.SuperCoreAPI;
-/*
-    Project: PrivateDevelopment
-    Package: xyz.TheProgramSrc.SuperCoreAPI
-    Created by TheProgramSrc at 17-03-20
-*/
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -35,7 +30,6 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
     private PreloadedItems preloadedItems;
     private SkinTextureManager skinManager;
     private boolean firstStart, emergencyStop;
-//  private DependencyManager dependencyManager;
     
     @Override
     public void onLoad() {
@@ -48,22 +42,14 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
         if(!this.translationsFolder.exists()) this.translationsFolder.mkdir();
         this.debugFile = new DebugFile(this);
         this.onPluginLoad();
-        if(this.emergencyStop) return;
     }
 
     @Override
     public void onEnable() {
+        if(this.emergencyStop) return;
         long start = System.currentTimeMillis();
         this.log("Loading Plugin...");
-        /* Dependencies Load 
-        this.dependencyManager = new DependencyManager();
-        this.getDependencies().forEach(depend->{
-            //TODO: Check if the file exists, if not download, if yes load
-            //maybe something like this:
-            this.dependencyManager.loadDepend(depend);
-        });
-        
-        */
+        /* Dependencies Load */
         
         this.systemSettings = new SystemSettings(this);
 
@@ -78,7 +64,6 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
 
         /* Enable */
         this.onPluginEnable();
-        if(this.emergencyStop) return;
         this.log("Loaded Plugin in &c" + (System.currentTimeMillis() - start) + "ms");
         if(this.isPaid()){
             this.log("&3Thanks for buying this plugin from &aTheProgramSrc");
@@ -172,13 +157,17 @@ public abstract class SuperCore extends JavaPlugin implements PluginProvider, iC
         return this.skinManager;
     }
 
-    public void emergencyStop(){
+    public void emergencyStop(String reason){
+        this.log("&c&lEMERGENCY STOP!");
+        if(reason != null){
+            this.log("&c&lREASON: &b"+reason);
+        }
         this.emergencyStop = true;
         HandlerList.unregisterAll(this);
         Bukkit.getPluginManager().disablePlugin(this);
     }
-    
-    /*
-    public abstract List<Dependency> getDependencies();
-    */
+
+    public void emergencyStop(){
+        this.emergencyStop(null);
+    }
 }

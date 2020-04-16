@@ -317,16 +317,23 @@ public class Utils {
 
     /* String */
 
-    public static String randomAlphaNumeric(int length) {
-        String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static String randomString(int length, String available){
         StringBuilder builder = new StringBuilder();
 
         while(length-- != 0) {
-            int character = (int)(Math.random() * (double)ALPHA_NUMERIC_STRING.length());
-            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+            int character = (int)(Math.random() * (double)available.length());
+            builder.append(available.charAt(character));
         }
 
         return builder.toString();
+    }
+
+    public static String randomAlphaNumeric(int length) {
+        return randomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+    }
+
+    public static String randomPassword(int length){
+        return randomString(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#*()[]{},.:;_-+$%/=");
     }
 
     public static String[] toStringArray(List<String> list) {
