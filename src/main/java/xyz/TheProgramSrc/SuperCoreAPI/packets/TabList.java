@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020.
+ * Created by TheProgramSrc
+ */
+
 package xyz.TheProgramSrc.SuperCoreAPI.packets;
 
 import org.bukkit.ChatColor;

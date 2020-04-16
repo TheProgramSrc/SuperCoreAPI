@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020.
+ * Created by TheProgramSrc
+ */
+
 package xyz.TheProgramSrc.SuperCoreAPI.skintexture;
 
 import com.google.gson.JsonObject;

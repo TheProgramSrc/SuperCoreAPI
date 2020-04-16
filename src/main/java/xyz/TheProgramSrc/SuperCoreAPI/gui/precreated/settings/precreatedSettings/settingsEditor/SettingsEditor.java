@@ -27,7 +27,6 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
                 this.getChangePrefix(),
                 this.getChangeCloseWord(),
                 this.getToggleDownloadTranslations(),
-                this.getToggleSQL()
         };
     }
 
@@ -45,40 +44,8 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
                                 .vars(this.getSystemSettings().isUpdaterEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
                                 .get()
                 );
-        return new GUIButton(11,item).setAction(a->{
+        return new GUIButton(10,item).setAction(a->{
             this.getSystemSettings().setUpdaterEnabled(!this.getSystemSettings().isUpdaterEnabled());
-            this.open();
-        });
-    }
-
-    private GUIButton getToggleDownloadTranslations(){
-        SimpleItem item = new SimpleItem(XMaterial.CRAFTING_TABLE)
-                .setDisplayName(Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME)
-                .setLore(
-                        "&7",
-                        Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION.options()
-                                .vars(this.getSystemSettings().isTranslationDownloaderEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
-                                .get()
-                );
-        return new GUIButton(30,item).setAction(a->{
-            this.getSystemSettings().setTranslationDownloaderEnabled(!this.getSystemSettings().isTranslationDownloaderEnabled());
-            this.open();
-        });
-    }
-
-
-
-    private GUIButton getToggleSQL(){
-        SimpleItem item = new SimpleItem(XMaterial.TORCH)
-                .setDisplayName(Base.SETTINGS_TOGGLE_SQL_NAME)
-                .setLore(
-                        "&7",
-                        Base.SETTINGS_TOGGLE_SQL_DESCRIPTION.options()
-                                .vars(this.getSystemSettings().isSQLEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
-                                .get()
-                );
-        return new GUIButton(32,item).setAction(a->{
-            this.getSystemSettings().setSQLEnabled(!this.getSystemSettings().isSQLEnabled());
             this.open();
         });
     }
@@ -87,7 +54,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         SimpleItem item = new SimpleItem(XMaterial.BOOK)
                 .setDisplayName(Base.SET_PREFIX_NAME)
                 .setLore("&7",Base.SET_PREFIX_DESCRIPTION.options().vars(this.getSystemSettings().getPrefix()).get());
-        return new GUIButton(13,item).setAction(a->{
+        return new GUIButton(16,item).setAction(a->{
             new Dialog(getCore(), a.getPlayer()){
                 @Override
                 public String getTitle() {
@@ -117,7 +84,7 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
         SimpleItem item = new SimpleItem(XMaterial.PAPER)
                 .setDisplayName(Base.SET_CLOSE_WORD_NAME)
                 .setLore("&7",Base.SET_CLOSE_WORD_DESCRIPTION.options().vars(this.getSystemSettings().getCloseWord()).get());
-        return new GUIButton(15,item).setAction(a->{
+        return new GUIButton(30,item).setAction(a->{
             new Dialog(getCore(), a.getPlayer()){
                 @Override
                 public String getTitle() {
@@ -140,6 +107,21 @@ public abstract class SettingsEditor extends SettingCategoryGUI {
                     return true;
                 }
             }.setRecall(p-> SettingsEditor.this.open()).addPlaceholder("{CurrentValue}", this.getSystemSettings().getCloseWord());
+        });
+    }
+
+    private GUIButton getToggleDownloadTranslations(){
+        SimpleItem item = new SimpleItem(XMaterial.CRAFTING_TABLE)
+                .setDisplayName(Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME)
+                .setLore(
+                        "&7",
+                        Base.SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION.options()
+                                .vars(this.getSystemSettings().isTranslationDownloaderEnabled() ? Base.ENABLED.toString() : Base.DISABLED.toString())
+                                .get()
+                );
+        return new GUIButton(32,item).setAction(a->{
+            this.getSystemSettings().setTranslationDownloaderEnabled(!this.getSystemSettings().isTranslationDownloaderEnabled());
+            this.open();
         });
     }
 }

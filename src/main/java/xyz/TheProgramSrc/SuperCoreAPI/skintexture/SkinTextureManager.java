@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020.
+ * Created by TheProgramSrc
+ */
+
 package xyz.TheProgramSrc.SuperCoreAPI.skintexture;
 /*
     Created by TheProgramSrc at 05-11-2019
