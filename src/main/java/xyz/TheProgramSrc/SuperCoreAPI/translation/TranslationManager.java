@@ -8,7 +8,6 @@ package xyz.TheProgramSrc.SuperCoreAPI.translation;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperModule;
 import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
-import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 import java.io.File;
@@ -32,7 +31,7 @@ public class TranslationManager extends SuperModule {
             if(!lang.equals("en_US")){
                 return this.translate("en_US", id);
             }else{
-                throw new NullPointerException("Cannot find translate '"+id+"' from '" + locale.toString() + "'");
+                throw new NullPointerException("Cannot translate '"+id+"' from '" + locale.toString() + "'");
             }
         }else{
             if(!this.phrases.get(locale).containsKey(id)){
@@ -58,12 +57,12 @@ public class TranslationManager extends SuperModule {
         this.register(Base.class);
     }
 
-    public void register(Class<? extends TranslationPack> tpack){
+    public void register(Class<? extends TranslationPack> translationPackClass){
         try{
-            TranslationPack pack = ((TranslationPack) InstanceCreator.create(tpack));
+            TranslationPack pack = ((TranslationPack) Utils.createInstance(translationPackClass));
             if(pack != null){
                 pack.getTranslations().forEach(t-> t.getPack().setManager(this));
-                File file = new File(this.getTranslationsFolder(), pack.getLanguage().toString()+".lang");
+                File file = new File(this.getTranslationsFolder(), pack.getLanguage().toString() + ".lang");
                 LinkedHashMap<String, String> map = new LinkedHashMap<>();
                 if(file.exists()){
                     YAMLConfig cfg = new YAMLConfig(file);

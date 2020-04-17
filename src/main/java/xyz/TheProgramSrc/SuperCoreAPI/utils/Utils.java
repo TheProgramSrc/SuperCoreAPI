@@ -10,12 +10,20 @@ import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredListener;
+import sun.misc.Unsafe;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
@@ -24,7 +32,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@SuppressWarnings({"unused", "WeakerAccess", "unchecked"})
 public class Utils {
 
     public static boolean nonNull(Object object) {
@@ -60,7 +67,7 @@ public class Utils {
     }
 
     public static void Log(Level level, String message) {
-        Logger.getLogger("xyz/theprogramsrc/test/SuperCoreAPI").log(level, message);
+        Logger.getLogger("SuperCoreAPI").log(level, message);
     }
 
     public static String[] setFirstForAll(String firstForAll, String[] strings) {
@@ -95,8 +102,8 @@ public class Utils {
         return r;
     }
 
-    public static String setFirstFor(String var0, String var1) {
-        return var0 + var1;
+    public static String setFirstFor(String string0, String string1) {
+        return string0 + string1;
     }
 
     public static String getEnumName(Enum<?> enumToGetName) {
@@ -232,87 +239,6 @@ public class Utils {
         }else{
             sender.sendMessage(ct(message));
         }
-    }
-
-    /* Other */
-
-    public static boolean isPAPI(){
-        return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
-    }
-
-    public static <T> List<T> toList(T... array) {
-        List<T> list = new ArrayList<>();
-        int var3 = array.length;
-
-        Collections.addAll(list, array);
-
-        return list;
-    }
-
-    public static void runDelayedTask(final Runnable runnable, long milliseconds) {
-        try {
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    runnable.run();
-                    this.cancel();
-                }
-            }, milliseconds);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
-    public static String toString(boolean bool){
-        return bool ? "true" : "false";
-    }
-
-    public static String toString(int i) {
-        return Integer.toString(i);
-    }
-
-    public static boolean isInteger(String integer) {
-        try {
-            Integer.parseInt(integer);
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
-    public static Integer Int(String string) {
-        return Integer.parseInt(string);
-    }
-
-    public static String toString(long l) {
-        return Long.toString(l);
-    }
-
-    public static long longValueOf(String s) {
-        return Long.parseLong(s);
-    }
-
-    public static String toString(double d) {
-        return Double.toString(d);
-    }
-
-    public static double doubleValueOf(String s) {
-        return Double.parseDouble(s);
-    }
-
-    public static String toString(float f) {
-        return Float.toString(f);
-    }
-
-    public static float floatValueOf(String s) {
-        return Float.parseFloat(s);
-    }
-
-    public static <T> T[] addToArray(T[] originalArray, T objectToAdd) {
-        T[] r = Arrays.copyOf(originalArray, originalArray.length + 1);
-        r[originalArray.length] = objectToAdd;
-        return r;
     }
 
     /* String */
@@ -518,6 +444,207 @@ public class Utils {
 
     public static Locale toLocale(String language) {
         return new Locale(language.split("_")[0], language.split("_")[1]);
+    }
+
+    public static Object createInstance(Class<?> clazz) {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            Unsafe unsafe = ((Unsafe)field.get(null));
+            return unsafe.allocateInstance(clazz);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /* Other */
+
+    public static void unloadPlugin(Plugin plugin) {
+        String pluginName = plugin.getName();
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        SimpleCommandMap simpleCommandMap = null;
+        List<?> pluginList = null;
+        Map<?,?> pluginNames = null;
+        Map<?,?> commands = null;
+        Map<?,?> listeners = null;
+        boolean haveListeners = true;
+        pluginManager.disablePlugin(plugin);
+
+        Field field1;
+        Field field2;
+        try {
+            Field plugins = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
+            plugins.setAccessible(true);
+            pluginList = (List<?>)plugins.get(pluginManager);
+            field1 = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
+            field1.setAccessible(true);
+            pluginNames = (Map<?,?>)field1.get(pluginManager);
+
+            try {
+                field2 = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
+                field2.setAccessible(true);
+                listeners = (Map<?,?>)field2.get(pluginManager);
+            } catch (Exception ex) {
+                haveListeners = false;
+            }
+
+            field2 = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
+            field2.setAccessible(true);
+            simpleCommandMap = (SimpleCommandMap)field2.get(pluginManager);
+            Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
+            knownCommands.setAccessible(true);
+            commands = (Map<?,?>)knownCommands.get(simpleCommandMap);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        pluginManager.disablePlugin(plugin);
+        if (pluginList != null) {
+            pluginList.remove(plugin);
+        }
+
+        if (pluginNames != null) {
+            pluginNames.remove(pluginName);
+        }
+
+        Iterator<?> iterator;
+        if (listeners != null && haveListeners) {
+            iterator = listeners.values().iterator();
+
+            while(iterator.hasNext()) {
+                Iterator<?> it = ((SortedSet<?>)iterator.next()).iterator();
+
+                while(it.hasNext()) {
+                    RegisteredListener registeredListener = (RegisteredListener)it.next();
+                    if (registeredListener.getPlugin() == plugin) {
+                        it.remove();
+                    }
+                }
+            }
+        }
+
+        if (simpleCommandMap != null) {
+            iterator = Utils.requireNonNull(commands).entrySet().iterator();
+
+            while(iterator.hasNext()) {
+                Map.Entry<?,?> entry = (Map.Entry<?,?>)iterator.next();
+                if (entry.getValue() instanceof PluginCommand) {
+                    PluginCommand pluginCommand = (PluginCommand)entry.getValue();
+                    if (pluginCommand.getPlugin() == plugin) {
+                        pluginCommand.unregister(simpleCommandMap);
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        ClassLoader classLoader = plugin.getClass().getClassLoader();
+        if (classLoader instanceof URLClassLoader) {
+            try {
+                field1 = classLoader.getClass().getDeclaredField("plugin");
+                field1.setAccessible(true);
+                field1.set(classLoader, null);
+                field2 = classLoader.getClass().getDeclaredField("pluginInit");
+                field2.setAccessible(true);
+                field2.set(classLoader, null);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            try {
+                ((URLClassLoader)classLoader).close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        System.gc();
+    }
+
+    public static boolean isPAPI(){
+        return Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
+    }
+
+    public static boolean isPlugin(String name){
+        return Bukkit.getPluginManager().getPlugin(name) != null;
+    }
+
+    public static Plugin getPlugin(String name){
+        return Bukkit.getPluginManager().getPlugin(name);
+    }
+
+    public static <T> List<T> toList(T... array) {
+        List<T> list = new ArrayList<>();
+        int var3 = array.length;
+
+        Collections.addAll(list, array);
+
+        return list;
+    }
+
+    public static void runDelayedTask(final Runnable runnable, long milliseconds) {
+        try {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runnable.run();
+                    this.cancel();
+                }
+            }, milliseconds);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public static String toString(boolean bool){
+        return bool ? "true" : "false";
+    }
+
+    public static String toString(int i) {
+        return Integer.toString(i);
+    }
+
+    public static boolean isInteger(String integer) {
+        try {
+            Integer.parseInt(integer);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public static Integer Int(String string) {
+        return Integer.parseInt(string);
+    }
+
+    public static String toString(long l) {
+        return Long.toString(l);
+    }
+
+    public static long longValueOf(String s) {
+        return Long.parseLong(s);
+    }
+
+    public static String toString(double d) {
+        return Double.toString(d);
+    }
+
+    public static double doubleValueOf(String s) {
+        return Double.parseDouble(s);
+    }
+
+    public static String toString(float f) {
+        return Float.toString(f);
+    }
+
+    public static float floatValueOf(String s) {
+        return Float.parseFloat(s);
+    }
+
+    public static <T> T[] addToArray(T[] originalArray, T objectToAdd) {
+        T[] r = Arrays.copyOf(originalArray, originalArray.length + 1);
+        r[originalArray.length] = objectToAdd;
+        return r;
     }
 }
 
