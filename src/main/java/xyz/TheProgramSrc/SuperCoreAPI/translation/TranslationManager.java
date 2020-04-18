@@ -8,6 +8,7 @@ package xyz.TheProgramSrc.SuperCoreAPI.translation;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperCore;
 import xyz.TheProgramSrc.SuperCoreAPI.SuperModule;
 import xyz.TheProgramSrc.SuperCoreAPI.config.YAMLConfig;
+import xyz.TheProgramSrc.SuperCoreAPI.utils.InstanceCreator;
 import xyz.TheProgramSrc.SuperCoreAPI.utils.Utils;
 
 import java.io.File;
@@ -59,7 +60,7 @@ public class TranslationManager extends SuperModule {
 
     public void register(Class<? extends TranslationPack> translationPackClass){
         try{
-            TranslationPack pack = ((TranslationPack) Utils.createInstance(translationPackClass));
+            TranslationPack pack = ((TranslationPack) InstanceCreator.create(translationPackClass));
             if(pack != null){
                 pack.getTranslations().forEach(t-> t.getPack().setManager(this));
                 File file = new File(this.getTranslationsFolder(), pack.getLanguage().toString() + ".lang");

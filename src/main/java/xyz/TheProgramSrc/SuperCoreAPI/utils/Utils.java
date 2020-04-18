@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
-import sun.misc.Unsafe;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -444,16 +443,6 @@ public class Utils {
 
     public static Locale toLocale(String language) {
         return new Locale(language.split("_")[0], language.split("_")[1]);
-    }
-
-    public static Object createInstance(Class<?> clazz) {
-        try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            Unsafe unsafe = ((Unsafe)field.get(null));
-            return unsafe.allocateInstance(clazz);
-        } catch (Exception ex) {
-            return null;
-        }
     }
 
     /* Other */
