@@ -56,9 +56,6 @@ public abstract class Dialog extends SuperModule {
             HandlerList.unregisterAll(this);
             Title.clearTitle(this.getPlayer());
             Actionbar.clearActionbar(this.getPlayer());
-            if(this.canClose()){            
-                Utils.sendMessage(this.getPlayer(), Base.DIALOG_CLOSED.toString());
-            }
             this.onDialogClose();
             if(this.recall != null){
                 this.recall.run(this.getPlayer());
@@ -92,6 +89,7 @@ public abstract class Dialog extends SuperModule {
             if(message.toLowerCase().equals(close.toLowerCase())){
                 if(this.canClose()){
                     this.close();
+                    Utils.sendMessage(this.getPlayer(), Base.DIALOG_CLOSED.toString());
                 }
             }else{
                 boolean result = this.onResult(message);
