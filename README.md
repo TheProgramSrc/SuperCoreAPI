@@ -42,8 +42,8 @@ To avoid bugs with other plugins using SuperCoreAPI is recommended to use this m
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>xyz.theprogramsrc.supercore</pattern>
-                                    <shadedPattern>com.example.myplugin.supercore</shadedPattern>
+                                    <pattern>xyz.theprogramsrc.supercoreapi</pattern>
+                                    <shadedPattern>com.example.myplugin.supercoreapi</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
