@@ -23,7 +23,7 @@ The best way to create plugins<br>
 </dependency>
 ```
 
-![LastVersion](https://img.shields.io/maven-metadata/v?color=%230768b7&label=Latest%20Version&metadataUrl=https%3A%2F%2Frepo.codemc.io%2Frepository%2Fmaven-public%2Fxyz%2FTheProgramSrc%2FSuperCoreAPI%2Fmaven-metadata.xml)
+![LastVersion](https://img.shields.io/maven-metadata/v?color=%230768b7&label=Latest%20Version&metadataUrl=https://repo.codemc.io/repository/maven-public/xyz/theprogramsrc/SuperCoreAPI/maven-metadata.xml)
 
 
 To avoid bugs with other plugins using SuperCoreAPI is recommended to use this maven shade plugin (using relocation settings):
