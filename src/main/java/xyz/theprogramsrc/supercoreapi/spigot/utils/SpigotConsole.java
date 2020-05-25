@@ -3,7 +3,7 @@
  * Created by TheProgramSrc (https://theprogramsrc.xyz)
  */
 
-package xyz.theprogramsrc.supercoreapi.spigot.objects;
+package xyz.theprogramsrc.supercoreapi.spigot.utils;
 
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.event.Listener;

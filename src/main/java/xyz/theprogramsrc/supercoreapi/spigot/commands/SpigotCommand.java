@@ -12,7 +12,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
-import xyz.theprogramsrc.supercoreapi.spigot.objects.SpigotConsole;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotConsole;
 
 public abstract class SpigotCommand extends SpigotModule {
 
