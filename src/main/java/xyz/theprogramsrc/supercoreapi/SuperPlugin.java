@@ -134,5 +134,17 @@ public interface SuperPlugin<PLUGIN> {
      */
     void onPluginDisable();
 
+    /**
+     * Return the Plugin OS (BungeeCord or Spigot)
+     * @return Plugin OS
+     */
     PLUGIN getPlugin();
+
+    /**
+     * Returns the plugin messaging channel name
+     * @return Plugin messaging channel name
+     */
+    default String getPluginMessagingChannelName(){
+        return this.getPluginName() + "_MessagingChannel";
+    }
 }

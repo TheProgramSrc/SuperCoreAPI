@@ -5,6 +5,7 @@
 
 package xyz.theprogramsrc.supercoreapi.spigot;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
@@ -100,10 +101,6 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         return this.getDescription().getAuthors().size() != 0 ? this.getDescription().getAuthors().get(0) : "TheProgramSrc";
     }
 
-    /**
-     * See {@link SuperPlugin#sendConsoleMessage(String)}
-     * @param message Message to send
-     */
     @Override
     public void sendConsoleMessage(String message) {
         this.getServer().getConsoleSender().sendMessage(this.getSuperUtils().color(message));
@@ -140,6 +137,16 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         return this.settingsStorage.getLanguage();
     }
 
+    @Override
+    public TranslationManager getTranslationManager() {
+        return this.translationManager;
+    }
+
+    @Override
+    public JavaPlugin getPlugin() {
+        return this;
+    }
+
     /**
      * Register the Spigot listeners
      * @param listeners Listeners to register
@@ -156,17 +163,6 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         return settingsStorage;
     }
 
-    @Override
-    public TranslationManager getTranslationManager() {
-        return this.translationManager;
-    }
-
-    @Override
-    public JavaPlugin getPlugin() {
-        return this;
-    }
-
-
     /**
      * Gets a task util
      * @return Spigot Tasks util
@@ -181,5 +177,22 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      */
     public PreloadedItems getPreloadedItems() {
         return preloadedItems;
+    }
+
+    /**
+     * Checks if the server has bungeecord enabled
+     * @return True if BungeeCord is enabled, otherwise false
+     */
+    public boolean isBungeeEnabled(){
+        if(!getServer().getVersion().toLowerCase().contains("spigot") && !getServer().getVersion().toLowerCase().contains("paper")){
+            return false;
+        }
+        ConfigurationSection section = getServer().spigot().getConfig().getConfigurationSection("settings");
+
+        if(section == null){
+            return false;
+        }
+
+        return section.getBoolean("settings.bungeecord");
     }
 }

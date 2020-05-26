@@ -7,6 +7,7 @@ package xyz.theprogramsrc.supercoreapi.bungee;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
+import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 
 import java.io.File;
@@ -63,5 +64,9 @@ public class BungeeModule implements Listener {
 
     public BungeePlugin getPlugin() {
         return plugin;
+    }
+
+    public SuperUtils getSuperUtils(){
+        return this.getPlugin().getSuperUtils();
     }
 }

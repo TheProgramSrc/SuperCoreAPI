@@ -6,17 +6,27 @@
 package xyz.theprogramsrc.supercoreapi.spigot.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
+import xyz.theprogramsrc.supercoreapi.spigot.events.messagingService.SpigotMessagingReceiver;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 
-public class EventManager {
+public class EventManager extends SpigotModule {
 
     private static boolean timerEnabled = false;
-    private final SpigotPlugin plugin;
 
     public EventManager(SpigotPlugin plugin){
+        super(plugin);
         this.plugin = plugin;
+        this.loadTimerTask();
+        this.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(this.plugin, this.plugin.getPluginMessagingChannelName());
+        this.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(this.plugin, "BungeeCord");
+    }
+
+    public void registerMessagingService(SpigotMessagingReceiver receiver){
+        this.getPlugin().getServer().getMessenger().registerIncomingPluginChannel(this.plugin, this.plugin.getPluginMessagingChannelName(), receiver);
     }
 
     private void loadTimerTask(){

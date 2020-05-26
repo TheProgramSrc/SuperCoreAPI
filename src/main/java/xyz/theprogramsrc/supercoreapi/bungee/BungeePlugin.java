@@ -10,6 +10,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
+import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
@@ -48,6 +49,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
+        new BungeeEventManager(this);
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){

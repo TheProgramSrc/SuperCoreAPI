@@ -56,7 +56,7 @@ public interface SuperUtils {
 
     /**
      * Removes the color from the specified collection
-     * @param collection Collection to translate
+     * @param strings Collection to translate
      * @return Collection without colors
      */
     default Collection<String> removeColor(Collection<String> strings){
@@ -85,6 +85,15 @@ public interface SuperUtils {
      * @param message Message to send
      */
     default void sendMessage(org.bukkit.command.CommandSender sender, String message){
+        throw new RuntimeException("The operation sendMessage(CommandSender, String) is not supported yet");
+    }
+
+    /**
+     * Send a message
+     * @param sender Sender to send the message
+     * @param message Message to send
+     */
+    default void sendMessage(net.md_5.bungee.api.CommandSender sender, String message){
         throw new RuntimeException("The operation sendMessage(CommandSender, String) is not supported yet");
     }
 }
