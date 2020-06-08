@@ -39,9 +39,9 @@ public class SpigotUpdater extends SpigotModule {
      */
     public void restartServer(boolean script){
         if(script){
-            this.plugin.getServer().spigot().restart();
+            ((SpigotPlugin)this.plugin).getServer().spigot().restart();
         }else{
-            this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), "restart");
+            ((SpigotPlugin)this.plugin).getServer().dispatchCommand(((SpigotPlugin)this.plugin).getServer().getConsoleSender(), "restart");
         }
     }
 

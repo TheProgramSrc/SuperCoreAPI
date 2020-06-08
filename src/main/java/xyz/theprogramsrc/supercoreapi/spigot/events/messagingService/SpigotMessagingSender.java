@@ -16,13 +16,13 @@ public class SpigotMessagingSender extends SpigotModule {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
         out.writeUTF(data);
-        player.sendPluginMessage(this.plugin, this.getPlugin().getPluginMessagingChannelName(), out.toByteArray());
+        player.sendPluginMessage(((SpigotPlugin)this.plugin), this.getPlugin().getPluginMessagingChannelName(), out.toByteArray());
     }
 
     public void sendBungeeMessage(Player player, String subchannel, String data){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
         out.writeUTF(data);
-        player.sendPluginMessage(this.plugin, "BungeeCord", out.toByteArray());
+        player.sendPluginMessage(((SpigotPlugin)this.plugin), "BungeeCord", out.toByteArray());
     }
 }

@@ -47,6 +47,6 @@ public class ClickAction {
     }
 
     public SpigotPlugin getPlugin(){
-        return this.gui.getPlugin();
+        return ((SpigotPlugin)this.gui.getPlugin());
     }
 }

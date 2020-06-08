@@ -55,7 +55,7 @@ public abstract class BrowserGUI<OBJ> extends GUI{
         int x = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
         buttons.add(new GUIButton(49, this.searchTerm == null ? this.getPreloadedItems().getSearchItem() : this.getPreloadedItems().getEndSearchItem()).setAction(a -> {
             if(this.searchTerm == null){
-                new Dialog(this.getPlugin(), this.getPlayer()){
+                new Dialog(((SpigotPlugin)this.getPlugin()), this.getPlayer()){
 
                     @Override
                     public String getTitle() {

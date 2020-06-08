@@ -19,20 +19,19 @@ public class EventManager extends SpigotModule {
 
     public EventManager(SpigotPlugin plugin){
         super(plugin);
-        this.plugin = plugin;
         this.loadTimerTask();
-        this.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(this.plugin, this.plugin.getPluginMessagingChannelName());
-        this.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(this.plugin, "BungeeCord");
+        ((SpigotPlugin) this.plugin).getServer().getMessenger().registerOutgoingPluginChannel(((SpigotPlugin)this.plugin), this.plugin.getPluginMessagingChannelName());
+        ((SpigotPlugin) this.plugin).getServer().getMessenger().registerOutgoingPluginChannel(((SpigotPlugin)this.plugin), "BungeeCord");
     }
 
     public void registerMessagingService(SpigotMessagingReceiver receiver){
-        this.getPlugin().getServer().getMessenger().registerIncomingPluginChannel(this.plugin, this.plugin.getPluginMessagingChannelName(), receiver);
+        ((SpigotPlugin) this.plugin).getServer().getMessenger().registerIncomingPluginChannel(((SpigotPlugin)this.plugin), this.plugin.getPluginMessagingChannelName(), receiver);
     }
 
     private void loadTimerTask(){
         if (!timerEnabled) {
             timerEnabled = true;
-            for(Time t : Time.values()) Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, () -> Bukkit.getPluginManager().callEvent(new TimerEvent(t)), 0L, t.getTime());
+            for(Time t : Time.values()) Bukkit.getScheduler().scheduleSyncRepeatingTask(((SpigotPlugin)this.plugin), () -> Bukkit.getPluginManager().callEvent(new TimerEvent(t)), 0L, t.getTime());
         }
     }
 }

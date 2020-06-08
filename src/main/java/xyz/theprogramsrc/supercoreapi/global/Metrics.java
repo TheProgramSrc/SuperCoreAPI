@@ -36,7 +36,7 @@ import java.util.zip.GZIPOutputStream;
 public class Metrics {
 
     /*
-    It's not necessary because I created iniside my custom package.
+    It's not necessary because I created inside my custom package.
 
     static {
         // You can use the property to disable the check in your test environment

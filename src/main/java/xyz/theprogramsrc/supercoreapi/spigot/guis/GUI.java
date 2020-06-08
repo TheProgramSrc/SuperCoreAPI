@@ -49,7 +49,7 @@ public abstract class GUI extends SpigotModule {
     public void open(){
         this.getSpigotTasks().runTask(()->{
             if(this.inventory == null){
-                this.plugin.listener(this);
+                ((SpigotPlugin)this.plugin).listener(this);
             }
             this.inventory = Bukkit.createInventory(null, this.getRows().getSize(), this.plugin.getSuperUtils().color(this.applyPlaceholders(this.centerTitle() ? this.getCenteredTitle() : this.getTitle())));
             this.player.openInventory(this.inventory);

@@ -12,7 +12,7 @@ public class BungeeConsole extends BungeeModule {
     }
 
     public void listeners(Listener... listeners){
-        this.plugin.listener(listeners);
+        ((BungeePlugin)this.plugin).listener(listeners);
     }
 
     public void execute(String command){

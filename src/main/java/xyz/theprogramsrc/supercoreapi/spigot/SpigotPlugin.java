@@ -98,7 +98,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public String getPluginAuthor() {
-        return this.getDescription().getAuthors().size() != 0 ? this.getDescription().getAuthors().get(0) : "TheProgramSrc";
+        return this.getDescription().getAuthors().size() != 0 ? (this.getDescription().getAuthors().get(0) != null ? this.getDescription().getAuthors().get(0) : "TheProgramSrc") : "TheProgramSrc";
     }
 
     @Override

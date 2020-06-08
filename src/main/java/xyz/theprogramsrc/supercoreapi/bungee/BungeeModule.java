@@ -7,18 +7,14 @@ package xyz.theprogramsrc.supercoreapi.bungee;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
-import xyz.theprogramsrc.supercoreapi.SuperUtils;
+import xyz.theprogramsrc.supercoreapi.SuperModule;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 
-import java.io.File;
-
-public class BungeeModule implements Listener {
-
-    protected final BungeePlugin plugin;
+public class BungeeModule extends SuperModule<Listener> implements Listener {
 
     public BungeeModule(BungeePlugin plugin, boolean registerListener){
-        this.plugin = plugin;
-        if(registerListener) this.plugin.getProxy().getPluginManager().registerListener(this.plugin, this);
+        super(plugin);
+        if(registerListener) this.listener(this);
         this.onLoad();
     }
 
@@ -26,47 +22,17 @@ public class BungeeModule implements Listener {
         this(plugin, true);
     }
 
-    public void onLoad(){
-
-    }
-
-    protected File getPluginFolder() {
-        return this.plugin.getPluginFolder();
-    }
-
-    protected File getServerFolder() {
-        return this.plugin.getServerFolder();
-    }
-
-    protected String getPluginName() {
-        return this.plugin.getPluginName();
-    }
-
-    protected String getPluginVersion(){
-        return this.plugin.getPluginVersion();
-    }
-
-    protected void log(String message){
-        this.plugin.log(message);
-    }
-
-    protected void listener(Listener... listeners){
-        this.plugin.listener(listeners);
+    @Override
+    protected void listener(Listener... listeners) {
+        ((BungeePlugin)this.plugin).listener(listeners);
     }
 
     protected Settings getSettings(){
-        return this.plugin.getSettings();
+        return ((BungeePlugin)this.plugin).getSettings();
     }
 
     protected ProxyServer getProxy(){
-        return this.plugin.getProxy();
+        return ((BungeePlugin)this.plugin).getProxy();
     }
 
-    public BungeePlugin getPlugin() {
-        return plugin;
-    }
-
-    public SuperUtils getSuperUtils(){
-        return this.getPlugin().getSuperUtils();
-    }
 }

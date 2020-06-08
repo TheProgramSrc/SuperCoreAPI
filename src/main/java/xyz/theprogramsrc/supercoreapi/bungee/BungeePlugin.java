@@ -93,7 +93,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     @Override
     public String getPluginAuthor() {
-        return this.getDescription().getAuthor();
+        return this.getDescription().getAuthor() != null ? this.getDescription().getAuthor() : "TheProgramSrc";
     }
 
     @Override

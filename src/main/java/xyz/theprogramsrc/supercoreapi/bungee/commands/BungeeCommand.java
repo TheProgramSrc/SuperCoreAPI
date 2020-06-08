@@ -9,8 +9,16 @@ import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeConsole;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 
+/**
+ * A extension for easier control with commands
+ */
 public abstract class BungeeCommand extends BungeeModule {
 
+    /**
+     * Creates a new command for bungeecord and registers it
+     *
+     * @param plugin The BungeeCord plugin
+     */
     public BungeeCommand(final BungeePlugin plugin){
         super(plugin);
         getProxy().getPluginManager().registerCommand(plugin, new Command(this.getCommand(), this.getPermission(), this.getAliases()) {
@@ -44,6 +52,10 @@ public abstract class BungeeCommand extends BungeeModule {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public abstract String getCommand();
 
     public String getPermission(){

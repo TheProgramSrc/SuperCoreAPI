@@ -17,11 +17,11 @@ public class SpigotConsole extends SpigotModule {
     }
 
     public void listeners(Listener... listeners){
-        this.plugin.listener(listeners);
+        ((SpigotPlugin)this.plugin).listener(listeners);
     }
 
     public void execute(final String command){
-        this.plugin.getServer().getScheduler().runTask(this.plugin, ()->this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), command));
+        ((SpigotPlugin)this.plugin).getServer().getScheduler().runTask(((SpigotPlugin)this.plugin), ()->((SpigotPlugin)this.plugin).getServer().dispatchCommand(((SpigotPlugin)this.plugin).getServer().getConsoleSender(), command));
     }
 
     public void logMessage(String msg){
@@ -29,6 +29,6 @@ public class SpigotConsole extends SpigotModule {
     }
 
     public ConsoleCommandSender parseConsoleCommandSender(){
-        return this.plugin.getServer().getConsoleSender();
+        return ((SpigotPlugin)this.plugin).getServer().getConsoleSender();
     }
 }

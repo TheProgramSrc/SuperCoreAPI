@@ -20,19 +20,19 @@ public class SpigotTasks extends SpigotModule {
 
     @Override
     public void onLoad() {
-        this.scheduler = this.plugin.getServer().getScheduler();
+        this.scheduler = ((SpigotPlugin)this.plugin).getServer().getScheduler();
     }
 
     public BukkitTask runTask(Runnable runnable){
-        return this.scheduler.runTask(this.plugin, runnable);
+        return this.scheduler.runTask(((SpigotPlugin)this.plugin), runnable);
     }
 
     public BukkitTask runAsyncTask(Runnable runnable){
-        return this.scheduler.runTask(this.plugin, runnable);
+        return this.scheduler.runTaskAsynchronously(((SpigotPlugin)this.plugin), runnable);
     }
 
     public BukkitTask runTaskLater(long ticks, Runnable runnable){
-        return this.scheduler.runTaskLater(this.plugin, runnable, ticks);
+        return this.scheduler.runTaskLater(((SpigotPlugin)this.plugin), runnable, ticks);
     }
 
     public void cancelTask(int id){
@@ -40,7 +40,7 @@ public class SpigotTasks extends SpigotModule {
     }
 
     public int runRepeatingTask(long ticksDelay, long ticksPeriod, Runnable runnable){
-        return this.scheduler.scheduleSyncRepeatingTask(this.plugin, runnable, ticksDelay, ticksPeriod);
+        return this.scheduler.scheduleSyncRepeatingTask(((SpigotPlugin)this.plugin), runnable, ticksDelay, ticksPeriod);
     }
 
     public BukkitScheduler getScheduler() {
