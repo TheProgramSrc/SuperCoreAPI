@@ -13,6 +13,10 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.BaseDependencies;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
@@ -30,6 +34,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     private Settings settings;
     private TranslationManager translationManager;
+    private DependencyManager dependencyManager;
 
     @Override
     public void onLoad() {
@@ -50,6 +55,9 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
         new BungeeEventManager(this);
+        PluginClassLoader classLoader = new ReflectionClassLoader(this);
+        this.dependencyManager = new DependencyManager(this, classLoader);
+        Arrays.stream(BaseDependencies.values()).forEach(d-> dependencyManager.loadDependencies(d.getDependency()));
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){
@@ -147,5 +155,10 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     public Settings getSettings() {
         return this.settings;
+    }
+
+    @Override
+    public DependencyManager getDependencyManager() {
+        return dependencyManager;
     }
 }

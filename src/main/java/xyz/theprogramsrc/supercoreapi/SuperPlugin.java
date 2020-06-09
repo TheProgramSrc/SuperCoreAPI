@@ -5,6 +5,7 @@
 
 package xyz.theprogramsrc.supercoreapi;
 
+import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 
@@ -147,4 +148,10 @@ public interface SuperPlugin<PLUGIN> {
     default String getPluginMessagingChannelName(){
         return this.getPluginName() + "_MessagingChannel";
     }
+
+    /**
+     * Gets the dependency manager
+     * @return Dependency Manager
+     */
+    DependencyManager getDependencyManager();
 }

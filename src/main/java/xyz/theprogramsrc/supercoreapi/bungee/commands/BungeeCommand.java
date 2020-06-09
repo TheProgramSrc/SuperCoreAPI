@@ -15,7 +15,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 public abstract class BungeeCommand extends BungeeModule {
 
     /**
-     * Creates a new command for bungeecord and registers it
+     * Creates a new command for BungeeCord and registers it
      *
      * @param plugin The BungeeCord plugin
      */
@@ -53,20 +53,40 @@ public abstract class BungeeCommand extends BungeeModule {
     }
 
     /**
-     * 
-     * @return
+     * Gets the command
+     * @return the command
      */
     public abstract String getCommand();
 
+    /**
+     * Gets the permission to use the command
+     * @return the permission
+     */
     public String getPermission(){
         return null;
     }
 
+    /**
+     * Gets all the available aliases
+     * @return the aliases
+     */
     public String[] getAliases(){
         return new String[0];
     }
 
+    /**
+     * Executed when a player executes the command
+     * @param player Who execute the command
+     * @param args Arguments of the command
+     * @return The CommandResult
+     */
     public abstract CommandResult onPlayerExecute(ProxiedPlayer player, String[] args);
 
+    /**
+     * Executed when the console executes the command
+     * @param console The console
+     * @param args the arguments of the command
+     * @return The CommandResult
+     */
     public abstract CommandResult onConsoleExecute(BungeeConsole console, String[] args);
 }

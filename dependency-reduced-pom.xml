@@ -34,13 +34,12 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
               <transformers>
                 <transformer>
                   <resource>META-INF/services/java.sql.Driver</resource>
                 </transformer>
               </transformers>
-              <createDependencyReducedPom>true</createDependencyReducedPom>
-              <minimizeJar>true</minimizeJar>
             </configuration>
           </execution>
         </executions>

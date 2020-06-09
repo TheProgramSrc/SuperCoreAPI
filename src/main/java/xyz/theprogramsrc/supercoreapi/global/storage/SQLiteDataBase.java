@@ -4,21 +4,25 @@ import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 
 public abstract class SQLiteDataBase implements DataBase {
 
     protected Connection connection;
-    private final String connectionURL;
     protected SuperPlugin<?> plugin;
 
     public SQLiteDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
-        this.connectionURL = "jdbc:sqlite:" + this.plugin.getPluginFolder() + File.separator + this.plugin.getPluginName().toLowerCase() + ".db";
 
+        this.createConnection();
+    }
+
+    private void createConnection() {
         try{
+            File file = new File(this.plugin.getPluginFolder(), this.plugin.getPluginName().toLowerCase()+".db");
+            if(!file.exists()) file.createNewFile();
             Class.forName("org.sqlite.JDBC");
         }catch (Exception ex){
+            this.plugin.log("&cCannot create SQLite Connection:");
             ex.printStackTrace();
         }
     }
@@ -52,7 +56,7 @@ public abstract class SQLiteDataBase implements DataBase {
     public void connect(ConnectionCall call) {
         if(this.connection == null){
             try{
-                this.connection = DriverManager.getConnection(this.connectionURL);
+                this.createConnection();
             }catch (Exception ex){
                 this.plugin.log("&cCannot connect with SQLite DataBase:");
                 ex.printStackTrace();

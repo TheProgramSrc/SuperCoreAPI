@@ -10,6 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.BaseDependencies;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
@@ -33,6 +37,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private SettingsStorage settingsStorage;
     private TranslationManager translationManager;
     private PreloadedItems preloadedItems;
+    private DependencyManager dependencyManager;
 
     @Override
     public void onLoad() {
@@ -55,6 +60,9 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.getTranslationManager().registerTranslation(Base.class);
         this.spigotTasks = new SpigotTasks(this);
         this.preloadedItems = new PreloadedItems(this);
+        PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
+        this.dependencyManager = new DependencyManager(this, pluginClassLoader);
+        Arrays.stream(BaseDependencies.values()).forEach(d-> this.dependencyManager.loadDependencies(d.getDependency()));
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){
@@ -194,5 +202,10 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         }
 
         return section.getBoolean("settings.bungeecord");
+    }
+
+    @Override
+    public DependencyManager getDependencyManager() {
+        return this.dependencyManager;
     }
 }
