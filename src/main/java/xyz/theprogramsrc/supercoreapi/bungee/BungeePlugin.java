@@ -13,7 +13,7 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
-import xyz.theprogramsrc.supercoreapi.global.dependencies.BaseDependencies;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
@@ -39,6 +39,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void onLoad() {
         long start = System.currentTimeMillis();
+        new xyz.theprogramsrc.Base();
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.firstStart = !this.getDataFolder().exists();
@@ -57,7 +58,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         new BungeeEventManager(this);
         PluginClassLoader classLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, classLoader);
-        Arrays.stream(BaseDependencies.values()).forEach(d-> dependencyManager.loadDependencies(d.getDependency()));
+        this.dependencyManager.loadDependencies(Dependencies.get());
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){

@@ -33,8 +33,6 @@ import java.util.List;
 
 public class Dependency {
 
-    private static final String MAVEN_CENTRAL_REPO = "https://repo1.maven.org/maven2/";
-    private static final String LUCK_MIRROR_REPO = "https://nexus.lucko.me/repository/maven-central/";
     private static final String MAVEN_FORMAT = "%s/%s/%s/%s-%s.jar";
 
     private final String name;
@@ -57,10 +55,11 @@ public class Dependency {
                 version
         );
         try {
-            this.urls = ImmutableList.of(
-                    new URL(LUCK_MIRROR_REPO + path),
-                    new URL(MAVEN_CENTRAL_REPO + path)
-            );
+            ImmutableList.Builder<URL> b = ImmutableList.builder();
+            for(Repositories r : Repositories.values()){
+                b.add(new URL(r.getURL() + path));
+            }
+            this.urls = b.build();
         } catch (Exception e) {
             throw new RuntimeException(e); // propagate
         }
@@ -70,14 +69,6 @@ public class Dependency {
 
     private static String rewriteEscaping(String s) {
         return s.replace("{}", ".");
-    }
-
-    public static String getMavenCentralRepo() {
-        return MAVEN_CENTRAL_REPO;
-    }
-
-    public static String getLuckMirrorRepo() {
-        return LUCK_MIRROR_REPO;
     }
 
     public static String getMavenFormat() {

@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
-import xyz.theprogramsrc.supercoreapi.global.dependencies.BaseDependencies;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
@@ -42,6 +42,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void onLoad() {
         long current = System.currentTimeMillis();
+        new xyz.theprogramsrc.Base();
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.serverFolder = Utils.folder(new File("."));
@@ -62,7 +63,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.preloadedItems = new PreloadedItems(this);
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
-        Arrays.stream(BaseDependencies.values()).forEach(d-> this.dependencyManager.loadDependencies(d.getDependency()));
+        this.dependencyManager.loadDependencies(Dependencies.get());
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){

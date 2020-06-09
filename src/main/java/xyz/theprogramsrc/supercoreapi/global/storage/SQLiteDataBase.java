@@ -4,6 +4,7 @@ import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 
 public abstract class SQLiteDataBase implements DataBase {
 
@@ -21,6 +22,7 @@ public abstract class SQLiteDataBase implements DataBase {
             File file = new File(this.plugin.getPluginFolder(), this.plugin.getPluginName().toLowerCase()+".db");
             if(!file.exists()) file.createNewFile();
             Class.forName("org.sqlite.JDBC");
+            this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
         }catch (Exception ex){
             this.plugin.log("&cCannot create SQLite Connection:");
             ex.printStackTrace();
