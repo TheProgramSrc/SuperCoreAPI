@@ -1,53 +1,44 @@
 # SuperCoreAPI
-The best way to create plugins<br>
-![Stars](https://img.shields.io/github/stars/TheProgramSrc/SuperCoreAPI?style=social)![Contributors](https://img.shields.io/github/contributors/TheProgramSrc/SuperCoreAPI?style=social)<br>
-![LastBuild](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.codemc.io%2Fview%2FAuthor%2Fjob%2Ftheprogramsrc%2Fjob%2FSuperCoreAPI%2F) ![Issues](https://img.shields.io/github/issues/TheProgramSrc/SuperCoreAPI)<br>
-![Java CI](https://github.com/TheProgramSrc/SuperCoreAPI/workflows/Java%20CI/badge.svg)
+Create the best plugins with better code, control and more!
 
-## Repository:
-```xml
-<!-- SuperCoreAPI -->
-<repository>
-    <id>CodeMC</id>
-    <url>https://repo.codemc.org/repository/maven-public</url>
-</repository>
-```
+## Available extensions:
 
-## Dependency:
-```xml
-<!-- SuperCoreAPI -->
-<dependency>
-    <groupId>xyz.theprogramsrc</groupId>
-    <artifactId>SuperCoreAPI</artifactId>
-    <version>{LAST VERSION}</version>
-</dependency>
-```
+### [Global](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/global)
+* Songoda / Spigot Update Checker
+* Plugin Injection
+* Dependency Manager
+* Translations
+* Metrics
+* File Utils
+* String Utils
+* Server Utils
 
-![LastVersion](https://img.shields.io/maven-metadata/v?color=%230768b7&label=Latest%20Version&metadataUrl=https://repo.codemc.io/repository/maven-public/xyz/theprogramsrc/SuperCoreAPI/maven-metadata.xml)
+### [BungeeCord](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/bungee)
+* Custom Command Creator
+* Messaging Services (Not tested yet)
+* Custom File Storage
+* BungeeCord Utils
+* BungeeCord Console Utils
+
+### [Spigot](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/spigot)
+* Custom Command Creator
+* Dialog Creator
+* Custom Events
+* Interactive GUI Creator
+* Hologram creator
+* Item Builder
+* Packet Utils
+* Reflection Utils
+* Plugin Updater
+* Custom Head Texture Util
+* Storage Utils
+* Cross-Version materials
+* Task Utils
 
 
-To avoid bugs with other plugins using SuperCoreAPI is recommended to use this maven shade plugin (using relocation settings):
-```xml
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <relocations>
-                                <relocation>
-                                    <pattern>xyz.theprogramsrc.supercoreapi</pattern>
-                                    <shadedPattern>com.example.myplugin.supercoreapi</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-```
+## Links:
+* [Donate](https://go.theprogramsrc.xyz/donate)
+* [Patreon](https://go.theprogramsrc.xyz/patreon)
+* [Free Minecraft Hosting](https://go.theprogramsrc.xyz/aternos)
+* [Best Minecraft Hosting, VPS Hosting, Dedicated Hosting and more!](https://go.theprogramsrc.xyz/elixirnode)
+* [The one stop marketplace for all the Minecraft plugins you will ever need.](https://go.theprogramsrc.xyz/songoda)
