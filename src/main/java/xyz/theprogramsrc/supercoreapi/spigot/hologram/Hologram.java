@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.hologram;
 
 import org.bukkit.Location;
@@ -23,6 +18,12 @@ public class Hologram extends SpigotModule {
     private final LinkedList<ArmorStand> armorStands;
     private final Location location;
 
+    /**
+     * Create a new Hologram
+     * @param plugin The Plugin
+     * @param location The location
+     * @param lines The content of the hologram
+     */
     public Hologram(SpigotPlugin plugin, Location location, LinkedList<String> lines){
         super(plugin);
         this.location = location;
@@ -31,6 +32,9 @@ public class Hologram extends SpigotModule {
         this.loadHologram();
     }
 
+    /**
+     * Loads the hologram
+     */
     public void loadHologram(){
         try{
             for(double i = 0.0; i < this.lines.size(); ++i){
@@ -52,18 +56,30 @@ public class Hologram extends SpigotModule {
         }
     }
 
+    /**
+     * Unloads the hologram
+     */
     public void unloadHologram(){
         for(ArmorStand armorStand : this.armorStands){
             armorStand.remove();
         }
     }
 
+    /**
+     * Sets the specified line in the specified index
+     * @param index the index
+     * @param text the text to place
+     */
     public void setLine(int index, String text){
         this.lines.set(index,text);
         this.unloadHologram();
         this.loadHologram();
     }
 
+    /**
+     * Adds a line at the bottom of the hologram
+     * @param text the text to add
+     */
     public void addLine(String text){
         this.lines.add(text);
         this.unloadHologram();

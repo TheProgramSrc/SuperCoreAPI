@@ -1,10 +1,8 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.packets.sky;
 
+/**
+ * Representation of the sky colors for the {@link SkyChanger} packet
+ */
 public enum SkyColor{
 
     NORMAL(0),

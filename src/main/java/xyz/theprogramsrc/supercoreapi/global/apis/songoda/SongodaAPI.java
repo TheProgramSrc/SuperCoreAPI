@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.apis.songoda;
 
 import com.google.gson.JsonElement;
@@ -11,8 +6,13 @@ import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
 public class SongodaAPI {
 
-    public static String getLastVersion(String resourceId){
-        String content = Utils.readWithInputStream("https://us-central-02.songoda.com/api/v2/products/id/" + resourceId);
+    /**
+     * Gets the last version of a plugin
+     * @param pluginId The id of the plugin
+     * @return The last version of the plugin
+     */
+    public static String getLastVersion(String pluginId){
+        String content = Utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
         if(content == null) {
             return null;
         }
@@ -24,8 +24,13 @@ public class SongodaAPI {
         return element.getAsJsonObject().get("version").getAsString();
     }
 
-    public static int getDownloads(String resourceId){
-        String content = Utils.readWithInputStream("https://us-central-02.songoda.com/api/v2/products/id/" + resourceId);
+    /**
+     * Gets the amount of downloads of a plugin
+     * @param pluginId The id of the plugin
+     * @return The amount of downloads
+     */
+    public static int getDownloads(String pluginId){
+        String content = Utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
         if(content == null) {
             return 0;
         }

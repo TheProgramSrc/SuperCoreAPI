@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi;
 
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -12,6 +7,10 @@ import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Representation of a Plugin
+ * @param <PLUGIN> the plugin bootstrap ({@link net.md_5.bungee.api.plugin.Plugin} or {@link org.bukkit.plugin.java.JavaPlugin})
+ */
 public interface SuperPlugin<PLUGIN> {
 
     /**

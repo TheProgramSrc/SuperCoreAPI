@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.items;
 
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTexture;
@@ -22,14 +17,26 @@ public enum Skulls {
         this.url = url;
     }
 
+    /**
+     * Gets the name of this skull
+     * @return the name of this skull if any, otherwise null
+     */
     public String asName(){
         return this.name;
     }
 
+    /**
+     * Gets the url of the texture
+     * @return the url of the texture
+     */
     public String asUrl(){
         return this.url;
     }
 
+    /**
+     * Gets the SkinTexture of this skull
+     * @return the texture of this skull
+     */
     public SkinTexture asSkinTexture(){
         return SkinTexture.fromURL(this.asUrl());
     }

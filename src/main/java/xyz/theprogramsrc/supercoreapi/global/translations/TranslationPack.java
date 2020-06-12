@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.translations;
 
 import xyz.theprogramsrc.supercoreapi.global.utils.StringUtils;

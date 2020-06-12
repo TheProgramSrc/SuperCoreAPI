@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.utils;
 
 import org.bukkit.Bukkit;
@@ -40,9 +35,9 @@ public class ReflectionUtils {
         return VERSION;
     }
 
-    public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... params) {
+    public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... args) {
         try {
-            return clazz.getConstructor(params);
+            return clazz.getConstructor(args);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

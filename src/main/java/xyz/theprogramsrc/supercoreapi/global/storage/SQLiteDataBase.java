@@ -33,6 +33,7 @@ public abstract class SQLiteDataBase implements DataBase {
      * SQLite is always available
      * @return True because SQLite dont require internet
      */
+    @Override
     public boolean isLoaded() {
         return true;
     }
@@ -40,6 +41,7 @@ public abstract class SQLiteDataBase implements DataBase {
     /**
      * Closes the current connection with DataBase
      */
+    @Override
     public void closeConnection() {
         try{
             if(this.connection != null){
@@ -55,6 +57,7 @@ public abstract class SQLiteDataBase implements DataBase {
      * Connects to the DataBase and execute the specified call
      * @param call ConnectionCall to execute
      */
+    @Override
     public void connect(ConnectionCall call) {
         if(this.connection == null){
             try{

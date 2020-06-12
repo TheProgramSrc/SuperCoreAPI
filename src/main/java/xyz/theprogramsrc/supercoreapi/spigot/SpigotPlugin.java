@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,6 +16,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotTasks;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,6 +34,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private TranslationManager translationManager;
     private PreloadedItems preloadedItems;
     private DependencyManager dependencyManager;
+    private SkinTextureManager skinManager;
 
     @Override
     public void onLoad() {
@@ -59,6 +56,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
+        this.skinManager = new SkinTextureManager();
         this.spigotTasks = new SpigotTasks(this);
         this.preloadedItems = new PreloadedItems(this);
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
@@ -208,5 +206,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public DependencyManager getDependencyManager() {
         return this.dependencyManager;
+    }
+
+    /**
+     * Gets the SkinTextureManager
+     * @return the SkinTextureManager
+     */
+    public SkinTextureManager getSkinManager() {
+        return skinManager;
     }
 }

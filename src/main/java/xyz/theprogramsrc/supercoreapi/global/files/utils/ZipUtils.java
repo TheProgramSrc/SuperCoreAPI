@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.files.utils;
 
 import java.io.File;
@@ -14,49 +9,47 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipUtils {
 
-    public static File zipFiles(File folder, String fileName, File... files){
+    /**
+     * Used to zip files
+     *
+     * @param folder The folder of the zip file
+     * @param fileName The name of the zip file
+     * @param files The files to zip
+     * @return The zip file
+     * @throws Exception if any error occurs
+     */
+    public static File zipFiles(File folder, String fileName, File... files)throws Exception{
         if(!folder.exists()) folder.mkdir();
         File zipFile = new File(folder, fileName);
-        try{
-            if(!zipFile.exists()) zipFile.createNewFile();
-        }catch (Exception ignored){}
+        if(!zipFile.exists()) zipFile.createNewFile();
 
-        try{
-            ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile));
-            for(File file : files){
-                if(file != null){
-                    if(file.isDirectory()){
-                        addZipFolder(file, zipOutputStream);
-                    }else{
-                        addZipFile(file, zipOutputStream);
-                    }
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile));
+        for(File file : files){
+            if(file != null){
+                if(file.isDirectory()){
+                    addZipFolder(file, zipOutputStream);
+                }else{
+                    addZipFile(file, zipOutputStream);
                 }
             }
-            zipOutputStream.close();
-            return zipFile;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return null;
         }
+        zipOutputStream.close();
+        return zipFile;
     }
 
-    private static void addZipFile(File file, ZipOutputStream out){
+    private static void addZipFile(File file, ZipOutputStream out) throws Exception{
         byte[] buf = new byte[2048];
-        try{
-            FileInputStream in = new FileInputStream(file);
-            out.putNextEntry(new ZipEntry(file.getPath()));
-            int len;
-            while((len = in.read(buf)) > 0){
-                out.write(buf, 0, len);
-            }
-            out.closeEntry();
-            in.close();
-        }catch (Exception ex){
-            ex.printStackTrace();
+        FileInputStream in = new FileInputStream(file);
+        out.putNextEntry(new ZipEntry(file.getPath()));
+        int len;
+        while((len = in.read(buf)) > 0){
+            out.write(buf, 0, len);
         }
+        out.closeEntry();
+        in.close();
     }
 
-    private static void addZipFolder(File dir, ZipOutputStream out){
+    private static void addZipFolder(File dir, ZipOutputStream out) throws Exception{
         File[] files = dir.listFiles();
         if(files != null){
             if(files.length > 0){
@@ -71,6 +64,12 @@ public class ZipUtils {
         }
     }
 
+    /**
+     * Used to unzip a file
+     * @param zipFile File to unzip
+     * @param outputFolder Folder where should be placed the unzipped files
+     * @throws Exception if occurs any exception
+     */
     public static void unzip(File zipFile, File outputFolder) throws Exception{
         if(!outputFolder.exists()) outputFolder.mkdirs();
         FileInputStream fileInputStream;

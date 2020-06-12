@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
 import org.bukkit.Bukkit;
@@ -29,7 +24,8 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIOutsideClickEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class GUI extends SpigotModule {
@@ -39,6 +35,11 @@ public abstract class GUI extends SpigotModule {
     private final Player player;
     private HashMap<Integer, GUIButton> buttons;
 
+    /**
+     * Creates a new GUI
+     * @param plugin the plugin
+     * @param player who will view the GUI
+     */
     public GUI(SpigotPlugin plugin, Player player){
         super(plugin);
         this.player = player;
@@ -46,6 +47,10 @@ public abstract class GUI extends SpigotModule {
         this.buttons = new HashMap<>();
     }
 
+    /**
+     * Opens a GUI or reload the GUI
+     * (Is not recommended to trigger repeatedly)
+     */
     public void open(){
         this.getSpigotTasks().runTask(()->{
             if(this.inventory == null){
@@ -56,6 +61,9 @@ public abstract class GUI extends SpigotModule {
         });
     }
 
+    /**
+     * Closes the current GUI
+     */
     public void close(){
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
@@ -64,23 +72,43 @@ public abstract class GUI extends SpigotModule {
         });
     }
 
+    /**
+     * Gets a button from the GUI using a slot
+     * @param slot The slot
+     * @return The button in the slot if exists, otherwise null
+     */
     public GUIButton getButtonFromGUI(int slot){
         return this.buttons.getOrDefault(slot, null);
     }
 
+    /**
+     * Checks if there is any item in the GUI
+     * @return if the GUI has items
+     */
     public boolean hasItems(){
         return this.buttons.size() != 0;
     }
 
+    /**
+     * Clear the GUI
+     */
     public void clear(){
         this.buttons.clear();
         this.inventory.clear();
     }
 
+    /**
+     * Used to know if the GUI title should be centered
+     * @return if the GUI title should be centered
+     */
     public boolean centerTitle(){
         return true;
     }
 
+    /**
+     * Gets the centered title
+     * @return the centered title
+     */
     public String getCenteredTitle() {
         String title = this.getTitle();
         StringBuilder result = new StringBuilder();
@@ -93,14 +121,27 @@ public abstract class GUI extends SpigotModule {
         return result.append(title).toString();
     }
 
+    /**
+     * Adds a placeholder to the GUI (used on the title)
+     * @param key The key of the placeholder
+     * @param value The value of the placeholder
+     */
     public void placeholder(String key, String value){
         this.placeholders.put(key, value);
     }
 
+    /**
+     * Removes a placeholder
+     * @param key The key of the placeholder
+     */
     public void remPlaceholder(String key){
         this.placeholders.remove(key);
     }
 
+    /**
+     * Adds placeholders to the GUI (used on the title)
+     * @param placeholders Placeholders to add
+     */
     public void placeholders(Map<String, String> placeholders){
         this.placeholders.putAll(placeholders);
     }
@@ -212,19 +253,43 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
+    /**
+     * Gets the player who is viewing the GUI
+     * @return the player viewing the GUI
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Gets the GUI as {@link Inventory}
+     * @return the bukkit inventory
+     */
     public Inventory getBukkitInventory() {
         return inventory;
     }
 
+    /**
+     * Executed when a GUI Event is triggered
+     * @param event The executed event
+     */
     protected void onEvent(GUIEvent event){}
 
+    /**
+     * Gets the GUI title
+     * @return the title
+     */
     protected abstract String getTitle();
 
+    /**
+     * Gets the GUI Rows
+     * @return the rows
+     */
     protected abstract GUIRows getRows();
 
+    /**
+     * Gets the items that should be placed inside the GUI
+     * @return the buttons to place inside the GUI
+     */
     protected abstract GUIButton[] getButtons();
 }

@@ -1,14 +1,12 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.storage;
 
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.storage.SpigotYMLConfig;
 
+/**
+ * Representation of the Plugin Settings File
+ */
 public class SettingsStorage extends SpigotModule {
 
     private SpigotYMLConfig cfg;
@@ -27,28 +25,48 @@ public class SettingsStorage extends SpigotModule {
         }
     }
 
+    /**
+     * Sets the prefix of the Plugin
+     * @param prefix the prefix
+     */
     public void setPrefix(String prefix){
         this.cfg.set("Prefix", prefix);
     }
 
+    /**
+     * Gets the prefix of the plugin
+     * @return the prefix
+     */
     public String getPrefix(){
         return this.cfg.getString("Prefix");
     }
 
+    /**
+     * Gets the language of the plugin
+     * @return the language
+     */
     public String getLanguage() {
         return this.cfg.getString("Language");
     }
 
+    /**
+     * Gets the close word of the plugin
+     * @return the close word
+     */
     public String getCloseWord() {
         return this.cfg.getString("DialogCloseWord");
     }
 
-    public void loadDefaults(){
+    private void loadDefaults(){
         this.cfg.add("Prefix", this.defaultPrefix);
         this.cfg.add("Language", "en_US");
         this.cfg.add("DialogCloseWord", "close");
     }
 
+    /**
+     * Gets the Config
+     * @return the config
+     */
     public SpigotYMLConfig getConfig() {
         return cfg;
     }

@@ -17,5 +17,13 @@ public abstract class BungeeMessageReceiver extends BungeeModule {
         this.onMessageReceived(event, event.getReceiver(), event.getSender(), event.getData(), event.getTag());
     }
 
+    /**
+     * Used to receive messages
+     * @param event PluginMessageEvent
+     * @param receiver The receiver
+     * @param sender The sender
+     * @param data The data
+     * @param tag The tag
+     */
     public abstract void onMessageReceived(PluginMessageEvent event, Connection receiver, Connection sender, byte[] data, String tag);
 }

@@ -15,6 +15,12 @@ public class BungeeMessageSender extends BungeeModule {
         super(plugin);
     }
 
+    /**
+     * Send a message using a ProxiedPlayer through the Plugin channel ()
+     * @param player Player to use
+     * @param data1 The subchannel to use
+     * @param data2 The data to send
+     */
     public void sendMessage(ProxiedPlayer player, String data1, String data2){
         Collection<ProxiedPlayer> networkPlayers = ProxyServer.getInstance().getPlayers();
         if ( networkPlayers == null || networkPlayers.isEmpty()) return;
@@ -24,6 +30,12 @@ public class BungeeMessageSender extends BungeeModule {
         player.getServer().getInfo().sendData(this.getPlugin().getPluginMessagingChannelName(), out.toByteArray());
     }
 
+    /**
+     * Send a message using a ProxiedPlayer through the "BungeeCord" channel
+     * @param player Player to use
+     * @param data1 The subchannel to use
+     * @param data2 The data to send
+     */
     public void sendBungeeMessage(ProxiedPlayer player, String data1, String data2){
         Collection<ProxiedPlayer> networkPlayers = ProxyServer.getInstance().getPlayers();
         if ( networkPlayers == null || networkPlayers.isEmpty()) return;

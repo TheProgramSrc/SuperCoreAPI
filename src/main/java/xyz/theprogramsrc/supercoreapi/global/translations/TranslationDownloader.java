@@ -12,6 +12,13 @@ import java.io.File;
 
 public class TranslationDownloader {
 
+    /**
+     * Used to download all translations from github
+     * @param core The Plugin
+     * @param username The GitHub Username
+     * @param repository The GitHub Repository
+     * @param folder The folder of the Translations
+     */
     public static void downloadFromGitHub(final SuperPlugin<?> core, final String username, final String repository, final String folder){
         JsonParser parser = new JsonParser();
         try{
@@ -40,6 +47,12 @@ public class TranslationDownloader {
         }
     }
 
+    /**
+     * Download a specific translation from web
+     * @param core The Plugin
+     * @param directUrl The DirectURl (This API doesn't support redirection)
+     * @param fileName The name of the file to save
+     */
     public static void downloadTranslation(final SuperPlugin<?> core, String directUrl, String fileName){
         try{
             File file = new File(core.getTranslationsFolder(), fileName.endsWith(".lang") ? fileName : (fileName+".lang"));

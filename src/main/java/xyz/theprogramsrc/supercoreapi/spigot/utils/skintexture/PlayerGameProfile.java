@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture;
 
 import com.mojang.authlib.GameProfile;
@@ -12,6 +7,11 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.ReflectionUtils;
 
 public class PlayerGameProfile{
 
+    /**
+     * Gets the {@link GameProfile} of a player
+     * @param player the player
+     * @return null if there is any exception, otherwise the GameProfile
+     */
     public static GameProfile get(Player player){
         try{
             Class<?> craftPlayer = ReflectionUtils.getOCBClass("entity.CraftPlayer");

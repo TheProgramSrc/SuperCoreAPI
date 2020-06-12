@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.utils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -15,9 +10,7 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * For documentation see {@link SuperUtils}

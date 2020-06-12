@@ -1,10 +1,8 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis.objects;
 
+/**
+ * Representation of the rows of a GUI
+ */
 public enum GUIRows {
     ONE(9),
     TWO(18),

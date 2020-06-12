@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.commands;
 
 import org.bukkit.command.CommandSender;
@@ -16,6 +11,11 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotConsole;
 
 public abstract class SpigotCommand extends SpigotModule {
 
+    /**
+     * Creates a new command for Spigot and registers it
+     *
+     * @param plugin The Spigot plugin
+     */
     public SpigotCommand(final SpigotPlugin plugin) {
         super(plugin);
         BukkitCommand command = new BukkitCommand(this.getCommand(), "", "/", Utils.toList(this.getAliases())) {
@@ -52,18 +52,42 @@ public abstract class SpigotCommand extends SpigotModule {
         }
     }
 
+    /**
+     * Gets the command
+     * @return the command
+     */
     public abstract String getCommand();
 
+    /**
+     * Gets the permission to use the command
+     * @return the permission
+     */
     public String getPermission(){
         return null;
     }
 
+    /**
+     * Gets all the available aliases
+     * @return the aliases
+     */
     public String[] getAliases(){
         return new String[0];
     }
 
+    /**
+     * Executed when a player executes the command
+     * @param player Who execute the command
+     * @param args Arguments of the command
+     * @return The CommandResult
+     */
     public abstract CommandResult onPlayerExecute(Player player, String[] args);
 
+    /**
+     * Executed when the console executes the command
+     * @param console The console
+     * @param args the arguments of the command
+     * @return The CommandResult
+     */
     public abstract CommandResult onConsoleExecute(SpigotConsole console, String[] args);
 
 }

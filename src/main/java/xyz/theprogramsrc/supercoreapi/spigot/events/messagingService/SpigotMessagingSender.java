@@ -12,6 +12,12 @@ public class SpigotMessagingSender extends SpigotModule {
         super(plugin);
     }
 
+    /**
+     * Send a message to the BungeeCord server using the Plugin Channel
+     * @param player The player to use
+     * @param subchannel The subchannel
+     * @param data The data to send
+     */
     public void sendMessage(Player player, String subchannel, String data){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
@@ -19,6 +25,12 @@ public class SpigotMessagingSender extends SpigotModule {
         player.sendPluginMessage(((SpigotPlugin)this.plugin), this.getPlugin().getPluginMessagingChannelName(), out.toByteArray());
     }
 
+    /**
+     * Send a message to the BungeeCord server using the BungeeCord Channel
+     * @param player The player to use
+     * @param subchannel The subchannel
+     * @param data The data to send
+     */
     public void sendBungeeMessage(Player player, String subchannel, String data){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);

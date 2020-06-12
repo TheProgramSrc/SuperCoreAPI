@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**
+ * An util to manage and use DataBase Storage
+ */
 public class DataBaseStorage {
 
     protected DataBase dataBase;
@@ -16,10 +19,21 @@ public class DataBaseStorage {
         this.dataBase = dataBase;
     }
 
+    /**
+     * Gets the prefix of the tables (PluginName_)
+     *
+     * @return the prefix of the tables
+     */
     public String getTablePrefix(){
         return this.plugin.getPluginName().toLowerCase() + "_";
     }
 
+    /**
+     * Used to get the last inserted id (using the column 'id')
+     * @param connection The connection
+     * @param table The table to check
+     * @return the last inserted id
+     */
     protected int requestLastInsertedID(Connection connection, String table) {
         String select = "SELECT * FROM " + this.getTablePrefix() + table + " ORDER BY id DESC LIMIT 1";
         String query;

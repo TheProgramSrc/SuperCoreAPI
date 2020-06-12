@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis.action;
 
 import org.bukkit.entity.Player;
@@ -10,6 +5,9 @@ import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 
+/**
+ * The ClickAction of a GUI
+ */
 public class ClickAction {
 
     private final GUI gui;

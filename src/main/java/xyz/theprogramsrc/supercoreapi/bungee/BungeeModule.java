@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.bungee;
 
 import net.md_5.bungee.api.ProxyServer;
@@ -27,10 +22,18 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
         ((BungeePlugin)this.plugin).listener(listeners);
     }
 
+    /**
+     * Gets the BungeeCord Plugin Settings
+     * @return The Plugin Settings
+     */
     protected Settings getSettings(){
         return ((BungeePlugin)this.plugin).getSettings();
     }
 
+    /**
+     * Gets the proxy
+     * @return The proxy
+     */
     protected ProxyServer getProxy(){
         return ((BungeePlugin)this.plugin).getProxy();
     }

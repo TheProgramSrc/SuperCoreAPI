@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.dialog;
 
 import org.bukkit.entity.Player;
@@ -37,6 +32,9 @@ public abstract class Dialog extends SpigotModule {
         this.openDialog();
     }
 
+    /**
+     * Used to open the dialog
+     */
     public void openDialog(){
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
@@ -55,6 +53,9 @@ public abstract class Dialog extends SpigotModule {
         Actionbar.sendActionBar(this.getPlayer(), this.apply(Utils.ct(this.getActionbar() != null ? this.getActionbar() : "")));
     }
 
+    /**
+     * Closes the current dialog
+     */
     public void close(){
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
@@ -103,25 +104,50 @@ public abstract class Dialog extends SpigotModule {
         }
     }
 
+    /**
+     * Gets the player
+     * @return The player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Sets the Recall that will be executed while the dialog is closed
+     * @param recall The recall
+     * @return This dialog
+     */
     public Dialog setRecall(Recall<Player> recall){
         this.recall = recall;
         return this;
     }
 
+    /**
+     * Add placeholders to the Dialog
+     * @param placeholders The placeholders
+     * @return This dialog
+     */
     public Dialog addPlaceholders(HashMap<String, String> placeholders){
         this.placeholders.putAll(placeholders);
         return this;
     }
 
+    /**
+     * Add a single placeholder to the Dialog
+     * @param key The key of the placeholder
+     * @param value The value of the placeholder
+     * @return This dialog
+     */
     public Dialog addPlaceholder(String key, String value){
         this.placeholders.put(key,value);
         return this;
     }
 
+    /**
+     * Removes a single placeholder to the Dialog
+     * @param key The key of the placeholder
+     * @return This dialog
+     */
     public Dialog removePlaceholder(String key){
         this.placeholders.remove(key);
         return this;
@@ -133,18 +159,42 @@ public abstract class Dialog extends SpigotModule {
         return r.get();
     }
 
+    /**
+     * Gets the title of the dialog
+     * @return the title
+     */
     public abstract String getTitle();
 
+    /**
+     * Gets the subtitle of the dialog
+     * @return the subtitle
+     */
     public abstract String getSubtitle();
 
+    /**
+     * Gets the actionbar of the dialog
+     * @return the actionbar
+     */
     public abstract String getActionbar();
 
+    /**
+     * A representation of the result of the dialog
+     * @param playerInput The input of the player
+     * @return true if the dialog can be closed, otherwise false
+     */
     public abstract boolean onResult(String playerInput);
 
+    /**
+     * Checks if this dialog can be closed or not
+     * @return true if the dialog can be closed, otherwise false
+     */
     public boolean canClose(){
         return true;
     }
 
+    /**
+     * Executed while the dialog is closed
+     */
     public void onDialogClose(){
 
     }

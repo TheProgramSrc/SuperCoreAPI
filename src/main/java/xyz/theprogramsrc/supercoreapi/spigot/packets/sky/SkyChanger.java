@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.packets.sky;
 
 import org.bukkit.entity.Player;
@@ -13,6 +8,11 @@ import java.lang.reflect.Constructor;
 @SuppressWarnings("all")
 public class SkyChanger{
 
+    /**
+     * Changes the sky of a player with packets
+     * @param player the player
+     * @param color the sky color
+     */
     public static void changeSky(Player player, SkyColor color) {
         /*
         if (color == SkyColor.FREEZE) {
@@ -33,8 +33,8 @@ public class SkyChanger{
             Constructor<?> packetConstructor = packetClass.getConstructor(Integer.TYPE, Float.TYPE);
             Object packet = packetConstructor.newInstance(7, number);
             ReflectionUtils.sendPacket(player, packet);
-        } catch (Exception var6) {
-            var6.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
     }

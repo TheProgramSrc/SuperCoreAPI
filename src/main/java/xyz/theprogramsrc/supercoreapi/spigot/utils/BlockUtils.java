@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.utils;
 
 import org.bukkit.Location;
@@ -13,6 +8,12 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class BlockUtils{
 
+    /**
+     * Gets the blocks in a specifier radius
+     * @param location The central location
+     * @param radius the blocks radius amount
+     * @return the blocks in the specified radius
+     */
     public static Block[] getBlocksInRadius(Location location, int radius) {
         ArrayList<Block> r = new ArrayList<>();
 

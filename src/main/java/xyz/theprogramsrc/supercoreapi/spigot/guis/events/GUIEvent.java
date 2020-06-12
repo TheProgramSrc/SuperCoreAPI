@@ -1,13 +1,11 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis.events;
 
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 
+/**
+ * Representation of a GUI Event
+ */
 public class GUIEvent {
 
     private final GUI gui;

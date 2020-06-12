@@ -1,12 +1,10 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis.action;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 
+/**
+ * Representation of the ClickType
+ */
 public enum ClickType {
 
     LEFT_CLICK,

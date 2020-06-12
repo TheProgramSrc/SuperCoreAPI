@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture;
 
 import com.google.gson.JsonObject;
@@ -23,6 +18,11 @@ public class SkinTexture {
     private String url;
     private long createdAt;
 
+    /**
+     * Gets a SkinTexture from a Player
+     * @param player the player
+     * @return the skin
+     */
     public static SkinTexture fromPlayer(Player player) {
         GameProfile gameProfile = PlayerGameProfile.get(player);
 
@@ -36,6 +36,11 @@ public class SkinTexture {
         }
     }
 
+    /**
+     * Gets a SkinTexture from a Player Name
+     * @param playerName the name
+     * @return the skin
+     */
     public static SkinTexture fromMojang(String playerName) {
         String url = "https://api.mojang.com/users/profiles/minecraft/" + playerName;
         String response = getResponse(url);
@@ -49,6 +54,11 @@ public class SkinTexture {
         }
     }
 
+    /**
+     * Gets a SkinTexture from a Player UUID
+     * @param uuid the uuid
+     * @return the skin
+     */
     public static SkinTexture fromMojang(UUID uuid) {
         String url = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false";
         String response = getResponse(url);
@@ -61,6 +71,11 @@ public class SkinTexture {
         }
     }
 
+    /**
+     * Gets a SkinTexture from URL
+     * @param url the url
+     * @return the skin
+     */
     public static SkinTexture fromURL(String url){
         return new SkinTexture(url, System.currentTimeMillis());
     }
@@ -90,24 +105,47 @@ public class SkinTexture {
         }
     }
 
+    /**
+     * Creates a new SkinTexture
+     * @param url the url of the texture
+     * @param createdAt Time created {@link System#currentTimeMillis()}
+     */
     public SkinTexture(String url, long createdAt) {
         this.url = url;
         this.createdAt = createdAt;
     }
 
+    /**
+     * Parse a SkinTexture from serialized format
+     * (URL:split:TIME_CREATED)
+     * @param serialized
+     */
     public SkinTexture(String serialized) {
         this.url = serialized.split(":split:")[0];
         this.createdAt = Long.valueOf(serialized.split(":split:")[1]);
     }
 
+    /**
+     * Gets the url of the texture
+     * @return the url
+     */
     public String getUrl() {
         return this.url;
     }
 
+    /**
+     * Gets when was created the SkinTexture
+     * @return creation time in millis
+     */
     public long getCreatedAt() {
         return this.createdAt;
     }
 
+    /**
+     * Serialize the SkinTexture
+     * (URL:split:TIME_CREATED)
+     * @return the serialized SkinTexture
+     */
     public String toString() {
         return this.url + ":split:" + this.createdAt;
     }

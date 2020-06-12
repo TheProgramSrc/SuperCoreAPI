@@ -1,14 +1,12 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis.events;
 
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 
+/**
+ * Executed when a player click a slot with item
+ */
 public class GUIClickEvent extends GUIEvent{
 
     private final GUIButton button;

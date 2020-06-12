@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
 import org.bukkit.entity.Player;
@@ -25,6 +20,11 @@ public abstract class BrowserGUI<OBJ> extends GUI{
     public int maxItemsPerPage = 36;
     private int page = 0;
 
+    /**
+     * Creates a BrowserGUI
+     * @param plugin the plugin
+     * @param player the player who will see the BrowserGUI
+     */
     public BrowserGUI(SpigotPlugin plugin, Player player){
         super(plugin, player);
     }
@@ -105,9 +105,22 @@ public abstract class BrowserGUI<OBJ> extends GUI{
         return buttons.stream().filter(Utils::nonNull).toArray(GUIButton[]::new);
     }
 
+    /**
+     * Gets all the objects to show
+     * @return The objects
+     */
     public abstract OBJ[] getObjects();
 
+    /**
+     * Gets a button from an object
+     * @param obj The Object
+     * @return The button for the Object
+     */
     public abstract GUIButton getButton(OBJ obj);
 
+    /**
+     * Executed when the back button is clicked
+     * @param clickAction The ClickAction
+     */
     public abstract void onBack(ClickAction clickAction);
 }

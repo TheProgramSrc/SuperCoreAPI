@@ -1,10 +1,11 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.apis;
 
+/**
+ * The PluginInjector works with Songoda and Spigot Products,
+ * this will help you to check information of a download, for example:
+ * The Identifier of a user who downloaded this plugin, or the id of the resource,
+ * or the nonce of the download.
+ */
 public class PluginInjector {
 
     private final String resource, nonce, userId;

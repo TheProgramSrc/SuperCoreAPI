@@ -1,6 +1,8 @@
 # SuperCoreAPI
 Create the best plugins with better code, control and more!
 
+[Examples](https://github.com/TheProgramSrc/SuperCoreAPI/tree/examples)
+
 ## Available extensions:
 
 ### [Global](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/global)

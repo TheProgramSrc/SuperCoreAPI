@@ -31,11 +31,18 @@ public abstract class MySQLDataBase implements DataBase{
         }
     }
 
+    /**
+     * Used to check if the Connection is loaded
+     * @return if the connection is loaded
+     */
     @Override
     public boolean isLoaded() {
         return this.loaded;
     }
 
+    /**
+     * Closes the connection between the plugin and the DataBase
+     */
     @Override
     public void closeConnection() {
         try{
@@ -48,6 +55,10 @@ public abstract class MySQLDataBase implements DataBase{
         }
     }
 
+    /**
+     * Used to connect to the DataBase and execute a {@link ConnectionCall}
+     * @param call ConnectionCall to execute
+     */
     @Override
     public void connect(ConnectionCall call) {
         try(Connection connection = this.dataSource.getConnection()){

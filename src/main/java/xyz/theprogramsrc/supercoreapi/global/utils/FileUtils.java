@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
 import java.io.BufferedInputStream;
@@ -13,10 +8,22 @@ import java.net.URL;
 
 public class FileUtils {
 
+    /**
+     * Used to download a file using CommonsIO
+     * @param url Url of the file
+     * @param file Output file
+     * @throws Exception If occurs any exception
+     */
     public static void downloadUsingCommons(String url, File file) throws Exception {
         org.apache.commons.io.FileUtils.copyURLToFile(new URL(url), file);
     }
 
+    /**
+     * Download a File using Stream
+     * @param urlLocation The url to download
+     * @param output The output of the file
+     * @return false if occurs any error, otherwise true
+     */
     public static boolean downloadUsingStream(String urlLocation, File output){
         try{
             URL url = new URL(followRedirects(urlLocation));

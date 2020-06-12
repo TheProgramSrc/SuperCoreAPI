@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2020.
- * Created by TheProgramSrc (https://theprogramsrc.xyz)
- */
-
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
@@ -18,6 +13,11 @@ public class ServerUtils {
         this.plugin = plugin;
     }
 
+    /**
+     * Send a Player to another Server (Bukkit)
+     * @param player Player to send
+     * @param server Name of the Server to send
+     */
     public void sendToServer(org.bukkit.entity.Player player, String server){
         if(!((org.bukkit.plugin.java.JavaPlugin)this.plugin.getPlugin()).getServer().getMessenger().isOutgoingChannelRegistered(((org.bukkit.plugin.java.JavaPlugin)this.plugin.getPlugin()), "BungeeCord")){
             ((org.bukkit.plugin.java.JavaPlugin)this.plugin.getPlugin()).getServer().getMessenger().registerOutgoingPluginChannel(((org.bukkit.plugin.java.JavaPlugin)this.plugin.getPlugin()), "BungeeCord");
@@ -35,6 +35,11 @@ public class ServerUtils {
         player.sendPluginMessage(((org.bukkit.plugin.java.JavaPlugin)this.plugin.getPlugin()), "BungeeCord", byteArrayOutputStream.toByteArray());
     }
 
+    /**
+     * Send a Player to another Server (Bungee)
+     * @param player Player to send
+     * @param server Name of the Server to send
+     */
     public void sendToServer(net.md_5.bungee.api.connection.ProxiedPlayer player, String server){
         ((net.md_5.bungee.api.plugin.Plugin)this.plugin).getProxy().registerChannel("BungeeCord");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

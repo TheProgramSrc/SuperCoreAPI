@@ -2,6 +2,10 @@ package xyz.theprogramsrc.supercoreapi;
 
 import java.io.File;
 
+/**
+ * Representation of a Plugin Module
+ * @param <LISTENER> The listener of the plugin
+ */
 public abstract class SuperModule<LISTENER> {
 
     protected SuperPlugin<?> plugin;
@@ -10,6 +14,9 @@ public abstract class SuperModule<LISTENER> {
         this.plugin = plugin;
     }
 
+    /**
+     * Executed on the module load
+     */
     public void onLoad(){
 
     }
