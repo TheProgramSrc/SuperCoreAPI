@@ -90,7 +90,7 @@ public enum Base implements TranslationPack{
 
     @Override
     public Translation get() {
-        return new Translation(this, this.name().toLowerCase().replaceAll("_","."), this.content);
+        return new Translation(this, this.name(), this.content);
     }
 
     @Override
