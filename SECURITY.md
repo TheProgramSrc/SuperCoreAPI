@@ -6,9 +6,9 @@ The following list can tell you if the version is supported or not. If the versi
 
 | Version | Supported          |
 | ------- | ------------------ |
+| [3.2.1](https://github.com/TheProgramSrc/SuperCoreAPI/tree/v3.2.1)   | :white_check_mark: |
 | [3.2.0](https://github.com/TheProgramSrc/SuperCoreAPI/tree/v3.2.0)   | :white_check_mark: |
-| [3.1.1](https://github.com/TheProgramSrc/SuperCoreAPI/tree/v3.1.1)   | :white_check_mark: |
-| < 3.1.0   | :x:                |
+| < 3.1.X   | :x:                |
 
 ## Reporting a Vulnerability
 
