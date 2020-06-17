@@ -25,7 +25,7 @@ import java.util.List;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<JavaPlugin> {
 
-    private boolean firstStart;
+    private boolean firstStart, emergencyStop;
     private List<Runnable> disableHooks;
     private File serverFolder, translationsFolder;
 
@@ -39,6 +39,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void onLoad() {
         long current = System.currentTimeMillis();
+        this.emergencyStop = false;
         new xyz.theprogramsrc.Base();
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
@@ -46,11 +47,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.onPluginLoad();
+        if(this.emergencyStop) return;
         this.log("Loaded plugin in " + (System.currentTimeMillis() - current) + "ms");
     }
 
     @Override
     public void onEnable() {
+        if(this.emergencyStop) return;
         this.log("Enabling plugin &3v" + this.getPluginVersion());
         this.settingsStorage = new SettingsStorage(this);
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
@@ -77,6 +80,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public void onDisable() {
+        if(this.emergencyStop) return;
         this.log("Disabling plugin &3v" + this.getPluginVersion());
         this.getDisableHooks().forEach(Runnable::run);
         this.onPluginDisable();
@@ -214,5 +218,11 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      */
     public SkinTextureManager getSkinManager() {
         return skinManager;
+    }
+
+    @Override
+    public void emergencyStop() {
+        this.emergencyStop = true;
+        this.getServer().getPluginManager().disablePlugin(this);
     }
 }

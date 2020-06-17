@@ -75,4 +75,13 @@ public abstract class SQLiteDataBase implements DataBase {
             ex.printStackTrace();
         }
     }
+
+    /**
+     * This is not needed because SQLite doesn't use credentials
+     * @return null
+     */
+    @Override
+    public DataBaseSettings getDataBaseSettings() {
+        return null;
+    }
 }

@@ -55,4 +55,19 @@ public class DataBaseStorage {
     }
 
 
+    /**
+     * Gets the plugin
+     * @return the plugin
+     */
+    public SuperPlugin<?> getPlugin() {
+        return plugin;
+    }
+
+    /**
+     * Gets the DataBase that it's being used
+     * @return the database
+     */
+    public DataBase getDataBase() {
+        return dataBase;
+    }
 }

@@ -153,4 +153,9 @@ public interface SuperPlugin<PLUGIN> {
      * @return Dependency Manager
      */
     DependencyManager getDependencyManager();
+
+    /**
+     * Stops the plugin
+     */
+    void emergencyStop();
 }

@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin> {
 
-    private boolean firstStart;
+    private boolean firstStart, emergencyStop;
     private List<Runnable> disableHooks;
     private File translationsFolder;
 
@@ -34,17 +34,20 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void onLoad() {
         long start = System.currentTimeMillis();
+        this.emergencyStop = false;
         new xyz.theprogramsrc.Base();
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.onPluginLoad();
+        if(this.emergencyStop) return;
         this.log("Loaded plugin in " + (System.currentTimeMillis() - start) + "ms");
     }
 
     @Override
     public void onEnable() {
+        if(this.emergencyStop) return;
         this.log("Enabling plugin &3v" + this.getPluginVersion());
         this.settings = new Settings(this);
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
@@ -69,6 +72,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     @Override
     public void onDisable() {
+        if(this.emergencyStop) return;
         this.log("Disabling plugin &3v" + this.getPluginVersion());
         this.getDisableHooks().forEach(Runnable::run);
         this.onPluginDisable();
@@ -156,5 +160,16 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public DependencyManager getDependencyManager() {
         return dependencyManager;
+    }
+
+    /**
+     * Not recommended in bungeecord because this is not an official way to disable a plugin
+     */
+    @Override
+    public void emergencyStop() {
+        this.emergencyStop = true;
+        this.onDisable();
+        this.getProxy().getPluginManager().unregisterCommands(this);
+        this.getProxy().getPluginManager().unregisterListeners(this);
     }
 }
