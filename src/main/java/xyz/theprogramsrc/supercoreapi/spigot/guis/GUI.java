@@ -122,6 +122,14 @@ public abstract class GUI extends SpigotModule {
     }
 
     /**
+     * Used to know if the GUI can be closed
+     * @return true if can be closed, otherwise false
+     */
+    public boolean canCloseGUI(){
+        return true;
+    }
+
+    /**
      * Adds a placeholder to the GUI (used on the title)
      * @param key The key of the placeholder
      * @param value The value of the placeholder
@@ -193,9 +201,13 @@ public abstract class GUI extends SpigotModule {
         if(this.inventory != null){
             if(event.getInventory().equals(this.inventory)){
                 if(event.getPlayer().equals(this.player)){
-                    this.getSpigotTasks().runTask(()->{
-                        HandlerList.unregisterAll(this);
-                        this.inventory = null;
+                    this.getSpigotTasks().runTaskLater(5L,()->{
+                        if(this.canCloseGUI()){
+                            HandlerList.unregisterAll(this);
+                            this.inventory = null;
+                        }else{
+                            this.open();
+                        }
                     });
                 }
             }
@@ -292,4 +304,5 @@ public abstract class GUI extends SpigotModule {
      * @return the buttons to place inside the GUI
      */
     protected abstract GUIButton[] getButtons();
+
 }
