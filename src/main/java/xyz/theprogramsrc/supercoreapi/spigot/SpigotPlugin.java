@@ -12,6 +12,7 @@ import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.Reflection
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.spigot.events.EventManager;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotTasks;
@@ -35,6 +36,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private PreloadedItems preloadedItems;
     private DependencyManager dependencyManager;
     private SkinTextureManager skinManager;
+    private EventManager eventManager;
 
     @Override
     public void onLoad() {
@@ -66,6 +68,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.skinManager = new SkinTextureManager();
         this.spigotTasks = new SpigotTasks(this);
         this.preloadedItems = new PreloadedItems(this);
+        this.eventManager = new EventManager(this);
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
@@ -237,5 +240,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     public boolean isEmergencyStop() {
         return emergencyStop;
+    }
+
+    /**
+     * Gets the event manager
+     * @return the event manager
+     */
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }
