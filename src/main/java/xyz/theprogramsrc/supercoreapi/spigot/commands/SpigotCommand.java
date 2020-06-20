@@ -33,7 +33,6 @@ public abstract class SpigotCommand extends SpigotModule {
         };
         command.setPermission(this.getPermission());
         plugin.getSuperUtils().registerBukkitCommand(command);
-        plugin.addDisableHook(()-> plugin.getSuperUtils().unregisterCommand(this.getCommand()));
     }
 
     private void onResult(CommandSender sender, CommandResult result){
