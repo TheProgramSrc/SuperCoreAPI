@@ -145,7 +145,7 @@ public interface SuperPlugin<PLUGIN> {
      * @return Plugin messaging channel name
      */
     default String getPluginMessagingChannelName(){
-        return this.getPluginName() + "_MessagingChannel";
+        return this.getPluginName() + ":messagingChannel";
     }
 
     /**
