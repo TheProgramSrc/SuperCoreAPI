@@ -3,9 +3,9 @@ package xyz.theprogramsrc.supercoreapi.global.storage.memory;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class MemoryStorage<OBJ> {
@@ -44,8 +44,16 @@ public class MemoryStorage<OBJ> {
         this.memory.forEach(consumer);
     }
 
-    public Set<Map.Entry<String,OBJ>> entrySet(){
-        return this.memory.entrySet();
+    public LinkedHashSet<Map.Entry<String,OBJ>> entrySet(){
+        return new LinkedHashSet<>(this.memory.entrySet());
+    }
+
+    public OBJ get(String key){
+        return this.memory.get(key);
+    }
+
+    public String fromValue(OBJ obj){
+        return this.keys().stream().filter(k-> this.memory.get(k).equals(obj)).findFirst().orElse(null);
     }
 
     public LinkedList<String> keys(){
