@@ -41,20 +41,24 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         long current = System.currentTimeMillis();
         this.emergencyStop = false;
         new xyz.theprogramsrc.Base();
-        this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.serverFolder = Utils.folder(new File("."));
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.onPluginLoad();
-        if(this.emergencyStop) return;
+        if(this.emergencyStop) {
+            setEnabled(false);
+            return;
+        }
         this.log("Loaded plugin in " + (System.currentTimeMillis() - current) + "ms");
     }
 
     @Override
     public void onEnable() {
-        if(this.emergencyStop) return;
-        this.log("Enabling plugin &3v" + this.getPluginVersion());
+        if(this.emergencyStop) {
+            setEnabled(false);
+            return;
+        }
         this.settingsStorage = new SettingsStorage(this);
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
@@ -66,6 +70,10 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
         this.onPluginEnable();
+        if(this.emergencyStop) {
+            setEnabled(false);
+            return;
+        }
         this.log("Enabled plugin");
         if(this.isFirstStart()){
             if(this.isPaid()){
@@ -80,8 +88,9 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public void onDisable() {
-        if(this.emergencyStop) return;
-        this.log("Disabling plugin &3v" + this.getPluginVersion());
+        if(this.emergencyStop) {
+            return;
+        }
         this.getDisableHooks().forEach(Runnable::run);
         this.onPluginDisable();
         this.log("Disabled plugin");
@@ -224,5 +233,9 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     public void emergencyStop() {
         this.emergencyStop = true;
         this.getServer().getPluginManager().disablePlugin(this);
+    }
+
+    public boolean isEmergencyStop() {
+        return emergencyStop;
     }
 }
