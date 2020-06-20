@@ -36,7 +36,7 @@ public class MemoryStorage<OBJ> {
         return this.memory.containsKey(key);
     }
 
-    public boolean has(OBJ value){
+    public boolean hasValue(OBJ value){
         return this.memory.containsValue(value);
     }
 
