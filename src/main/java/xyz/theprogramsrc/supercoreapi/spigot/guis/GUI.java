@@ -41,7 +41,7 @@ public abstract class GUI extends SpigotModule {
      * @param player who will view the GUI
      */
     public GUI(SpigotPlugin plugin, Player player){
-        super(plugin);
+        super(plugin,false);
         this.player = player;
         this.placeholders = new HashMap<>();
         this.buttons = new HashMap<>();
