@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.1</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -156,6 +156,13 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.25.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Logs Filter -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

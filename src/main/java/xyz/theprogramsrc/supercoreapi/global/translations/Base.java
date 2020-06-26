@@ -6,9 +6,14 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public enum Base implements TranslationPack{
-    CONFIRM("Confirm"),
-    DECLINE("Decline"),
+    OK("Ok"),
+    ADD("Add"),
+    REMOVE("Remove"),
+    DONE("Done"),
+    COMPLETED("Completed"),
+    CANCEL("Cancel"),
     LEFT_CLICK("Left Click"),
+    SHIFT_CLICK("Shift Click"),
     MIDDLE_CLICK("Middle Click"),
     RIGHT_CLICK("Right Click"),
     LANGUAGES("Languages"),
@@ -19,6 +24,8 @@ public enum Base implements TranslationPack{
     PLAYER("Player"),
     PLAYERS("Players"),
     CONSOLE("Console"),
+    CONFIRM("Confirm"),
+    DECLINE("Decline"),
 
     /* MESSAGES */
     NO_PERMISSION("&cYou dont have permission."),
@@ -60,6 +67,7 @@ public enum Base implements TranslationPack{
     MATERIAL_SELECTOR_ITEM_NAME("&a$1"),
     MATERIAL_SELECTOR_ITEM_DESCRIPTION("&7Click to select &a$1"),
 
+    /* Items */
     ITEM_BACK_NAME("&aBack"),
     ITEM_BACK_DESCRIPTION("&7Click to go Back."),
 

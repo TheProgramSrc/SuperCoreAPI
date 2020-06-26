@@ -3,6 +3,7 @@ package xyz.theprogramsrc.supercoreapi.global.storage;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
+import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 
 import java.sql.Connection;
 
@@ -16,6 +17,7 @@ public abstract class MySQLDataBase implements DataBase{
     public MySQLDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
         this.plugin.log("Connecting to '" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port()+"'...");
+        new LogsFilter(LogsFilter.FilterResult.DENY, "com.zaxxer.hikari");
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl("jdbc:mysql://" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port() + "/" + getDataBaseSettings().database() + "?useSSL=" + getDataBaseSettings().useSSL());
         cfg.setUsername(getDataBaseSettings().username());
