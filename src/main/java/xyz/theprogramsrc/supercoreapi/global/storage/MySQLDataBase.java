@@ -17,7 +17,9 @@ public abstract class MySQLDataBase implements DataBase{
     public MySQLDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
         this.plugin.log("Connecting to '" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port()+"'...");
-        new LogsFilter(LogsFilter.FilterResult.DENY, "com.zaxxer.hikari");
+        if(this.hideHikariLogs()){
+            this.plugin.registerLogFilter(new LogsFilter(LogsFilter.FilterResult.DENY, "com.zaxxer.hikari"));
+        }
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl("jdbc:mysql://" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port() + "/" + getDataBaseSettings().database() + "?useSSL=" + getDataBaseSettings().useSSL());
         cfg.setUsername(getDataBaseSettings().username());
@@ -69,5 +71,12 @@ public abstract class MySQLDataBase implements DataBase{
             this.plugin.log("&cCannot execute MySQL Connection Call:");
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * @return true to hide the hikaricp logs, otherwise false
+     */
+    public boolean hideHikariLogs(){
+        return true;
     }
 }

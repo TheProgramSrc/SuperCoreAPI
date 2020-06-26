@@ -1,5 +1,8 @@
 package xyz.theprogramsrc.supercoreapi;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
@@ -158,4 +161,13 @@ public interface SuperPlugin<PLUGIN> {
      * Stops the plugin
      */
     void emergencyStop();
+
+    /**
+     * Registers a log filter
+     * @param logsFilter the filter
+     */
+    default void registerLogFilter(LogsFilter logsFilter){
+        Logger consoleLogger = (Logger) LogManager.getRootLogger();
+        consoleLogger.addFilter(logsFilter);
+    }
 }
