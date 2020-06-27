@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>3.1.0</version>
+  <version>3.4.0</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <defaultGoal>clean package</defaultGoal>
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.15.2-R0.1-20200509.094844-17</version>
+      <version>1.15.2-R0.1-20200625.172449-18</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -138,6 +138,18 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.25.2</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>log4j-api</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
   <distributionManagement>
