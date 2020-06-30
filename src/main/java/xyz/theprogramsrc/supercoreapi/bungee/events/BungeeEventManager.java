@@ -10,7 +10,6 @@ public class BungeeEventManager extends BungeeModule {
 
     public BungeeEventManager(BungeePlugin plugin) {
         super(plugin);
-        getProxy().registerChannel(this.getPlugin().getPluginMessagingChannelName());
     }
 
 }

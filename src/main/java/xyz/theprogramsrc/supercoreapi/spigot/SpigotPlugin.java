@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
+import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
@@ -38,6 +39,8 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private SkinTextureManager skinManager;
     private EventManager eventManager;
 
+    private PluginDataStorage pluginDataStorage;
+
     @Override
     public void onLoad() {
         long current = System.currentTimeMillis();
@@ -47,6 +50,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.serverFolder = Utils.folder(new File("."));
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
+        this.pluginDataStorage = new PluginDataStorage(this);
         this.onPluginLoad();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -229,7 +233,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      * @return the SkinTextureManager
      */
     public SkinTextureManager getSkinManager() {
-        return skinManager;
+        return this.skinManager;
     }
 
     @Override
@@ -239,7 +243,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     }
 
     public boolean isEmergencyStop() {
-        return emergencyStop;
+        return this.emergencyStop;
     }
 
     /**
@@ -247,6 +251,11 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      * @return the event manager
      */
     public EventManager getEventManager() {
-        return eventManager;
+        return this.eventManager;
+    }
+
+    @Override
+    public PluginDataStorage getPluginDataStorage() {
+        return this.pluginDataStorage;
     }
 }

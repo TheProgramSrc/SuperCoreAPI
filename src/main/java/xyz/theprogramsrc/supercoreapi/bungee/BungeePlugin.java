@@ -8,6 +8,7 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
+import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
@@ -31,6 +32,8 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     private TranslationManager translationManager;
     private DependencyManager dependencyManager;
 
+    private PluginDataStorage pluginDataStorage;
+
     @Override
     public void onLoad() {
         long start = System.currentTimeMillis();
@@ -40,6 +43,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.disableHooks = new ArrayList<>();
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
+        this.pluginDataStorage = new PluginDataStorage(this);
         this.onPluginLoad();
         if(this.emergencyStop) return;
         this.log("Loaded plugin in " + (System.currentTimeMillis() - start) + "ms");
@@ -159,7 +163,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     @Override
     public DependencyManager getDependencyManager() {
-        return dependencyManager;
+        return this.dependencyManager;
     }
 
     /**
@@ -171,5 +175,14 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.onDisable();
         this.getProxy().getPluginManager().unregisterCommands(this);
         this.getProxy().getPluginManager().unregisterListeners(this);
+    }
+
+    public boolean isEmergencyStop() {
+        return this.emergencyStop;
+    }
+
+    @Override
+    public PluginDataStorage getPluginDataStorage() {
+        return this.pluginDataStorage;
     }
 }

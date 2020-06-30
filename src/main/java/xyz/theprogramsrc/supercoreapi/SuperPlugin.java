@@ -3,6 +3,7 @@ package xyz.theprogramsrc.supercoreapi;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
+import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
@@ -144,14 +145,6 @@ public interface SuperPlugin<PLUGIN> {
     PLUGIN getPlugin();
 
     /**
-     * Returns the plugin messaging channel name
-     * @return Plugin messaging channel name
-     */
-    default String getPluginMessagingChannelName(){
-        return this.getPluginName().toLowerCase().replaceAll(" ", "") + ":messagingchannel";
-    }
-
-    /**
      * Gets the dependency manager
      * @return Dependency Manager
      */
@@ -170,4 +163,10 @@ public interface SuperPlugin<PLUGIN> {
         Logger consoleLogger = (Logger) LogManager.getRootLogger();
         consoleLogger.addFilter(logsFilter);
     }
+
+    /**
+     * Gets the plugin data storage
+     * @return
+     */
+    PluginDataStorage getPluginDataStorage();
 }

@@ -44,3 +44,6 @@ Create the best plugins with better code, control and more!
 * [Free Minecraft Hosting](https://go.theprogramsrc.xyz/aternos)
 * [Best Minecraft Hosting, VPS Hosting, Dedicated Hosting and more!](https://go.theprogramsrc.xyz/elixirnode)
 * [The one stop marketplace for all the Minecraft plugins you will ever need.](https://go.theprogramsrc.xyz/songoda)
+
+ <br>
+If you think there is a feature that shouldn't be here remember that this API is for TheProgramSrc's and PluginsSrc Projects.

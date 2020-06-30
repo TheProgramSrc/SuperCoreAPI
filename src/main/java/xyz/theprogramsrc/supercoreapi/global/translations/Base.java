@@ -33,7 +33,7 @@ public enum Base implements TranslationPack{
     NOT_SUPPORTED("&cThis command it's only for &e$1"),
     INVALID_ARGUMENTS("&cInvalid Arguments!"),
 
-    DIALOG_HOW_TO_CLOSE("&7To close the dialog write &c$1 &7in the chat."),
+    DIALOG_HOW_TO_CLOSE("&7Use &aLeft Click &7to close the dialog."),
     DIALOG_CLOSED("&7You &cclosed &7this dialog."),
 
     /* DIALOGS */

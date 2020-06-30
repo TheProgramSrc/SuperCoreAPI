@@ -49,18 +49,9 @@ public class SettingsStorage extends SpigotModule {
         return this.cfg.getString("Language");
     }
 
-    /**
-     * Gets the close word of the plugin
-     * @return the close word
-     */
-    public String getCloseWord() {
-        return this.cfg.getString("DialogCloseWord");
-    }
-
     private void loadDefaults(){
         this.cfg.add("Prefix", this.defaultPrefix);
         this.cfg.add("Language", "en_US");
-        this.cfg.add("DialogCloseWord", "close");
     }
 
     /**

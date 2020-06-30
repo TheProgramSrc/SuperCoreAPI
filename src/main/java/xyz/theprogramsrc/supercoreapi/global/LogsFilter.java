@@ -27,7 +27,7 @@ public class LogsFilter extends AbstractFilter{
     private Result process(String message){
         if(message != null){
             String msg = message.toLowerCase();
-            if(Arrays.stream(this.filteredStrings).anyMatch(s-> msg.contains(s.toLowerCase()))){
+            if(Arrays.stream(this.filteredStrings).anyMatch(s-> msg.contains(s.toLowerCase()) && Arrays.stream(this.getExtraRequirements()).anyMatch(s1-> msg.contains(s1.toLowerCase())))){
                 return Result.toResult(this.result.name(), Result.NEUTRAL);
             }
         }
@@ -53,6 +53,14 @@ public class LogsFilter extends AbstractFilter{
     @Override
     public Result filter(Logger logger, Level level, Marker marker, String msg, Object... params) {
         return this.process(msg);
+    }
+
+    /**
+     * An array of strings that will be checked if a message contains one of those to filter the message
+     * @return the strings
+     */
+    public String[] getExtraRequirements(){
+        return new String[0];
     }
 
     public static enum FilterResult{

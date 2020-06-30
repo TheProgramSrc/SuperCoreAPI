@@ -1,6 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.spigot.packets;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -106,6 +107,7 @@ public class Actionbar {
     public static void sendActionBar(@Nonnull Player player, @Nullable String message) {
         Objects.requireNonNull(player, "Cannot send action bar to null player");
         Object packet = null;
+        if(message != null) message = ChatColor.translateAlternateColorCodes('&', message);
 
         try {
             Object component = CHAT_COMPONENT_TEXT.invoke(message);
@@ -215,7 +217,7 @@ public class Actionbar {
     /**
      * Clears the action bar to the player
      *
-     * @param player
+     * @param player player to clear the actionbar
      */
     public static void clearActionbar(Player player) {
         sendActionBar(player, "&7");

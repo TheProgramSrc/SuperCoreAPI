@@ -3,7 +3,9 @@ package xyz.theprogramsrc.supercoreapi.spigot.dialog;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import xyz.theprogramsrc.supercoreapi.Recall;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
@@ -23,8 +25,12 @@ public abstract class Dialog extends SpigotModule {
     private final Player player;
     private Recall<Player> recall;
     private final HashMap<String, String> placeholders;
-    private String closeWord;
 
+    /**
+     * Creates a new dialog between the plugin and a player
+     * @param plugin the plugin
+     * @param player the player
+     */
     public Dialog(SpigotPlugin plugin, Player player){
         super(plugin, false);
         this.player = player;
@@ -38,12 +44,11 @@ public abstract class Dialog extends SpigotModule {
     public void openDialog(){
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
-            this.closeWord = this.getSettings().getCloseWord().toLowerCase();
             this.listener(this);
             this.getPlayer().closeInventory();
             sendTitleAndActionbar();
             if(this.canClose()){
-                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.options().vars(this.closeWord).toString());
+                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
             }
         });
     }
@@ -79,7 +84,19 @@ public abstract class Dialog extends SpigotModule {
     public void onMove(PlayerMoveEvent event){
         if(this.canClose()){
             if(this.getPlayer().equals(event.getPlayer())){
-                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString().replace("{CloseWord}", this.closeWord));
+                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onClick(PlayerInteractEvent event){
+        if(this.getPlayer().equals(event.getPlayer())){
+            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
+                if(this.canClose()){
+                    this.getSuperUtils().sendMessage(event.getPlayer(), Base.DIALOG_CLOSED.toString());
+                    this.close();
+                }
             }
         }
     }
@@ -88,18 +105,10 @@ public abstract class Dialog extends SpigotModule {
     public void onChat(AsyncPlayerChatEvent event){
         if(event.getPlayer().equals(this.getPlayer())){
             event.setCancelled(true);
-            String close = this.closeWord;
             String message = event.getMessage();
-            if(message.toLowerCase().equals(close.toLowerCase())){
-                if(this.canClose()){
-                    this.close();
-                    this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_CLOSED.toString());
-                }
-            }else{
-                boolean result = this.onResult(message);
-                if(result){
-                    this.close();
-                }
+            boolean result = this.onResult(message);
+            if(result){
+                this.close();
             }
         }
     }
