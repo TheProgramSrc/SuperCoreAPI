@@ -17,10 +17,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickType;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIClickEvent;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIEmptyClickEvent;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIEvent;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIOutsideClickEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
@@ -57,6 +54,8 @@ public abstract class GUI extends SpigotModule {
                 ((SpigotPlugin)this.plugin).listener(this);
             }
             this.inventory = Bukkit.createInventory(null, this.getRows().getSize(), this.plugin.getSuperUtils().color(this.applyPlaceholders(this.centerTitle() ? this.getCenteredTitle() : this.getTitle())));
+            this.loadGUIItemsAndSyncItems();
+            this.onEvent(new GUIOpenEvent(this, this.player));
             this.player.openInventory(this.inventory);
         });
     }
@@ -66,9 +65,13 @@ public abstract class GUI extends SpigotModule {
      */
     public void close(){
         this.getSpigotTasks().runTask(()->{
-            HandlerList.unregisterAll(this);
-            this.inventory = null;
-            this.player.closeInventory();
+            GUICloseEvent event = new GUICloseEvent(this, this.player);
+            this.onEvent(event);
+            if(!event.isCancelled()){
+                HandlerList.unregisterAll(this);
+                this.inventory = null;
+                this.player.closeInventory();
+            }
         });
     }
 
@@ -95,6 +98,35 @@ public abstract class GUI extends SpigotModule {
     public void clear(){
         this.buttons.clear();
         this.inventory.clear();
+    }
+
+    /**
+     * Adds a new GUIButton to the GUI
+     * @param guiButton the button
+     */
+    public void addButton(GUIButton guiButton){
+        if(guiButton.getSlot() == -1){
+            if(this.inventory != null){
+                this.buttons.put(this.inventory.firstEmpty(), guiButton);
+            }else{
+                for(int i = 0; i < this.getRows().getSize(); ++i){
+                    if(!this.buttons.containsKey(i)){
+                        this.buttons.put(i, guiButton);
+                        return;
+                    }
+                }
+            }
+        }else{
+            this.buttons.put(guiButton.getSlot(), guiButton);
+        }
+    }
+
+    /**
+     * Removes a button from the GUI
+     * @param slot the slot
+     */
+    public void remButton(int slot){
+        this.buttons.remove(slot);
     }
 
     /**
@@ -163,36 +195,7 @@ public abstract class GUI extends SpigotModule {
     @EventHandler
     public void syncItems(TimerEvent event){
         if(event.getTime() == Time.TICK){
-            if(this.inventory != null){
-                this.buttons = new HashMap<>();
-                GUIButton[] buttons = this.getButtons();
-                if(buttons == null) return;
-                for (GUIButton b : buttons) {
-                    int slot = b.getSlot();
-                    if (slot == -1) {
-                        for(slot = 0; this.buttons.containsKey(slot);){
-                            slot++;
-                        }
-                    }
-
-                    this.buttons.put(slot, b);
-                }
-
-                this.inventory.clear();
-
-                for(GUIButton b : this.buttons.values()){
-                    int slot = b.getSlot();
-                    ItemStack item = b.getItemStack();
-                    if(item != null){
-                        if(slot <= this.getRows().getSize() && slot >= 0){
-                            this.inventory.setItem(slot, item);
-                        }
-                    }
-                }
-
-
-                this.player.updateInventory();
-            }
+            this.loadGUIItemsAndSyncItems();
         }
     }
 
@@ -304,5 +307,38 @@ public abstract class GUI extends SpigotModule {
      * @return the buttons to place inside the GUI
      */
     protected abstract GUIButton[] getButtons();
+
+    private void loadGUIItemsAndSyncItems(){
+        if(this.inventory != null){
+            this.buttons = new HashMap<>();
+            GUIButton[] buttons = this.getButtons();
+            if(buttons == null) return;
+            for (GUIButton b : buttons) {
+                int slot = b.getSlot();
+                if (slot == -1) {
+                    for(slot = 0; this.buttons.containsKey(slot);){
+                        slot++;
+                    }
+                }
+
+                this.buttons.put(slot, b);
+            }
+
+            this.inventory.clear();
+
+            for(GUIButton b : this.buttons.values()){
+                int slot = b.getSlot();
+                ItemStack item = b.getItemStack();
+                if(item != null){
+                    if(slot <= this.getRows().getSize() && slot >= 0){
+                        this.inventory.setItem(slot, item);
+                    }
+                }
+            }
+
+
+            this.player.updateInventory();
+        }
+    }
 
 }

@@ -307,6 +307,26 @@ public class SimpleItem {
     }
 
     /**
+     * Sets if the item glows or not (Using an enchantment)
+     *
+     * NOTE: This will add and remove the enchantment 'Durability' with Level '1'
+     * If you need that enchantment is not recommended to use <pre>setGlowing(false)</pre>
+     *
+     * @param glowing either show the item glowing or not
+     */
+    public SimpleItem setGlowing(boolean glowing){
+        ItemFlag flag = ItemFlag.HIDE_ENCHANTS;
+        if(glowing){
+            this.addFlag(flag);
+            this.addEnchantment(Enchantment.DURABILITY);
+        }else{
+            this.removeFlag(flag);
+            this.removeEnchantment(Enchantment.DURABILITY);
+        }
+        return this;
+    }
+
+    /**
      * Sets if the attributes should be shown
      * @param showAttributes true to show the attributes, false to hide them
      * @return this item
