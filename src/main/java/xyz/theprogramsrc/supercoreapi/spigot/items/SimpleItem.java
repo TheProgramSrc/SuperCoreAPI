@@ -482,7 +482,7 @@ public class SimpleItem {
 
                 meta.setDisplayName(this.apply(Utils.ct(this.getDisplayName())));
                 meta.setLore(this.apply(Utils.ct(this.getLore())));
-                meta.getItemFlags().addAll(this.getFlags());
+                this.getFlags().forEach(meta::addItemFlags);
                 item.setItemMeta(meta);
             }
         }else{
@@ -490,7 +490,7 @@ public class SimpleItem {
             if(meta != null){
                 meta.setDisplayName(this.apply(Utils.ct(this.getDisplayName())));
                 meta.setLore(this.apply(Utils.ct(this.getLore())));
-                meta.getItemFlags().addAll(this.getFlags());
+                this.getFlags().forEach(meta::addItemFlags);
                 item.setItemMeta(meta);
             }
         }
