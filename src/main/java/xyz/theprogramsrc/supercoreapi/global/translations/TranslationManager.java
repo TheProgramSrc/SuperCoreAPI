@@ -45,7 +45,7 @@ public class TranslationManager {
             }
             translations.forEach(t-> translationsMap.put(t.getId(), t.getValue()));
             file.createNewFile();
-            String[] comments = {"# Default translation " + pack.getLanguage().toString(),"# If you want to edit the translations copy this file and rename it", "# The file name format is 'language_COUNTRY.lang'","# Also you can search about Java Locales", "#", "# If you're translating this file, remember to not translate placeholders or keys!"};
+            String[] comments = {"# Default translation " + pack.getLanguage().toString(),"# If you want to edit the translations copy this file and rename it", "# The file name format is 'language_COUNTRY.lang'","# Also you can search about Java Locales", "#", "# If you're translating this file, remember to not translate placeholders nor keys!"};
             String[] translationsArray = translationsMap.entrySet().stream().map(e-> e.getKey() + "=" + e.getValue()).toArray(String[]::new);
             List<String> lines = new ArrayList<>();
             lines.addAll(Utils.toList(comments));
