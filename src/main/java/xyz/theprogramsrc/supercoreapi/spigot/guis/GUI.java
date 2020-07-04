@@ -21,7 +21,9 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -31,6 +33,7 @@ public abstract class GUI extends SpigotModule {
     private final HashMap<String, String> placeholders;
     private final Player player;
     private HashMap<Integer, GUIButton> buttons;
+    private List<GUIButton> extraButtons;
 
     /**
      * Creates a new GUI
@@ -42,6 +45,7 @@ public abstract class GUI extends SpigotModule {
         this.player = player;
         this.placeholders = new HashMap<>();
         this.buttons = new HashMap<>();
+        this.extraButtons = new ArrayList<>();
     }
 
     /**
@@ -107,17 +111,17 @@ public abstract class GUI extends SpigotModule {
     public void addButton(GUIButton guiButton){
         if(guiButton.getSlot() == -1){
             if(this.inventory != null){
-                this.buttons.put(this.inventory.firstEmpty(), guiButton);
+                this.extraButtons.add(guiButton.setSlot(this.inventory.firstEmpty()));
             }else{
                 for(int i = 0; i < this.getRows().getSize(); ++i){
                     if(!this.buttons.containsKey(i)){
-                        this.buttons.put(i, guiButton);
+                        this.extraButtons.add(guiButton.setSlot(i));
                         return;
                     }
                 }
             }
         }else{
-            this.buttons.put(guiButton.getSlot(), guiButton);
+            this.extraButtons.add(guiButton);
         }
     }
 
@@ -127,6 +131,7 @@ public abstract class GUI extends SpigotModule {
      */
     public void remButton(int slot){
         this.buttons.remove(slot);
+        this.extraButtons.removeIf(b -> b.getSlot() == slot);
     }
 
     /**
@@ -311,8 +316,10 @@ public abstract class GUI extends SpigotModule {
     private void loadGUIItemsAndSyncItems(){
         if(this.inventory != null){
             this.buttons = new HashMap<>();
-            GUIButton[] buttons = this.getButtons();
-            if(buttons == null) return;
+            List<GUIButton> buttons = new ArrayList<>();
+            GUIButton[] array = this.getButtons();
+            if(array != null) buttons.addAll(Utils.toList(array));
+            buttons.addAll(this.extraButtons);
             for (GUIButton b : buttons) {
                 int slot = b.getSlot();
                 if (slot == -1) {
