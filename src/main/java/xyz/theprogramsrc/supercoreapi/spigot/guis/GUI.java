@@ -33,7 +33,6 @@ public abstract class GUI extends SpigotModule {
     private final HashMap<String, String> placeholders;
     private final Player player;
     private HashMap<Integer, GUIButton> buttons;
-    private List<GUIButton> extraButtons;
 
     /**
      * Creates a new GUI
@@ -45,7 +44,6 @@ public abstract class GUI extends SpigotModule {
         this.player = player;
         this.placeholders = new HashMap<>();
         this.buttons = new HashMap<>();
-        this.extraButtons = new ArrayList<>();
     }
 
     /**
@@ -102,36 +100,6 @@ public abstract class GUI extends SpigotModule {
     public void clear(){
         this.buttons.clear();
         this.inventory.clear();
-    }
-
-    /**
-     * Adds a new GUIButton to the GUI
-     * @param guiButton the button
-     */
-    public void addButton(GUIButton guiButton){
-        if(guiButton.getSlot() == -1){
-            if(this.inventory != null){
-                this.extraButtons.add(guiButton.setSlot(this.inventory.firstEmpty()));
-            }else{
-                for(int i = 0; i < this.getRows().getSize(); ++i){
-                    if(!this.buttons.containsKey(i)){
-                        this.extraButtons.add(guiButton.setSlot(i));
-                        return;
-                    }
-                }
-            }
-        }else{
-            this.extraButtons.add(guiButton);
-        }
-    }
-
-    /**
-     * Removes a button from the GUI
-     * @param slot the slot
-     */
-    public void remButton(int slot){
-        this.buttons.remove(slot);
-        this.extraButtons.removeIf(b -> b.getSlot() == slot);
     }
 
     /**
@@ -319,7 +287,9 @@ public abstract class GUI extends SpigotModule {
             List<GUIButton> buttons = new ArrayList<>();
             GUIButton[] array = this.getButtons();
             if(array != null) buttons.addAll(Utils.toList(array));
-            buttons.addAll(this.extraButtons);
+            array = this.getExtraButtons();
+            if(array != null) buttons.addAll(Utils.toList(array));
+
             for (GUIButton b : buttons) {
                 int slot = b.getSlot();
                 if (slot == -1) {
@@ -346,6 +316,14 @@ public abstract class GUI extends SpigotModule {
 
             this.player.updateInventory();
         }
+    }
+
+    /**
+     * Gets the extra items that will be placed inside the GUI
+     * @return the buttons to place inside the GUI
+     */
+    protected GUIButton[] getExtraButtons(){
+        return new GUIButton[0];
     }
 
 }
