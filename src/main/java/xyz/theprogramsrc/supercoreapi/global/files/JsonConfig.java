@@ -24,7 +24,16 @@ public class JsonConfig {
         JsonObject json;
         if(file.exists()){
             try{
-                json = new JsonParser().parse(Utils.readFile(file)).getAsJsonObject();
+                String content = Utils.readFile(file);
+                if(content == null){
+                    json = new JsonObject();
+                }else{
+                    if(content.isEmpty() || content.equals(" ")){
+                        json = new JsonObject();
+                    }else{
+                        json = new JsonParser().parse(Utils.readFile(file)).getAsJsonObject();
+                    }
+                }
             }catch (Exception ex){
                 ex.printStackTrace();
                 json = new JsonObject();
@@ -126,6 +135,7 @@ public class JsonConfig {
      */
     public void set(String key, String value){
         this.json.addProperty(key, value);
+        this.save();
     }
 
     /**
