@@ -10,11 +10,15 @@ import xyz.theprogramsrc.supercoreapi.global.notifications.NotificationCollectio
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class PluginDataStorage extends JsonConfig {
 
     public PluginDataStorage(SuperPlugin<?> plugin){
         super(plugin.getPluginFolder(), "PluginData.json");
+        if(!this.contains("stats_id")){
+            this.add("stats_id", UUID.randomUUID().toString());
+        }
     }
 
     public void saveNotification(Notification notification){
