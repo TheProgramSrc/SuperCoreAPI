@@ -8,6 +8,7 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
+import xyz.theprogramsrc.supercoreapi.bungee.utils.tasks.BungeeTasks;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -34,6 +35,8 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     private PluginDataStorage pluginDataStorage;
 
+    private BungeeTasks bungeeTasks;
+
     @Override
     public void onLoad() {
         long start = System.currentTimeMillis();
@@ -53,6 +56,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     public void onEnable() {
         if(this.emergencyStop) return;
         this.log("Enabling plugin &3v" + this.getPluginVersion());
+        this.bungeeTasks = new BungeeTasks(this);
         this.settings = new Settings(this);
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
@@ -172,11 +176,15 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void emergencyStop() {
         this.emergencyStop = true;
-        this.onDisable();
         this.getProxy().getPluginManager().unregisterCommands(this);
         this.getProxy().getPluginManager().unregisterListeners(this);
+        this.onDisable();
     }
 
+    /**
+     * Checks if this is an emergency stop
+     * @return true if is an emergency stop, otherwise false
+     */
     public boolean isEmergencyStop() {
         return this.emergencyStop;
     }
@@ -184,5 +192,13 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public PluginDataStorage getPluginDataStorage() {
         return this.pluginDataStorage;
+    }
+
+    /**
+     * Gets the BungeeTasks util
+     * @return the bungeetasks util
+     */
+    public BungeeTasks getBungeeTasks() {
+        return bungeeTasks;
     }
 }

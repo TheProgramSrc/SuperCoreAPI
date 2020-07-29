@@ -17,11 +17,22 @@ public class BungeeYMLConfig {
     private Configuration config;
     private final File file;
 
+    /**
+     * Create a new YML Config using a File
+     *
+     * @param file The file where should be all the data
+     */
     public BungeeYMLConfig(File file){
         this.file = file;
         this.load();
     }
 
+    /**
+     * Create a new YML Config using a folder and the File Name
+     *
+     * @param folder The folder where should be placed the file
+     * @param fileName The name of the file (including the extension)
+     */
     public BungeeYMLConfig(File folder, String fileName){
         this(new File(Utils.folder(folder), fileName));
     }
@@ -36,7 +47,7 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Clear the file and his contents
+     * Delete the file and his contents
      * and then create a new file
      */
     public void clear(){
@@ -51,9 +62,9 @@ public class BungeeYMLConfig {
 
     /**
      * Used to reload the cache
-     * (Make sure to use {@link #save()} before executing this)
+     * <i>Note: All unsaved changes will be erased</i>
      *
-     * @throws Exception if occurs any exception
+     * @see #save()
      */
     public void reload(){
         try{
@@ -64,7 +75,8 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Used to save all the cached information
+     * Used to save all the changes made
+     *
      */
     public void save(){
         try{
@@ -76,6 +88,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to set information inside the file
+     *
      * @param path Location of the saved information
      * @param value Information to save
      */
@@ -90,7 +103,8 @@ public class BungeeYMLConfig {
 
     /**
      * Used to add information inside the file
-     * ONLY IF DOES NOT EXISTS
+     * <i>ONLY IF DOES NOT EXISTS</i>
+     *
      * @param path Location of the saved information
      * @param value Information to save
      */
@@ -100,6 +114,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to check if the configuration contains a specific Path
+     *
      * @param path Path to check
      * @return true if the path exists, otherwise false
      */
@@ -109,6 +124,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -118,6 +134,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -129,6 +146,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -138,6 +156,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -149,6 +168,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -158,6 +178,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -169,6 +190,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -178,6 +200,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -189,6 +212,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -198,6 +222,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -209,6 +234,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -218,6 +244,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -229,6 +256,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -238,6 +266,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -249,6 +278,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -258,6 +288,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -269,6 +300,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -278,6 +310,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -289,6 +322,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -298,6 +332,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -309,6 +344,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -318,6 +354,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -329,6 +366,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -338,6 +376,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file, and if not exists set the default value
+     *
      * @param path Path where is saved the information
      * @param def Object to save if there is no existent information in the path
      * @return The information saved in the specified path
@@ -349,6 +388,7 @@ public class BungeeYMLConfig {
 
     /**
      * Used to request information from the file
+     *
      * @param path Path where is saved the information
      * @return The information saved in the specified path
      */
@@ -357,10 +397,11 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Used to request information from the file, and if not exists set the default value
-     * @param path Path where is saved the information
-     * @param def Object to save if there is no existent information in the path
-     * @return The information saved in the specified path
+     * Used to request a {@link Long list of longs} from the file, and if not exists set the default value
+     *
+     * @param path Path where is saved the {@link Long list of longs}
+     * @param def Object to save if there is no existent {@link Long list of longs} in the path
+     * @return The {@link Long list of longs} saved in the specified path
      */
     public List<Long> getLongList(String path, List<Long> def){
         this.add(path, def);
@@ -368,19 +409,21 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Used to request information from the file
-     * @param path Path where is saved the information
-     * @return The information saved in the specified path
+     * Used to request a {@link Float list of floats} from the file
+     *
+     * @param path Path where is saved the {@link Float list of floats}
+     * @return The {@link Float list of floats} saved in the specified path
      */
     public List<Float> getFloatList(String path){
         return this.config.getFloatList(path);
     }
 
     /**
-     * Used to request information from the file, and if not exists set the default value
-     * @param path Path where is saved the information
-     * @param def Object to save if there is no existent information in the path
-     * @return The information saved in the specified path
+     * Used to request a list of Floats from the file, and if not exists set the default value
+     *
+     * @param path Path where is saved the float list
+     * @param def Object to save if there is no existent float list in the path
+     * @return The float list saved in the specified path
      */
     public List<Float> getFloatList(String path, List<Float> def){
         this.add(path, def);
@@ -388,7 +431,8 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Used to request {@link Configuration} from the file
+     * Used to request a {@link Configuration Configuration Section} from the file
+     *
      * @param path Path where is saved the {@link Configuration}
      * @return The {@link Configuration} saved in the specified path
      */
@@ -406,16 +450,18 @@ public class BungeeYMLConfig {
     }
 
     /**
-     * Used to get the main {@link Configuration}
-     * @return Main {@link Configuration}
+     * Used to get the main {@link Configuration Configuration}
+     *
+     * @return The main {@link Configuration Configuration}
      */
     public Configuration getConfig() {
         return config;
     }
 
     /**
-     * Used to get the file containing all this information
-     * @return File containing all this information
+     * Used to get the file containing all the data of the current Configuration
+     *
+     * @return The {@link File File} containing all the data
      */
     public File getFile() {
         return file;

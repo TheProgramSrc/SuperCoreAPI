@@ -9,6 +9,9 @@ import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotConsole;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class SpigotCommand extends SpigotModule {
 
     /**
@@ -29,6 +32,16 @@ public abstract class SpigotCommand extends SpigotModule {
                 }
                 SpigotCommand.this.onResult(sender, result);
                 return true;
+            }
+
+            @Override
+            public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
+                if(sender instanceof Player){
+                    List<String> complete = SpigotCommand.this.getCommandComplete(((Player) sender), alias, args);
+                    return complete != null ? complete : new ArrayList<>();
+                }else{
+                    return super.tabComplete(sender, alias, args);
+                }
             }
         };
         command.setPermission(this.getPermission());
@@ -88,5 +101,16 @@ public abstract class SpigotCommand extends SpigotModule {
      * @return The CommandResult
      */
     public abstract CommandResult onConsoleExecute(SpigotConsole console, String[] args);
+
+    /**
+     * Gets all the available command completions for a specific player
+     * @param player the player who is requesting the completion
+     * @param alias the alias being used
+     * @param args All arguments passed to the command, split via ' '
+     * @return all the available command completions for the provided player
+     */
+    public List<String> getCommandComplete(Player player, String alias, String[] args){
+        return new ArrayList<>();
+    }
 
 }

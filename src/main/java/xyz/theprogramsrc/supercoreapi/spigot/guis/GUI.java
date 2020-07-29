@@ -6,107 +6,146 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import org.bukkit.inventory.PlayerInventory;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickType;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class GUI extends SpigotModule {
 
-    private Inventory inventory;
-    private final HashMap<String, String> placeholders;
     private final Player player;
-    private HashMap<Integer, GUIButton> buttons;
+    private Inventory inv;
+    private final HashMap<Integer, GUIButton> buttons;
+    private RecurringTask task;
 
     /**
-     * Creates a new GUI
+     * Create a new {@link GUI GUI}
      * @param plugin the plugin
-     * @param player who will view the GUI
+     * @param player the player to show the {@link GUI GUI}
      */
     public GUI(SpigotPlugin plugin, Player player){
-        super(plugin,false);
+        super(plugin, false);
         this.player = player;
-        this.placeholders = new HashMap<>();
         this.buttons = new HashMap<>();
     }
 
     /**
-     * Opens a GUI or reload the GUI
-     * (Is not recommended to trigger repeatedly)
+     * Opens the {@link GUI GUI}
      */
     public void open(){
-        this.getSpigotTasks().runTask(()->{
-            if(this.inventory == null){
-                ((SpigotPlugin)this.plugin).listener(this);
-            }
-            this.inventory = Bukkit.createInventory(null, this.getRows().getSize(), this.plugin.getSuperUtils().color(this.applyPlaceholders(this.centerTitle() ? this.getCenteredTitle() : this.getTitle())));
-            this.loadGUIItemsAndSyncItems();
-            this.onEvent(new GUIOpenEvent(this, this.player));
-            this.player.openInventory(this.inventory);
-        });
+        if(this.inv == null){
+            this.listener(this);
+        }
+
+        this.inv = Bukkit.createInventory(null, this.getRows().getSize(), this.getSuperUtils().color(this.isTitleCentered() ? this.getCenteredTitle() : this.getTitle()));
+
+        if(this.task == null){
+            this.task = this.getSpigotTasks().runRepeatingTask(0L, 1, ()->{
+                if(this.inv != null){
+                    if(this.getButtons() != null){
+                        if(this.getButtons().length != 0){
+                            for (GUIButton button : this.getButtons()) {
+                                this.addButton(button);
+                            }
+                        }
+                    }
+
+                    this.inv.clear();
+                    for (Map.Entry<Integer, GUIButton> entry : this.buttons.entrySet()) {
+                        int slot = entry.getKey();
+                        GUIButton button = entry.getValue();
+                        this.inv.setItem(slot, button.getItemStack());
+                    }
+                    this.player.updateInventory();
+                }else{
+                    if(this.task != null) this.task.stop();
+                }
+            });
+        }else{
+            this.task.start();
+        }
+
+        this.player.openInventory(this.inv);
     }
 
     /**
-     * Closes the current GUI
+     * Closes the {@link GUI GUI}
      */
     public void close(){
         this.getSpigotTasks().runTask(()->{
-            GUICloseEvent event = new GUICloseEvent(this, this.player);
+            GUICloseEvent event = new GUICloseEvent(this);
             this.onEvent(event);
             if(!event.isCancelled()){
+                if(this.task != null) this.task.stop();
                 HandlerList.unregisterAll(this);
-                this.inventory = null;
                 this.player.closeInventory();
+                this.inv = null;
             }
         });
     }
 
     /**
-     * Gets a button from the GUI using a slot
-     * @param slot The slot
-     * @return The button in the slot if exists, otherwise null
+     * Adds a button inside the {@link GUI GUI} using the last empty slot if there is no slot specified inside the {@link GUIButton button}
+     * @param button the button to add inside the {@link GUI GUI}
      */
-    public GUIButton getButtonFromGUI(int slot){
-        return this.buttons.getOrDefault(slot, null);
+    public void addButton(GUIButton button){
+        int slot = button.getSlot();
+        if(slot < 0 || slot > 53){
+            while(this.buttons.containsKey(slot)){
+                slot++;
+            }
+            button.setSlot(slot);
+        }
+        this.setButton(slot, button);
     }
 
     /**
-     * Checks if there is any item in the GUI
-     * @return if the GUI has items
+     * Sets a button inside the {@link GUI GUI} overriding the slot specified in the {@link GUIButton button}
+     * @param slot the slot where should the button be placed
+     * @param button the button to add inside the {@link GUI GUI}
      */
-    public boolean hasItems(){
-        return this.buttons.size() != 0;
+    public void setButton(int slot, GUIButton button){
+        this.buttons.put(slot, button);
     }
 
     /**
-     * Clear the GUI
+     * Alternative method to add items into a {@link GUI GUI}
+     * @return the buttons to add inside the {@link GUI GUI}
      */
-    public void clear(){
-        this.buttons.clear();
-        this.inventory.clear();
+    protected GUIButton[] getButtons(){
+        return new GUIButton[0];
+    }
+
+    protected abstract GUIRows getRows();
+
+    protected abstract String getTitle();
+
+    /**
+     * Check if the {@link GUI} can be closed
+     * @return true if can be closed, otherwise false
+     */
+    public boolean canCloseGUI(){
+        return true;
     }
 
     /**
-     * Used to know if the GUI title should be centered
-     * @return if the GUI title should be centered
+     * Check if the title must be centered
+     * @return true if the title must be centered, otherwise false
      */
-    public boolean centerTitle(){
+    public boolean isTitleCentered(){
         return true;
     }
 
@@ -127,108 +166,69 @@ public abstract class GUI extends SpigotModule {
     }
 
     /**
-     * Used to know if the GUI can be closed
-     * @return true if can be closed, otherwise false
+     * Executed when a {@link GUIEvent GUIEvent} is called
+     * @param event the {@link GUIEvent event} called
      */
-    public boolean canCloseGUI(){
-        return true;
-    }
+    public void onEvent(GUIEvent event){
 
-    /**
-     * Adds a placeholder to the GUI (used on the title)
-     * @param key The key of the placeholder
-     * @param value The value of the placeholder
-     */
-    public void placeholder(String key, String value){
-        this.placeholders.put(key, value);
-    }
-
-    /**
-     * Removes a placeholder
-     * @param key The key of the placeholder
-     */
-    public void remPlaceholder(String key){
-        this.placeholders.remove(key);
-    }
-
-    /**
-     * Adds placeholders to the GUI (used on the title)
-     * @param placeholders Placeholders to add
-     */
-    public void placeholders(Map<String, String> placeholders){
-        this.placeholders.putAll(placeholders);
-    }
-
-    protected String applyPlaceholders(String text){
-        final AtomicReference<String> r = new AtomicReference<>(text);
-        this.placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
-        return r.get();
     }
 
     @EventHandler
-    public void syncItems(TimerEvent event){
-        if(event.getTime() == Time.TICK){
-            this.loadGUIItemsAndSyncItems();
-        }
-    }
-
-    @EventHandler
-    public void onClose(InventoryCloseEvent event){
-        if(this.inventory != null){
-            if(event.getInventory().equals(this.inventory)){
-                if(event.getPlayer().equals(this.player)){
-                    this.getSpigotTasks().runTaskLater(5L,()->{
-                        if(this.canCloseGUI()){
-                            HandlerList.unregisterAll(this);
-                            this.inventory = null;
-                        }else{
-                            this.open();
-                        }
-                    });
+    public void onOpen(InventoryOpenEvent event){
+        if(this.inv != null && this.player != null){
+            if(event.getPlayer().equals(this.player)){
+                if(event.getInventory().equals(this.inv)){
+                    GUIOpenEvent guiOpenEvent = new GUIOpenEvent(this);
+                    this.onEvent(guiOpenEvent);
                 }
             }
         }
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event){
-        if(this.inventory != null){
-            if(event.getPlayer().equals(this.player)){
-                HandlerList.unregisterAll(this);
-                this.inventory = null;
+    public void onClose(InventoryCloseEvent event){
+        if(this.inv != null && this.player != null){
+            if(event.getInventory().equals(this.inv)){
+                if(event.getPlayer().equals(this.player)){
+                    if(this.canCloseGUI()){
+                        this.task.stop();
+                        HandlerList.unregisterAll(this);
+                        this.inv = null;
+                    }else{
+                        this.open();
+                    }
+                }
             }
         }
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        Player who = ((Player)event.getWhoClicked());
-        if(this.player.equals(who)){
-            if(this.inventory != null){
-                if(event.getInventory().equals(this.inventory) || Utils.equals(event.getClickedInventory(), this.inventory)){
-                    int slot = event.getSlot();
-                    ItemStack item = event.getCurrentItem();
-                    InventoryType.SlotType slotType = event.getSlotType();
-                    if(slotType == InventoryType.SlotType.OUTSIDE){
-                        GUIOutsideClickEvent outsideClickEvent = new GUIOutsideClickEvent(this, who);
-                        this.onEvent(outsideClickEvent);
-                        event.setCancelled(!outsideClickEvent.canDrop());
-                    }else{
-                        event.setCancelled(true);
-                        if(item == null){
-                            GUIEmptyClickEvent emptyClickEvent = new GUIEmptyClickEvent(this, slot, player);
-                            this.onEvent(emptyClickEvent);
-                            return;
-                        }
+        if(this.inv != null && this.player != null){
+            if(event.getInventory().equals(this.inv) && event.getWhoClicked().equals(this.player) && (!(event.getInventory() instanceof PlayerInventory))){
+                Player who = ((Player)event.getWhoClicked());
+                event.setCancelled(true);
+                ItemStack item = event.getCurrentItem();
+                InventoryType.SlotType slotType = event.getSlotType();
+                int slot = event.getRawSlot();
+                if(slotType == InventoryType.SlotType.OUTSIDE){
+                    GUIOutsideClickEvent outsideClickEvent = new GUIOutsideClickEvent(this);
+                    this.onEvent(outsideClickEvent);
+                    event.setCancelled(!outsideClickEvent.canDrop());
+                }else{
+                    event.setCancelled(true);
+                    GUIEmptyClickEvent emptyClickEvent = new GUIEmptyClickEvent(this, slot);
+                    if(item == null){
+                        this.onEvent(emptyClickEvent);
+                        return;
+                    }else if(item.getType() == XMaterial.AIR.parseMaterial()){
+                        this.onEvent(emptyClickEvent);
+                        return;
+                    }
 
-                        if(item.getType() == XMaterial.AIR.parseMaterial()){
-                            GUIEmptyClickEvent emptyClickEvent = new GUIEmptyClickEvent(this, slot, player);
-                            this.onEvent(emptyClickEvent);
-                            return;
-                        }
-
+                    if(this.buttons.containsKey(slot)){
                         GUIButton button = this.buttons.get(slot);
-                        GUIClickEvent clickEvent = new GUIClickEvent(this, who, button, slot);
+                        GUIClickEvent clickEvent = new GUIClickEvent(this, button, slot);
                         this.onEvent(clickEvent);
                         if(button.getAction() != null){
                             ClickType clickType = ClickType.fromEvent(event);
@@ -241,89 +241,31 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    /**
-     * Gets the player who is viewing the GUI
-     * @return the player viewing the GUI
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * Gets the GUI as {@link Inventory}
-     * @return the bukkit inventory
-     */
-    public Inventory getBukkitInventory() {
-        return inventory;
-    }
-
-    /**
-     * Executed when a GUI Event is triggered
-     * @param event The executed event
-     */
-    protected void onEvent(GUIEvent event){}
-
-    /**
-     * Gets the GUI title
-     * @return the title
-     */
-    protected abstract String getTitle();
-
-    /**
-     * Gets the GUI Rows
-     * @return the rows
-     */
-    protected abstract GUIRows getRows();
-
-    /**
-     * Gets the items that should be placed inside the GUI
-     * @return the buttons to place inside the GUI
-     */
-    protected abstract GUIButton[] getButtons();
-
-    private void loadGUIItemsAndSyncItems(){
-        if(this.inventory != null){
-            this.buttons = new HashMap<>();
-            List<GUIButton> buttons = new ArrayList<>();
-            GUIButton[] array = this.getButtons();
-            if(array != null) buttons.addAll(Utils.toList(array));
-            array = this.getExtraButtons();
-            if(array != null) buttons.addAll(Utils.toList(array));
-
-            for (GUIButton b : buttons) {
-                int slot = b.getSlot();
-                if (slot == -1) {
-                    for(slot = 0; this.buttons.containsKey(slot);){
-                        slot++;
-                    }
-                }
-
-                this.buttons.put(slot, b);
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event){
+        if(this.inv != null){
+            if(event.getPlayer().equals(this.player)){
+                this.task.stop();
+                HandlerList.unregisterAll(this);
+                this.inv = null;
             }
-
-            this.inventory.clear();
-
-            for(GUIButton b : this.buttons.values()){
-                int slot = b.getSlot();
-                ItemStack item = b.getItemStack();
-                if(item != null){
-                    if(slot <= this.getRows().getSize() && slot >= 0){
-                        this.inventory.setItem(slot, item);
-                    }
-                }
-            }
-
-
-            this.player.updateInventory();
         }
     }
 
     /**
-     * Gets the extra items that will be placed inside the GUI
-     * @return the buttons to place inside the GUI
+     * Gets the {@link Inventory Bukkit Inventory}
+     * @return the {@link Inventory Bukkit Inventory}
      */
-    protected GUIButton[] getExtraButtons(){
-        return new GUIButton[0];
+    public Inventory getBukkitInventory() {
+        return inv;
+    }
+
+    /**
+     * Gets the player who is viewing the {@link GUI gui}
+     * @return the player who is viewing the {@link GUI gui}
+     */
+    public Player getPlayer() {
+        return player;
     }
 
 }

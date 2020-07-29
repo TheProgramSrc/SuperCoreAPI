@@ -10,14 +10,15 @@ import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeConsole;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 
 /**
- * A extension for easier control with commands
+ * BungeeCommand is a representation of a {@link Command Command}
+ * with ease of control and customization.
  */
 public abstract class BungeeCommand extends BungeeModule {
 
     /**
-     * Creates a new command for BungeeCord and registers it
+     * Create a new {@link BungeeCommand BungeeCommand}
      *
-     * @param plugin The BungeeCord plugin
+     * @param plugin The {@link BungeePlugin BungeeCord Plugin}
      */
     public BungeeCommand(final BungeePlugin plugin){
         super(plugin);
@@ -53,22 +54,26 @@ public abstract class BungeeCommand extends BungeeModule {
     }
 
     /**
-     * Gets the command
-     * @return the command
+     * Gets the command executed to run the {@link BungeeCommand BungeeCommand}
+     * @return The command
      */
     public abstract String getCommand();
 
     /**
      * Gets the permission to use the command
-     * @return the permission
+     *
+     * @return The permission to use the command
+     * @see #getCommand()
      */
     public String getPermission(){
         return null;
     }
 
     /**
-     * Gets all the available aliases
-     * @return the aliases
+     * Gets all the available aliases.
+     * The aliases are more commands to run the {@link BungeeCommand BungeeCommand}
+     *
+     * @return The aliases
      */
     public String[] getAliases(){
         return new String[0];
@@ -76,17 +81,19 @@ public abstract class BungeeCommand extends BungeeModule {
 
     /**
      * Executed when a player executes the command
+     *
      * @param player Who execute the command
-     * @param args Arguments of the command
-     * @return The CommandResult
+     * @param args The arguments of the command
+     * @return The {@link CommandResult Result} of the command
      */
     public abstract CommandResult onPlayerExecute(ProxiedPlayer player, String[] args);
 
     /**
      * Executed when the console executes the command
+     *
      * @param console The console
-     * @param args the arguments of the command
-     * @return The CommandResult
+     * @param args The arguments of the command
+     * @return The {@link CommandResult Result} of the command
      */
     public abstract CommandResult onConsoleExecute(BungeeConsole console, String[] args);
 }

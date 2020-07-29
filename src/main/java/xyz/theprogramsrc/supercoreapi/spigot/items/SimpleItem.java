@@ -38,7 +38,7 @@ public class SimpleItem {
         this.lore = new ArrayList<>();
         this.enchantments = new HashMap<>();
         this.flags = new ArrayList<>();
-        this.material = XMaterial.fromItem(itemStack);
+        this.material = XMaterial.matchXMaterial(itemStack);
         this.amount = itemStack.getAmount();
         if(itemStack.getItemMeta() != null){
             if(itemStack.hasItemMeta()){
@@ -464,6 +464,13 @@ public class SimpleItem {
      * @return this item as ItemStack
      */
     public ItemStack build(){
+        if(this.getDisplayName() == null){
+            if(this.getMaterial() != null){
+                this.setDisplayName(this.getMaterial().getHumanName());
+            }else{
+                this.setDisplayName("&cDisplayName is null!. You can also set just '& 7'");
+            }
+        }
         ItemStack item = this.material.parseItem();
         if(this.skinTexture != null){
             SkullMeta meta = ((SkullMeta)item.getItemMeta());
@@ -509,5 +516,21 @@ public class SimpleItem {
         List<String> r = new ArrayList<>();
         list.forEach(s-> r.add(apply(s)));
         return r;
+    }
+
+    /**
+     * Checks if the item has a lore
+     * @return true if there is a lore, otherwise false
+     */
+    public boolean hasLore() {
+        return this.getLore() != null;
+    }
+
+    /**
+     * Checks if the item has a DisplayName
+     * @return true if there is a DisplayName, otherwise false
+     */
+    public boolean hasDisplayName() {
+        return this.getDisplayName() != null;
     }
 }

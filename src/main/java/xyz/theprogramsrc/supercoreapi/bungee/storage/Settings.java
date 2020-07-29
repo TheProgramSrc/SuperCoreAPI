@@ -5,9 +5,7 @@ import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.storage.BungeeYMLConfig;
 
 /**
- * Basic BungeeCord Settings
- *
- * Use {@link #getConfig()} to get the Configuration File and modify it
+ * Basic BungeeCord Settings used by the Plugin
  */
 public class Settings extends BungeeModule {
 

@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Listener;
 import xyz.theprogramsrc.supercoreapi.SuperModule;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
+import xyz.theprogramsrc.supercoreapi.bungee.utils.tasks.BungeeTasks;
 
 public class BungeeModule extends SuperModule<Listener> implements Listener {
 
@@ -36,6 +37,14 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
      */
     protected ProxyServer getProxy(){
         return ((BungeePlugin)this.plugin).getProxy();
+    }
+
+    /**
+     * Gets the BungeeTasks util
+     * @return the BungeeTasks util
+     */
+    protected BungeeTasks getBungeeTasks(){
+        return ((BungeePlugin)this.plugin).getBungeeTasks();
     }
 
 }

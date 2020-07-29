@@ -1,6 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.spigot;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
@@ -16,14 +17,17 @@ import xyz.theprogramsrc.supercoreapi.global.updater.SpigotUpdateChecker;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.events.EventManager;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
+import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
+import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotTasks;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<JavaPlugin> {
@@ -39,6 +43,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private DependencyManager dependencyManager;
     private SkinTextureManager skinManager;
     private EventManager eventManager;
+    private RecipeCreator recipeCreator;
 
     private PluginDataStorage pluginDataStorage;
 
@@ -77,6 +82,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
+        this.recipeCreator = new RecipeCreator(this);
         this.onPluginEnable();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -240,6 +246,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void emergencyStop() {
         this.emergencyStop = true;
+        HandlerList.unregisterAll(this);
         this.getServer().getPluginManager().disablePlugin(this);
     }
 
@@ -271,5 +278,31 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
                 SpigotPlugin.this.log("Please update SuperCoreAPI to v" + lastVersion);
             }
         }.check();
+    }
+
+    /**
+     * Registers a new custom recipe
+     *
+     * @param id the identifier (must be unique)
+     * @param recipe the recipe
+     */
+    public void registerRecipe(String id, CustomRecipe recipe){
+        this.recipeCreator.addRecipe(id, recipe);
+    }
+
+    /**
+     * Unregister a recipe
+     * @param id the identifier
+     */
+    public void unregisterRecipe(String id){
+        this.recipeCreator.removeRecipe(id);
+    }
+
+    /**
+     * Gets all the registered recipes
+     * @return the recipes
+     */
+    public HashMap<String, CustomRecipe> getRecipes(){
+        return this.recipeCreator.getRecipes();
     }
 }

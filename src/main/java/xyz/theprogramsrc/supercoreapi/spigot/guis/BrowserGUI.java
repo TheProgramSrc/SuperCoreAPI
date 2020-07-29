@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class BrowserGUI<OBJ> extends GUI{
+public abstract class BrowserGUI<OBJ> extends GUI {
 
     private String searchTerm = null;
     public int maxItemsPerPage = 36;

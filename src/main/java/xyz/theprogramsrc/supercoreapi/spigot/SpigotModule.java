@@ -4,7 +4,7 @@ import org.bukkit.event.Listener;
 import xyz.theprogramsrc.supercoreapi.SuperModule;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotTasks;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
 /**
  * For more docs see {@link SuperModule}

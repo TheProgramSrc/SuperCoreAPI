@@ -12,10 +12,9 @@ import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.packets.Actionbar;
 import xyz.theprogramsrc.supercoreapi.spigot.packets.Title;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.RecurringTask;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -25,6 +24,7 @@ public abstract class Dialog extends SpigotModule {
     private final Player player;
     private Recall<Player> recall;
     private final HashMap<String, String> placeholders;
+    private RecurringTask task;
 
     /**
      * Creates a new dialog between the plugin and a player
@@ -44,13 +44,19 @@ public abstract class Dialog extends SpigotModule {
     public void openDialog(){
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
-            this.listener(this);
             this.getPlayer().closeInventory();
             sendTitleAndActionbar();
+            this.listener(this);
             if(this.canClose()){
                 this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
             }
         });
+
+        if(this.task == null){
+            this.task = this.getSpigotTasks().runRepeatingTask(0L, 1L, this::sendTitleAndActionbar);
+        }else{
+            this.task.start();
+        }
     }
 
     private void sendTitleAndActionbar() {
@@ -63,6 +69,7 @@ public abstract class Dialog extends SpigotModule {
      */
     public void close(){
         this.getSpigotTasks().runTask(()->{
+            this.task.stop();
             HandlerList.unregisterAll(this);
             Title.clearTitle(this.getPlayer());
             Actionbar.clearActionbar(this.getPlayer());
@@ -73,18 +80,20 @@ public abstract class Dialog extends SpigotModule {
         });
     }
 
-    @EventHandler
-    public void syncMessages(TimerEvent event){
-        if(event.getTime() == Time.TICK){
-            sendTitleAndActionbar();
-        }
-    }
+    private long lastMoved;
 
     @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent event){
         if(this.canClose()){
             if(this.getPlayer().equals(event.getPlayer())){
-                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+                if(this.lastMoved == 0){
+                    this.lastMoved = System.currentTimeMillis();
+                }
+
+                if((System.currentTimeMillis() - this.lastMoved) >= 5000){
+                    this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+                    this.lastMoved = System.currentTimeMillis();
+                }
             }
         }
     }
