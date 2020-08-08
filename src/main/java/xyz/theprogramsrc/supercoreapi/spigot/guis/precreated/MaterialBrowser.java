@@ -22,7 +22,7 @@ public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
     @Override
     public XMaterial[] getObjects() {
         Inventory inventory = Bukkit.createInventory(null, 9);
-        return Arrays.stream(XMaterial.itemsSupported()).filter(m->{
+        return Arrays.stream(XMaterial.itemsSupported()).filter(m-> m.parseMaterial() != null).filter(m->{
             inventory.setItem(4, m.parseItem());
             if(inventory.getItem(4) != null){
                 inventory.clear();

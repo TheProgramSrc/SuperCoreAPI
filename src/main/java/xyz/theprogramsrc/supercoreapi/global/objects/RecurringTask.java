@@ -1,4 +1,4 @@
-package xyz.theprogramsrc.supercoreapi.spigot.utils.tasks;
+package xyz.theprogramsrc.supercoreapi.global.objects;
 
 public abstract class RecurringTask {
 

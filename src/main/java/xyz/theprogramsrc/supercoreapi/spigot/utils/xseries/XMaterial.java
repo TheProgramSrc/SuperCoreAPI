@@ -1970,8 +1970,8 @@ public enum XMaterial {
     @SuppressWarnings("deprecation")
     public ItemStack parseItem(boolean suggest) {
         Material material = this.parseMaterial(suggest);
-        Objects.requireNonNull(material, "Unsupported material: " + this.name() + " (" + data + '\'');
-        return ISFLAT ? new ItemStack(material) : new ItemStack(material, 1, this.data);
+        Objects.requireNonNull(material, "Unsupported material: " + this.name() + " (" + this.getData() + ')');
+        return ISFLAT ? new ItemStack(material) : new ItemStack(material, 1, this.getData());
     }
 
     /**
@@ -1997,7 +1997,7 @@ public enum XMaterial {
     @Nullable
     public Material parseMaterial(boolean suggest) {
         Optional<Material> cache = PARSED_CACHE.getIfPresent(this);
-        if (cache != null) return cache.orElse(null);
+        if (cache != null) return cache.orElse(Material.STONE);
         Material mat;
 
         if (!ISFLAT && this.isDuplicated()) mat = requestOldMaterial(suggest);
@@ -2040,7 +2040,7 @@ public enum XMaterial {
             Material material = Material.getMaterial(legacy);
             if (material != null) return material;
         }
-        return null;
+        return Material.STONE;
     }
 
     /**
@@ -2104,6 +2104,10 @@ public enum XMaterial {
      */
     public boolean isFromNewSystem() {
         return this.legacy.length != 0 && Integer.parseInt(this.legacy[0].substring(2)) > 13;
+    }
+
+    public boolean isFlat(){
+        return ISFLAT;
     }
 
     /**

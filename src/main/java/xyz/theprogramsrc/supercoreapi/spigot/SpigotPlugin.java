@@ -17,6 +17,7 @@ import xyz.theprogramsrc.supercoreapi.global.updater.SpigotUpdateChecker;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.events.EventManager;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
+import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<JavaPlugin> {
+
+    public static SpigotPlugin i;
 
     private boolean firstStart, emergencyStop;
     private List<Runnable> disableHooks;
@@ -50,6 +53,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void onLoad() {
         long current = System.currentTimeMillis();
+        i = this;
         this.emergencyStop = false;
         new xyz.theprogramsrc.Base();
         this.disableHooks = new ArrayList<>();
@@ -83,6 +87,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
         this.recipeCreator = new RecipeCreator(this);
+        Skulls.loadFromGitHub();
         this.onPluginEnable();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -305,4 +310,5 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     public HashMap<String, CustomRecipe> getRecipes(){
         return this.recipeCreator.getRecipes();
     }
+
 }

@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial.PLAYER_HEAD;
+
 public class SimpleItem {
 
     private XMaterial material;
@@ -61,12 +63,8 @@ public class SimpleItem {
      * @param skinTexture the skin
      */
     public SimpleItem(SkinTexture skinTexture){
-        this.material = XMaterial.PLAYER_HEAD;
+        this(PLAYER_HEAD);
         this.skinTexture = skinTexture;
-        this.enchantments = new HashMap<>();
-        this.flags = new ArrayList<>();
-        this.lore = new ArrayList<>();
-        this.placeholders = new HashMap<>();
     }
 
     /**
@@ -452,31 +450,48 @@ public class SimpleItem {
     }
 
     /**
-     * Duplicates this item
-     * @return the duplicated item
+     * Checks if the item has a DisplayName
+     * @return true if there is a DisplayName, otherwise false
      */
-    public SimpleItem duplicate(){
-        return new SimpleItem(this.getMaterial()).setAmount(this.getAmount()).setLore(this.getLore()).setDisplayName(this.getDisplayName()).setSkin(this.getSkinTexture()).setEnchantments(this.getEnchantments()).setFlags(this.getFlags());
+    public boolean hasDisplayName() {
+        return this.getDisplayName() != null;
+    }
+
+    /**
+     * Checks if the item has a lore
+     * @return true if there is a lore, otherwise false
+     */
+    public boolean hasLore() {
+        return this.getLore() != null;
     }
 
     /**
      * Transforms this item into a ItemStack
+     *
      * @return this item as ItemStack
      */
     public ItemStack build(){
-        if(this.getDisplayName() == null){
-            if(this.getMaterial() != null){
-                this.setDisplayName(this.getMaterial().getHumanName());
-            }else{
-                this.setDisplayName("&cDisplayName is null!. You can also set just '& 7'");
-            }
-        }
-        ItemStack item = this.material.parseItem();
-        if(this.skinTexture != null){
-            SkullMeta meta = ((SkullMeta)item.getItemMeta());
+        return build(false);
+    }
+
+    /**
+     * Transforms this item into a ItemStack
+     *
+     * @param suggest Use a suggested material (from older materials) if the material is added in a later version of Minecraft.
+     * @return this item as ItemStack
+     */
+    public ItemStack build(boolean suggest){
+        XMaterial material = this.material;
+        if(this.getDisplayName() == null)
+            this.setDisplayName(this.getMaterial() != null ? this.getMaterial().getHumanName() : "&cNULL");
+        ItemStack item = material.parseItem(suggest);
+        if(item == null)
+            return null;
+        if(this.hasSkin()){
+            SkullMeta meta = ((SkullMeta) item.getItemMeta());
             if(meta != null){
-                GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
-                byte[] skinBytes = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", this.getSkinTexture().getUrl()).getBytes());
+                GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
+                byte[] skinBytes = Base64.encodeBase64(String.format("{\"textures\":{\"SKIN\":{\"url\":\"%s\"}}}", this.getSkinTexture().getUrl()).getBytes());
                 gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
 
                 try {
@@ -506,31 +521,29 @@ public class SimpleItem {
         return item;
     }
 
+    /**
+     * Duplicates this item
+     * @return the duplicated item
+     */
+    public SimpleItem duplicate(){
+        return new SimpleItem(this.getMaterial()).setAmount(this.getAmount()).setLore(this.getLore()).setDisplayName(this.getDisplayName()).setSkin(this.getSkinTexture()).setEnchantments(this.getEnchantments()).setFlags(this.getFlags());
+    }
+
     private String apply(String text){
+        if(text == null)
+            return "null";
         AtomicReference<String> r = new AtomicReference<>(text);
         this.placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
         return r.get();
     }
 
     private List<String> apply(List<String> list){
+        if(list == null)
+            return Utils.toList("null");
         List<String> r = new ArrayList<>();
         list.forEach(s-> r.add(apply(s)));
         return r;
     }
 
-    /**
-     * Checks if the item has a lore
-     * @return true if there is a lore, otherwise false
-     */
-    public boolean hasLore() {
-        return this.getLore() != null;
-    }
 
-    /**
-     * Checks if the item has a DisplayName
-     * @return true if there is a DisplayName, otherwise false
-     */
-    public boolean hasDisplayName() {
-        return this.getDisplayName() != null;
-    }
 }

@@ -11,6 +11,8 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
  */
 public class SpigotModule extends SuperModule<Listener> implements Listener {
 
+    protected SpigotPlugin spigotPlugin;
+
     /**
      * Creates a new Spigot Module
      * @param plugin the plugin
@@ -19,6 +21,7 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
     public SpigotModule(SpigotPlugin plugin, boolean registerListener){
         super(plugin);
         if(registerListener) this.listener(this);
+        this.spigotPlugin = plugin;
         this.onLoad();
     }
 

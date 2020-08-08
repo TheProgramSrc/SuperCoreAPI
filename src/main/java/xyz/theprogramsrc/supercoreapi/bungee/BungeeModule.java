@@ -8,8 +8,11 @@ import xyz.theprogramsrc.supercoreapi.bungee.utils.tasks.BungeeTasks;
 
 public class BungeeModule extends SuperModule<Listener> implements Listener {
 
+    protected BungeePlugin bungeePlugin;
+
     public BungeeModule(BungeePlugin plugin, boolean registerListener){
         super(plugin);
+        this.bungeePlugin = plugin;
         if(registerListener) this.listener(this);
         this.onLoad();
     }

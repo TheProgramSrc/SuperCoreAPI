@@ -4,7 +4,7 @@ import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
 import xyz.theprogramsrc.supercoreapi.bungee.BungeeModule;
 import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.RecurringTask;
+import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 
 import java.util.concurrent.TimeUnit;
 

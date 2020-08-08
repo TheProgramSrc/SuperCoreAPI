@@ -37,9 +37,12 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     private BungeeTasks bungeeTasks;
 
+    public static BungeePlugin i;
+
     @Override
     public void onLoad() {
         long start = System.currentTimeMillis();
+        i = this;
         this.emergencyStop = false;
         new xyz.theprogramsrc.Base();
         this.log("Loading plugin &3v"+this.getPluginVersion());

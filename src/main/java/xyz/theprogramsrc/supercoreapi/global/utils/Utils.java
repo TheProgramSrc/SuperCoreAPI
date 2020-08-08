@@ -4,10 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -279,7 +276,7 @@ public class Utils {
             conn.connect();
             conn.getInputStream().close();
             return true;
-        } catch (Exception var2) {
+        } catch (IOException var2) {
             return false;
         }
     }
@@ -294,10 +291,28 @@ public class Utils {
             URL javaURL = new URL(url);
             URLConnection connection = javaURL.openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            return new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
-        }catch (Exception ex){
+            return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
+        }catch (IOException ex){
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Used to read a whole website returning a list of every line
+     *
+     * @param url URL of the website
+     * @return Content of the website
+     */
+    public static List<String> readLinesWithInputStream(String url){
+        try{
+            URL webURL = new URL(url);
+            URLConnection connection = webURL.openConnection();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            return reader.lines().collect(Collectors.toList());
+        }catch (IOException e){
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
 
@@ -492,9 +507,9 @@ public class Utils {
      * Used to read a file into string
      * @param file File to read
      * @return Content of the file
-     * @throws Exception If occurs any exception on the file reading
+     * @throws IOException If occurs any exception on the file reading
      */
-    public static String readFile(File file) throws Exception{
+    public static String readFile(File file) throws IOException{
         return FileUtils.readFileToString(file, Charset.defaultCharset());
     }
 
@@ -502,9 +517,9 @@ public class Utils {
      * Reads all the lines of a file
      * @param file File to read lines
      * @return Lines of the file
-     * @throws Exception If occurs any exception on the file reading
+     * @throws IOException If occurs any exception on the file reading
      */
-    public static List<String> readLines(File file)throws Exception{
+    public static List<String> readLines(File file)throws IOException{
         return FileUtils.readLines(file, Charset.defaultCharset());
     }
 
@@ -512,9 +527,9 @@ public class Utils {
      * Writes a set of lines into a file
      * @param file File to write
      * @param data Data to write into the file
-     * @throws Exception If occurs any exception on the file writing
+     * @throws IOException If occurs any exception on the file writing
      */
-    public static void writeFile(File file, Collection<String> data) throws Exception{
+    public static void writeFile(File file, Collection<String> data) throws IOException{
         FileUtils.writeLines(file, data);
     }
 
@@ -522,18 +537,20 @@ public class Utils {
      * Used to write a string into a file
      * @param file File to write the data
      * @param data Data to write into the file
-     * @throws Exception If occurs any exception on the file writing
+     * @throws IOException If occurs any exception during the file writing
      */
-    public static void writeFile(File file, String data)throws Exception{
+    public static void writeFile(File file, String data) throws IOException{
         FileUtils.write(file, data, Charset.defaultCharset());
     }
 
     /**
      * Used to destroy files
      * @param file File to destroy
-     * @throws Exception If occurs any exception on file deletion
+     * @throws NullPointerException  if the directory is null
+     * @throws FileNotFoundException if the file was not found
+     * @throws IOException in case deletion is unsuccessful
      */
-    public static void destroyFile(File file) throws Exception{
+    public static void destroyFile(File file) throws IOException{
         FileUtils.forceDelete(file);
     }
 
@@ -543,12 +560,12 @@ public class Utils {
      * @param destination File to save the downloaded file
      * @throws UnknownHostException if is not connected to internet
      * @throws IOException if the URL cannot be opened
-     * @throws IOException if the is a directory
+     * @throws IOException if the destination is a directory
      * @throws IOException if the destination file cannot be written
      * @throws IOException if the destination file needs creating but can't be
      * @throws IOException if an IO error occurs during copying
      */
-    public static void downloadFile(String url, File destination) throws Exception{
+    public static void downloadFile(String url, File destination) throws IOException {
         if(!isConnected()) throw new UnknownHostException("Cannot connect to internet!");
         FileUtils.copyURLToFile(new URL(url), destination);
     }
@@ -560,12 +577,12 @@ public class Utils {
      * @param fileName Name of the downloaded file
      * @throws UnknownHostException if is not connected to internet
      * @throws IOException if the URL cannot be opened
-     * @throws IOException if the is a directory
+     * @throws IOException if the destination is a directory
      * @throws IOException if the destination file cannot be written
      * @throws IOException if the destination file needs creating but can't be
      * @throws IOException if an IO error occurs during copying
      */
-    public static void downloadFile(String url, File outputFolder, String fileName)throws Exception{
+    public static void downloadFile(String url, File outputFolder, String fileName) throws IOException{
         downloadFile(url, new File(folder(outputFolder), fileName));
     }
 
