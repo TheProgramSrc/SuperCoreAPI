@@ -29,6 +29,7 @@ public abstract class GUI extends SpigotModule {
     private final Player player;
     private Inventory inv;
     private final HashMap<Integer, GUIButton> buttons;
+    private boolean manuallyClosed;
 
     /**
      * Create a new {@link GUI GUI}
@@ -37,6 +38,7 @@ public abstract class GUI extends SpigotModule {
      */
     public GUI(SpigotPlugin plugin, Player player){
         super(plugin, false);
+        this.manuallyClosed = false;
         this.player = player;
         this.buttons = new HashMap<>();
     }
@@ -56,6 +58,7 @@ public abstract class GUI extends SpigotModule {
      * Closes the {@link GUI GUI}
      */
     public void close(){
+        this.manuallyClosed = true;
         this.getSpigotTasks().runTask(()->{
             GUICloseEvent event = new GUICloseEvent(this);
             this.onEvent(event);
@@ -160,11 +163,22 @@ public abstract class GUI extends SpigotModule {
             if(event.getInventory().equals(this.inv)){
                 if(event.getPlayer().equals(this.player)){
                     this.getSpigotTasks().runTaskLater(5L,()->{
-                        if(this.canCloseGUI()){
-                            HandlerList.unregisterAll(this);
-                            this.inv = null;
-                        }else{
+                        GUICloseEvent closeEvent = new GUICloseEvent(this);
+                        this.onEvent(closeEvent);
+                        if(closeEvent.isCancelled()){
                             this.open();
+                        }else{
+                            if(this.canCloseGUI()){
+                                HandlerList.unregisterAll(this);
+                                this.inv = null;
+                            }else{
+                                if(this.manuallyClosed){
+                                    HandlerList.unregisterAll(this);
+                                    this.inv = null;
+                                }else{
+                                    this.open();
+                                }
+                            }
                         }
                     });
                 }
