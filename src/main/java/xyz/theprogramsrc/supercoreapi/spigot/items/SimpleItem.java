@@ -3,547 +3,439 @@ package xyz.theprogramsrc.supercoreapi.spigot.items;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.apache.commons.codec.binary.Base64;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import xyz.theprogramsrc.supercoreapi.global.utils.StringUtils;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTexture;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 
-import static xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial.PLAYER_HEAD;
-
+/**
+ * SimpleItem is a representation of a ItemStack with more options in one class.
+ */
 public class SimpleItem {
 
-    private XMaterial material;
-    private int amount = 1;
-    private List<String> lore;
-    private String displayName;
-    private SkinTexture skinTexture;
-    private HashMap<Enchantment, Integer> enchantments;
-    private List<ItemFlag> flags;
-    private final HashMap<String, String> placeholders;
+    private final SpigotUtils utils = ((SpigotUtils)SpigotPlugin.i.getSuperUtils());
+    private ItemStack item;
+    private LinkedHashMap<String, String> placeholders;
 
     /**
-     * Create a new Simple Item from ItemStack
-     * @param itemStack the item
+     * Create a new SimpleItem from an ItemStack
+     * @param itemStack the {@link ItemStack ItemStack}
      */
     public SimpleItem(ItemStack itemStack){
-        this.lore = new ArrayList<>();
-        this.enchantments = new HashMap<>();
-        this.flags = new ArrayList<>();
-        this.material = XMaterial.matchXMaterial(itemStack);
-        this.amount = itemStack.getAmount();
-        if(itemStack.getItemMeta() != null){
-            if(itemStack.hasItemMeta()){
-                ItemMeta meta = itemStack.getItemMeta();
-                if(meta instanceof SkullMeta){
-                    SkullMeta skullMeta = ((SkullMeta)meta);
-                    this.skinTexture = SkinTexture.fromMojang(skullMeta.getOwner());
-                }
-                this.lore = meta.getLore();
-                this.displayName = meta.getDisplayName();
-                this.flags = new ArrayList<>(meta.getItemFlags());
-            }
-        }
-        this.enchantments = new HashMap<>(itemStack.getEnchantments());
-        this.placeholders = new HashMap<>();
+        this.item = itemStack;
+        this.placeholders = new LinkedHashMap<>();
     }
 
     /**
-     * Create a new SimpleItem from a SkinTexture
-     * @param skinTexture the skin
+     * Create a new SimpleItem from a {@link XMaterial XMaterial}
+     * @param xMaterial the {@link XMaterial XMaterial}
+     */
+    public SimpleItem(XMaterial xMaterial){
+        this(xMaterial.parseItem());
+    }
+
+    /**
+     * Create a new SimpleItem from a {@link SkinTexture SkinTexure}
+     * @param skinTexture the {@link SkinTexture SkinTexure}
      */
     public SimpleItem(SkinTexture skinTexture){
-        this(PLAYER_HEAD);
-        this.skinTexture = skinTexture;
+        this(XMaterial.PLAYER_HEAD);
+        this.setSkin(skinTexture);
     }
 
     /**
-     * Create a new SimpleItem from a Material
-     * @param material the material
+     * Sets the Display Name to this SimpleItem
+     * @param displayName the Display Name
+     * @return this SimpleItem
      */
-    public SimpleItem(XMaterial material) {
-        this.material = material;
-        this.enchantments = new HashMap<>();
-        this.flags = new ArrayList<>();
-        this.lore = new ArrayList<>();
-        this.placeholders = new HashMap<>();
-    }
-
-    /**
-     * Create a new SimpleItem from the DisplayName
-     * @param displayName the DisplayName
-     */
-    public SimpleItem(String displayName) {
-        this.material = XMaterial.STONE;
-        this.displayName = displayName;
-        this.enchantments = new HashMap<>();
-        this.flags = new ArrayList<>();
-        this.lore = new ArrayList<>();
-        this.placeholders = new HashMap<>();
-    }
-
-    /**
-     * Adds a new placeholder to the Item
-     * @param key the key of the placeholder
-     * @param value the value of the placeholder
-     * @return this item
-     */
-    public SimpleItem addPlaceholder(String key, String value){
-        this.placeholders.put(key, value);
+    public SimpleItem setDisplayName(String displayName){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null) {
+            meta.setDisplayName(SpigotPlugin.i.getSuperUtils().color(displayName));
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Removes a placeholder from the Item
-     * @param key the key of the placeholder
-     * @return this item
+     * Sets the lore to this SimpleItem
+     * @param loreLines the lines to set
+     * @return this SimpleItem
      */
-    public SimpleItem removePlaceholder(String key){
-        this.placeholders.remove(key);
+    public SimpleItem setLore(String... loreLines){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null) {
+            LinkedList<String> lore = new LinkedList<>();
+            for (String line : Utils.toList(SpigotPlugin.i.getSuperUtils().color(loreLines))) {
+                lore.add(new StringUtils(line).placeholders(this.placeholders).get());
+            }
+            meta.setLore(lore);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Sets the material of the item
-     * @param material the material
-     * @return this item
+     * Adds new lore lines to this SimpleItem
+     * @param loreLines the lines to add
+     * @return this SimpleItem
      */
-    public SimpleItem setMaterial(XMaterial material){
-        this.material = material;
+    public SimpleItem addLoreLines(String... loreLines){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null) {
+            LinkedList<String> lore = new LinkedList<>(meta.getLore() != null ? meta.getLore() : Collections.emptyList());
+            for (String line : Utils.toList(SpigotPlugin.i.getSuperUtils().color(loreLines))) {
+                lore.add(new StringUtils(line).placeholders(this.placeholders).get());
+            }
+            meta.setLore(lore);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Sets the amount of the item
-     * @param amount the amount
-     * @return this item
+     * Changes the first lore line with a new value
+     * @param loreLine the new value to replace the first lore line of this SimpleItem
+     * @return this SimpleItem
      */
-    public SimpleItem setAmount(int amount){
-        this.amount = amount;
+    public SimpleItem setFirstLoreLine(String loreLine){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            LinkedList<String> newLore = new LinkedList<>();
+            newLore.add(new StringUtils(this.utils.color(loreLine)).placeholders(this.placeholders).get());
+            if(meta.getLore() != null) {
+                for (String line : meta.getLore()) {
+                    newLore.add(new StringUtils(this.utils.color(line)).placeholders(this.placeholders).get());
+                }
+            }
+            meta.setLore(newLore);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Sets the lore of the item
-     * @param lore the lore
-     * @return this item
+     * Adds a new lore line to this SimpleItem 
+     * @param loreLine the line to add
+     * @return this SimpleItem
      */
-    public SimpleItem setLore(List<String> lore){
-        this.lore = new ArrayList<>(lore);
+    public SimpleItem addLoreLine(String loreLine){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            LinkedList<String> newLore = new LinkedList<>();
+            if(meta.getLore() != null)
+                newLore.addAll(meta.getLore());
+            newLore.add(new StringUtils(this.utils.color(loreLine)).placeholders(this.placeholders).get());
+            meta.setLore(newLore);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Sets the lore of the item
-     * @param lore the lore
-     * @return this item
+     * Replaces the specified index with a new lore line
+     * @param index the index to replace the lore line
+     * @param loreLine the lore line to set in the specified index
+     * @return this SimpleItem
      */
-    public SimpleItem setLore(String... lore){
-        this.lore = Utils.toList(lore);
+    public SimpleItem setLoreLine(int index, String loreLine){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            LinkedList<String> newLore = new LinkedList<>(meta.getLore() != null ? meta.getLore() : Collections.emptyList());
+            newLore.set(index, new StringUtils(this.utils.color(loreLine)).placeholders(this.placeholders).get());
+            meta.setLore(newLore);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Sets the first line of the lore
-     * @param text the text
-     * @return this item
+     * Sets the skull owner of this SimpleItem.
+     * <i>THIS ONLY WORKS IF THE ITEM IS A {@link XMaterial#PLAYER_HEAD PlayerHead}</i>
+     *
+     * @param name the name of the owning player
+     * @return this SimpleItem
      */
-    public SimpleItem setFirstLoreLine(String text){
-        List<String> lore = new ArrayList<>();
-        lore.add(text);
-        lore.addAll(this.lore);
-        this.lore = lore;
+    public SimpleItem setOwner(String name){
+        SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
+        if(meta != null){
+            meta.setOwner(name);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Adds a new line to the lore
-     * @param text the text
-     * @return this item
+     * Sets the skull owner of this SimpleItem.
+     * <i>THIS ONLY WORKS IF THE ITEM IS A {@link XMaterial#PLAYER_HEAD PlayerHead}</i>
+     *
+     * @param offlinePlayer the skull owner of this SimpleItem
+     * @return this SimpleItem
      */
-    public SimpleItem addLoreLine(String text){
-        this.lore.add(text);
+    public SimpleItem setOwningPlayer(OfflinePlayer offlinePlayer){
+        SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
+        if(meta != null){
+            meta.setOwningPlayer(offlinePlayer);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
     /**
-     * Adds new lines to the lore
-     * @param lore the text
-     * @return this item
+     * Sets the SkinTexture of this SimpleItem
+     * <i>THIS ONLY WORKS IF THE ITEM IS A {@link XMaterial#PLAYER_HEAD PlayerHead}</i>
+     *
+     * @param skinTexture the skin to set
+     * @return this SimpleItem
      */
-    public SimpleItem addLoreLines(String... lore){
-        this.lore.addAll(Utils.toList(lore));
+    public SimpleItem setSkin(SkinTexture skinTexture){
+        SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
+        if(meta != null){
+            GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
+            byte[] skinBytes = Base64.encodeBase64(("{\"textures\":{\"SKIN\":{\"url\":\"" + skinTexture.getUrl() + "\"}}}").getBytes());
+            gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
+
+            try {
+                Field profile = meta.getClass().getDeclaredField("profile");
+                profile.setAccessible(true);
+                profile.set(meta, gameProfile);
+            }catch (IllegalAccessException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
         return this;
     }
 
     /**
-     * Sets a specific line of the lore
-     * @param index the index to set
-     * @param text the text
-     * @return this item
+     * Adds a new Enchantment to this SimpleItem
+     * @param enchantment the enchantment to add
+     * @param level the level of the enchantment
+     * @return this SimpleItem
      */
-    public SimpleItem setLoreLine(int index, String text){
-        if(index < 0) index = this.lore.size();
-        this.lore.set(index, text);
+    public SimpleItem addEnchantment(Enchantment enchantment, int level){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            meta.addEnchant(enchantment, level, true);
+            this.item.setItemMeta(meta);
+        }
         return this;
     }
 
-    /**
-     * Removes the last line from the lore
-     * @return this item
-     */
-    public SimpleItem removeLastLoreLine(){
-        this.lore.remove(this.lore.size()-1);
-        return this;
-    }
 
     /**
-     * Removes a specific line from the lore
-     * @param index the index
-     * @return this item
-     */
-    public SimpleItem removeLoreLine(int index){
-        if(index >= this.lore.size()) index = this.lore.size()-1;
-        if(index < 0) index = 0;
-        this.lore.remove(index);
-        return this;
-    }
-
-    /**
-     * Sets the skin texture of the item
-     * @param skin the skin
-     * @return this item
-     */
-    public SimpleItem setSkin(SkinTexture skin){
-        this.skinTexture = skin;
-        return this;
-    }
-
-    /**
-     * Adds an enchantment to the item
-     * @param enchantment the enchantment
-     * @return this item
+     * Adds a new Enchantment to this SimpleItem
+     * <i>The level added will be 1</i>
+     *
+     * @param enchantment the enchantment to add
+     * @return this SimpleItem
      */
     public SimpleItem addEnchantment(Enchantment enchantment){
         return this.addEnchantment(enchantment, 1);
     }
 
     /**
-     * Adds an enchantment and specify the level
-     * @param enchantment the enchantment
-     * @param level the level
-     * @return this item
-     */
-    public SimpleItem addEnchantment(Enchantment enchantment, int level){
-        this.enchantments.put(enchantment, level);
-        return this;
-    }
-
-    /**
-     * Removes an enchantment from the item
-     * @param enchantment the enchantment
-     * @return this item
+     * Removes an Enchantment from this SimpleItem
+     * @param enchantment the enchantment to remove
+     * @return this SimpleItem
      */
     public SimpleItem removeEnchantment(Enchantment enchantment){
-        this.enchantments.remove(enchantment);
-        return this;
-    }
-
-    /**
-     * Adds a flag to the item
-     * @param flag the flag
-     * @return this item
-     */
-    public SimpleItem addFlag(ItemFlag flag){
-        this.flags.add(flag);
-        return this;
-    }
-
-    /**
-     * Adds flags to the item
-     * @param flags the flags
-     * @return this item
-     */
-    public SimpleItem addFlags(ItemFlag... flags){
-        this.flags.addAll(Utils.toList(flags));
-        return this;
-    }
-
-    /**
-     * Removes a flag from the item
-     * @param flag the flag
-     * @return this item
-     */
-    public SimpleItem removeFlag(ItemFlag flag){
-        this.flags.remove(flag);
-        return this;
-    }
-
-    /**
-     * Sets if the enchantments should be shown
-     * @param showEnchantments true for show the enchantments, false to hide them
-     * @return this item
-     */
-    public SimpleItem setShowEnchantments(boolean showEnchantments){
-        ItemFlag flag = ItemFlag.HIDE_ENCHANTS;
-        if(showEnchantments){
-            this.flags.remove(flag);
-        }else{
-            this.flags.add(flag);
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            meta.removeEnchant(enchantment);
+            this.item.setItemMeta(meta);
         }
         return this;
     }
 
     /**
-     * Sets if the item glows or not (Using an enchantment)
-     *
-     * NOTE: This will add and remove the enchantment 'Durability' with Level '1'
-     * If you need that enchantment is not recommended to use <pre>setGlowing(false)</pre>
-     *
-     * @param glowing either show the item glowing or not
+     * Adds new flags to this SimpleItem
+     * @param itemFlags the {@link ItemFlag flags} to add
+     * @return this SimpleItem
+     */
+    public SimpleItem addFlag(ItemFlag... itemFlags){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            meta.addItemFlags(itemFlags);
+            this.item.setItemMeta(meta);
+        }
+        return this;
+    }
+
+    /**
+     * Removes the specified flags from this SimpleItem
+     * @param itemFlags the {@link ItemFlag flags} to remove
+     * @return this SimpleItem
+     */
+    public SimpleItem removeFlag(ItemFlag... itemFlags){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta != null){
+            meta.removeItemFlags(itemFlags);
+            this.item.setItemMeta(meta);
+        }
+        return this;
+    }
+
+    /**
+     * Sets if the enchantments of this SimpleItem should be shown
+     * @param show if it's <b>true</b>, the enchantments will be shown, otherwise they will be hidden
+     * @return this SimpleItem
+     */
+    public SimpleItem setShowEnchantments(boolean show){
+        ItemFlag flag = ItemFlag.HIDE_ENCHANTS;
+        if(show) {
+            this.removeFlag(flag);
+        } else {
+            this.addFlag(flag);
+        }
+        return this;
+    }
+
+    /**
+     * Sets if this SimpleItem should be glowing
+     * @param glowing if it's <b>true</b>, the item will be glowing, otherwise it won't be glowing
+     * @return this SimpleItem
+     * @see #setShowEnchantments(boolean)
+     * @see #addEnchantment(Enchantment)
      */
     public SimpleItem setGlowing(boolean glowing){
-        ItemFlag flag = ItemFlag.HIDE_ENCHANTS;
+        Enchantment enchantment = Enchantment.DURABILITY;
         if(glowing){
-            this.addFlag(flag);
-            this.addEnchantment(Enchantment.DURABILITY);
+            this.addEnchantment(enchantment);
+            this.setShowEnchantments(false);
         }else{
-            this.removeFlag(flag);
-            this.removeEnchantment(Enchantment.DURABILITY);
+            this.removeEnchantment(enchantment);
+            this.setShowEnchantments(true);
         }
         return this;
     }
 
     /**
-     * Sets if the attributes should be shown
+     * Sets if this SimpleItem should be shown the attributes
      * @param showAttributes true to show the attributes, false to hide them
-     * @return this item
+     * @return this SimpleItem
      */
     public SimpleItem setShowAttributes(boolean showAttributes){
         ItemFlag flag = ItemFlag.HIDE_ATTRIBUTES;
         if(showAttributes){
-            this.flags.remove(flag);
+            this.removeFlag(flag);
         }else{
-            this.flags.add(flag);
+            this.addFlag(flag);
         }
         return this;
     }
 
     /**
-     * Sets the DisplayName of the item
-     * @param name the name
-     * @return this item
+     * Sets the amount of this SimpleItem
+     * @param amount the amount to set
+     * @return this SimpleItem
      */
-    public SimpleItem setDisplayName(String name){
-        this.displayName = name;
+    public SimpleItem setAmount(int amount){
+        this.item.setAmount(amount);
         return this;
     }
 
     /**
-     * Sets the enchantments of the item
-     * @param enchantments the enchantments
-     * @return this item
+     * Sets the material of this SimpleItem
+     * @param material the material to set
+     * @return this SimpleItem
      */
-    public SimpleItem setEnchantments(HashMap<Enchantment, Integer> enchantments) {
-        this.enchantments = new HashMap<>(enchantments);
+    public SimpleItem setMaterial(XMaterial material){
+        this.item = material.parseItem();
         return this;
     }
 
     /**
-     * Sets the flags of the item
-     * @param flags the flags
-     * @return this item
+     * Gets the display name of this SimpleItem
+     * @return the display name
      */
-    public SimpleItem setFlags(List<ItemFlag> flags){
-        this.flags = new ArrayList<>(flags);
+    public String getDisplayName(){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta == null)
+            return "null";
+        return meta.getDisplayName();
+    }
+
+    /**
+     * Gets the lore of this SimpleItem
+     * @return the lore
+     */
+    public LinkedList<String> getLore(){
+        ItemMeta meta = this.item.getItemMeta();
+        if(meta == null)
+            return new LinkedList<>(Utils.toList("null"));
+        return new LinkedList<>(meta.getLore() != null ? meta.getLore() : Utils.toList("null"));
+    }
+
+    /**
+     * Adds a placeholder to this SimpleItem
+     * @param placeholder the placeholder
+     * @param replacement the value/replacement of the placeholder
+     * @return this SimpleItem
+     */
+    public SimpleItem addPlaceholder(String placeholder, String replacement){
+        this.placeholders.put(placeholder, replacement);
+        return this;
+    }
+
+
+    /**
+     * Removes a placeholder from this SimpleItem
+     * @param placeholder the placeholder
+     * @return this SimpleItem
+     */
+    public SimpleItem removePlaceholder(String placeholder){
+        this.placeholders.remove(placeholder);
         return this;
     }
 
     /**
-     * Gets the material of this item
-     * @return the material of this item
+     * Sets the placeholders to this SimpleItem
+     * @param placeholders the placeholders to set
+     * @param replace true to replace the old placeholders, false to keep them and add the new ones.
+     * @return this SimpleItem
      */
-    public XMaterial getMaterial() {
-        return material;
+    public SimpleItem setPlaceholders(Map<String, String> placeholders, boolean replace){
+        if(replace){
+            this.placeholders = new LinkedHashMap<>(placeholders);
+        }else{
+            this.placeholders.putAll(placeholders);
+        }
+        return this;
     }
 
     /**
-     * Gets the amount of this item
-     * @return the amount of this item
+     * Adds the placeholders to the SimpleItem
+     * @param placeholders the placeholders to add
+     * @return this SimpleItem
      */
-    public int getAmount() {
-        return amount;
+    public SimpleItem setPlaceholders(Map<String, String> placeholders){
+        return this.setPlaceholders(placeholders, false);
     }
 
     /**
-     * Gets the lore of this item
-     * @return the lore of this item
-     */
-    public List<String> getLore() {
-        return lore;
-    }
-
-    /**
-     * Gets the displayName of this item
-     * @return the displayName of this item
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     * Gets the skin texture of this item
-     * @return the skin texture of this item
-     */
-    public SkinTexture getSkinTexture() {
-        return skinTexture;
-    }
-
-    /**
-     * Gets the enchantments of this item
-     * @return the enchantments of this item
-     */
-    public HashMap<Enchantment, Integer> getEnchantments() {
-        return enchantments;
-    }
-
-    /**
-     * Gets the flags of this item
-     * @return the flags of this item
-     */
-    public List<ItemFlag> getFlags() {
-        return flags;
-    }
-
-    /**
-     * Checks if this item have any enchantments
-     * @return if this item have any enchantments
-     */
-    public boolean hasEnchantments(){
-        return this.getEnchantments().size() != 0;
-    }
-
-    /**
-     * Checks if this item have any flags
-     * @return if this item have any flags
-     */
-    public boolean hasFlags(){
-        return this.getFlags().size() != 0;
-    }
-
-    /**
-     * Checks if this item have any skin
-     * @return if this item have any skin
-     */
-    public boolean hasSkin(){
-        return this.getSkinTexture() != null;
-    }
-
-    /**
-     * Checks if the item has a DisplayName
-     * @return true if there is a DisplayName, otherwise false
-     */
-    public boolean hasDisplayName() {
-        return this.getDisplayName() != null;
-    }
-
-    /**
-     * Checks if the item has a lore
-     * @return true if there is a lore, otherwise false
-     */
-    public boolean hasLore() {
-        return this.getLore() != null;
-    }
-
-    /**
-     * Transforms this item into a ItemStack
-     *
-     * @return this item as ItemStack
+     * Build this SimpleItem into a ItemStack
+     * @return the {@link ItemStack ItemStack} of this SimpleItem
      */
     public ItemStack build(){
-        return build(false);
+        return new ItemStack(this.item);
     }
 
     /**
-     * Transforms this item into a ItemStack
-     *
-     * @param suggest Use a suggested material (from older materials) if the material is added in a later version of Minecraft.
-     * @return this item as ItemStack
-     */
-    public ItemStack build(boolean suggest){
-        XMaterial material = this.material;
-        if(this.getDisplayName() == null)
-            this.setDisplayName(this.getMaterial() != null ? this.getMaterial().getHumanName() : "&cNULL");
-        ItemStack item = material.parseItem(suggest);
-        if(item == null)
-            return null;
-        if(this.hasSkin()){
-            SkullMeta meta = ((SkullMeta) item.getItemMeta());
-            if(meta != null){
-                GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
-                byte[] skinBytes = Base64.encodeBase64(String.format("{\"textures\":{\"SKIN\":{\"url\":\"%s\"}}}", this.getSkinTexture().getUrl()).getBytes());
-                gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
-
-                try {
-                    Field profile = meta.getClass().getDeclaredField("profile");
-                    profile.setAccessible(true);
-                    profile.set(meta, gameProfile);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                meta.setDisplayName(this.apply(Utils.ct(this.getDisplayName())));
-                meta.setLore(this.apply(Utils.ct(this.getLore())));
-                this.getFlags().forEach(meta::addItemFlags);
-                item.setItemMeta(meta);
-            }
-        }else{
-            ItemMeta meta = item.getItemMeta();
-            if(meta != null){
-                meta.setDisplayName(this.apply(Utils.ct(this.getDisplayName())));
-                meta.setLore(this.apply(Utils.ct(this.getLore())));
-                this.getFlags().forEach(meta::addItemFlags);
-                item.setItemMeta(meta);
-            }
-        }
-        item.addUnsafeEnchantments(this.getEnchantments());
-        item.setAmount(this.getAmount());
-        return item;
-    }
-
-    /**
-     * Duplicates this item
-     * @return the duplicated item
+     * Duplicate this SimpleItem
+     * @return this SimpleItem duplicated
      */
     public SimpleItem duplicate(){
-        return new SimpleItem(this.getMaterial()).setAmount(this.getAmount()).setLore(this.getLore()).setDisplayName(this.getDisplayName()).setSkin(this.getSkinTexture()).setEnchantments(this.getEnchantments()).setFlags(this.getFlags());
+        return new SimpleItem(this.item);
     }
-
-    private String apply(String text){
-        if(text == null)
-            return "null";
-        AtomicReference<String> r = new AtomicReference<>(text);
-        this.placeholders.forEach((k,v)-> r.set(r.get().replace(k,v)));
-        return r.get();
-    }
-
-    private List<String> apply(List<String> list){
-        if(list == null)
-            return Utils.toList("null");
-        List<String> r = new ArrayList<>();
-        list.forEach(s-> r.add(apply(s)));
-        return r;
-    }
-
-
 }
