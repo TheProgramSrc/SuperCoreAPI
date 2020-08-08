@@ -23,7 +23,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class GUI extends SpigotModule {
 
@@ -62,8 +61,8 @@ public abstract class GUI extends SpigotModule {
             this.onEvent(event);
             if(!event.isCancelled()){
                 HandlerList.unregisterAll(this);
-                this.player.closeInventory();
                 this.inv = null;
+                this.player.closeInventory();
             }
         });
     }
@@ -224,7 +223,7 @@ public abstract class GUI extends SpigotModule {
 
     @EventHandler
     public void syncItems(TimerEvent event){
-        if(event.getTime() != Time.FASTER)
+        if(event.getTime() != Time.TWO_TICKS)
             return;
         if(this.inv == null)
             return;
@@ -237,11 +236,15 @@ public abstract class GUI extends SpigotModule {
             }
         }
 
-        for (Map.Entry<Integer, GUIButton> entry : this.buttons.entrySet()) {
-            int slot = entry.getKey();
-            GUIButton button = entry.getValue();
-            this.inv.setItem(slot, button.getItemStack());
+        for (GUIButton button : this.buttons.values()) {
+            int slot = button.getSlot();
+            ItemStack item = button.getItemStack();
+            if(item == null)
+                return;
+            if(slot <= this.getRows().getSize() && slot >= 0)
+                this.inv.setItem(slot, item);
         }
+
         this.player.updateInventory();
     }
 

@@ -26,6 +26,7 @@ public class ReflectionUtils {
             Object handle = player.getClass().getMethod("getHandle").invoke(player);
             Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
             playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

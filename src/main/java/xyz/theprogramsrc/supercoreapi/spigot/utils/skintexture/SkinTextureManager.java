@@ -3,9 +3,8 @@ package xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class SkinTextureManager {
@@ -53,19 +52,10 @@ public class SkinTextureManager {
 
     /**
      * Gets a SkinTexture from the database
-     * @param name the name
+     * @param key the key of the SkinTexture
      * @return null if there is any error, otherwise the skin
      */
-    public SkinTexture fromDataBase(String name){
-        try{
-            String content = Utils.readWithInputStream("https://raw.githubusercontent.com/TheProgramSrc/PluginsResources/master/SuperCoreAPI/Heads");
-            if(content == null) return null;
-            String textureURL = Arrays.stream(content.split(";")).filter(s-> s.split(":")[0].equalsIgnoreCase(name)).findFirst().orElse(null);
-            if(textureURL == null) return null;
-            return this.getSkin(textureURL.split(":")[1]);
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return null;
-        }
+    public SkinTexture fromDataBase(String key){
+        return Skulls.fromDataBase(key);
     }
 }
