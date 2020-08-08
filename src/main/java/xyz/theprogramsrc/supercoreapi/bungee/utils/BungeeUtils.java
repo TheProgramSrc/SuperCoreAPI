@@ -11,6 +11,11 @@ import xyz.theprogramsrc.supercoreapi.SuperUtils;
 public class BungeeUtils implements SuperUtils {
 
     @Override
+    public ChatColor parseHex(String hex) {
+        return ChatColor.of(hex);
+    }
+
+    @Override
     public String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }

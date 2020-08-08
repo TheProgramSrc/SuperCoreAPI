@@ -13,6 +13,13 @@ import java.util.stream.Collectors;
 public interface SuperUtils {
 
     /**
+     * Translate the given Hex into ChatColor
+     * @param hex The color in hex
+     * @return the hex color as ChatColor
+     */
+    net.md_5.bungee.api.ChatColor parseHex(String hex);
+
+    /**
      * Translates the message into minecraft coloured message
      * @param message Message to translate
      * @return Translated message

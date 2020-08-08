@@ -17,6 +17,12 @@ import java.util.Map;
  */
 public class SpigotUtils implements SuperUtils {
 
+    @Override
+    public net.md_5.bungee.api.ChatColor parseHex(String hex) {
+        return net.md_5.bungee.api.ChatColor.of(hex);
+    }
+
+    @Override
     public String color(String string){
         return ChatColor.translateAlternateColorCodes('&', string);
     }
