@@ -362,7 +362,7 @@ public class SimpleItem {
     public String getDisplayName(){
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
-            return "null";
+            return null;
         return meta.getDisplayName();
     }
 
@@ -373,8 +373,8 @@ public class SimpleItem {
     public LinkedList<String> getLore(){
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
-            return new LinkedList<>(Utils.toList("null"));
-        return new LinkedList<>(meta.getLore() != null ? meta.getLore() : Utils.toList("null"));
+            return null;
+        return meta.getLore() != null ? new LinkedList<>(meta.getLore()) : null;
     }
 
     /**
@@ -437,5 +437,21 @@ public class SimpleItem {
      */
     public SimpleItem duplicate(){
         return new SimpleItem(this.item);
+    }
+
+    /**
+     * Gets if the Display Name of this SimpleItem is Null
+     * @return true if it's null, otherwise, false
+     */
+    public boolean hasDisplayName(){
+        return this.getDisplayName() != null;
+    }
+
+    /**
+     * Gets if the Lore of this SimpleItem is Null
+     * @return true if it's null, otherwise, false
+     */
+    public boolean hasLore(){
+        return this.getLore() != null;
     }
 }
