@@ -200,10 +200,16 @@ public class SimpleItem {
      * @return this SimpleItem
      */
     public SimpleItem setSkin(SkinTexture skinTexture){
+        if(skinTexture == null)
+            return this;
+        if(skinTexture.getUrl() == null || skinTexture.getUrl().equals("null"))
+            return this;
+        if(!(this.item.getItemMeta() instanceof SkullMeta))
+            return this;
         SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
         if(meta != null){
-            GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
-            byte[] skinBytes = Base64.encodeBase64(("{textures:{SKIN:{url:\"" + skinTexture.getUrl() + "\"}}}").getBytes());
+            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
+            byte[] skinBytes = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinTexture.getUrl()).getBytes());
             gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
 
             try {
@@ -226,22 +232,7 @@ public class SimpleItem {
      * @return this SimpleItem
      */
     public SimpleItem setSkin(String textureURL){
-        SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
-        if(meta != null){
-            GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
-            byte[] skinBytes = Base64.encodeBase64(("{textures:{SKIN:{url:\"" + textureURL + "\"}}}").getBytes());
-            gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
-
-            try {
-                Field profile = meta.getClass().getDeclaredField("profile");
-                profile.setAccessible(true);
-                profile.set(meta, gameProfile);
-            }catch (IllegalAccessException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-            this.item.setItemMeta(meta);
-        }
-        return this;
+        return setSkin(SpigotPlugin.i.getSkinManager().getSkin(textureURL));
     }
 
     /**
