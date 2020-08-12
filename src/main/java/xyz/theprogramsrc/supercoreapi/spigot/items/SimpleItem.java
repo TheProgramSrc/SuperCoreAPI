@@ -62,7 +62,7 @@ public class SimpleItem {
     public SimpleItem setDisplayName(String displayName){
         ItemMeta meta = this.item.getItemMeta();
         if(meta != null) {
-            meta.setDisplayName(SpigotPlugin.i.getSuperUtils().color(displayName));
+            meta.setDisplayName(new StringUtils(this.utils.color(displayName)).placeholders(this.placeholders).get());
             this.item.setItemMeta(meta);
         }
         return this;
@@ -77,7 +77,7 @@ public class SimpleItem {
         ItemMeta meta = this.item.getItemMeta();
         if(meta != null) {
             LinkedList<String> lore = new LinkedList<>();
-            for (String line : Utils.toList(SpigotPlugin.i.getSuperUtils().color(loreLines))) {
+            for (String line : Utils.toList(this.utils.color(loreLines))) {
                 lore.add(new StringUtils(line).placeholders(this.placeholders).get());
             }
             meta.setLore(lore);
@@ -115,7 +115,7 @@ public class SimpleItem {
             LinkedList<String> newLore = new LinkedList<>();
             newLore.add(new StringUtils(this.utils.color(loreLine)).placeholders(this.placeholders).get());
             if(meta.getLore() != null) {
-                for (String line : meta.getLore()) {
+                for (String line : Utils.ct(meta.getLore())) {
                     newLore.add(new StringUtils(this.utils.color(line)).placeholders(this.placeholders).get());
                 }
             }
@@ -170,7 +170,7 @@ public class SimpleItem {
     public SimpleItem setOwner(String name){
         SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
         if(meta != null){
-            meta.setOwner(name);
+            meta.setOwner(new StringUtils(name).placeholders(this.placeholders).get());
             this.item.setItemMeta(meta);
         }
         return this;
@@ -203,7 +203,7 @@ public class SimpleItem {
         SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
         if(meta != null){
             GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
-            byte[] skinBytes = Base64.encodeBase64(("{\"textures\":{\"SKIN\":{\"url\":\"" + skinTexture.getUrl() + "\"}}}").getBytes());
+            byte[] skinBytes = Base64.encodeBase64(("{textures:{SKIN:{url:\"" + skinTexture.getUrl() + "\"}}}").getBytes());
             gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
 
             try {
@@ -213,6 +213,33 @@ public class SimpleItem {
             }catch (IllegalAccessException | NoSuchFieldException e) {
                 e.printStackTrace();
             }
+            this.item.setItemMeta(meta);
+        }
+        return this;
+    }
+
+    /**
+     * Sets the SkinTexture of this SimpleItem
+     * <i>THIS ONLY WORKS IF THE ITEM IS A {@link XMaterial#PLAYER_HEAD PlayerHead}</i>
+     *
+     * @param textureURL the url of skin to set
+     * @return this SimpleItem
+     */
+    public SimpleItem setSkin(String textureURL){
+        SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
+        if(meta != null){
+            GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("Steve".getBytes()), "");
+            byte[] skinBytes = Base64.encodeBase64(("{textures:{SKIN:{url:\"" + textureURL + "\"}}}").getBytes());
+            gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
+
+            try {
+                Field profile = meta.getClass().getDeclaredField("profile");
+                profile.setAccessible(true);
+                profile.set(meta, gameProfile);
+            }catch (IllegalAccessException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            this.item.setItemMeta(meta);
         }
         return this;
     }
@@ -363,7 +390,7 @@ public class SimpleItem {
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
             return null;
-        return meta.getDisplayName();
+        return Utils.ct(meta.getDisplayName());
     }
 
     /**
@@ -374,7 +401,7 @@ public class SimpleItem {
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
             return null;
-        return meta.getLore() != null ? new LinkedList<>(meta.getLore()) : null;
+        return meta.getLore() != null ? new LinkedList<>(this.utils.color(meta.getLore())) : null;
     }
 
     /**
