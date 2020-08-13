@@ -12,10 +12,12 @@ public class SkinTextureManager {
 
     private final HashMap<String, SkinTexture> cache;
     private final HashMap<String, SkinTexture> urls;
+    private final HashMap<String, SkinTexture> db;
 
     public SkinTextureManager(){
         this.cache = new HashMap<>();
         this.urls = new HashMap<>();
+        this.db = new HashMap<>();
     }
 
     /**
@@ -35,6 +37,11 @@ public class SkinTextureManager {
         return this.cache.get(key);
     }
 
+    /**
+     * Gets a skin from an url
+     * @param url the url of the skin
+     * @return the skin
+     */
     public SkinTexture getSkin(String url){
         String key = Utils.encodeBase64(url);
         if(!this.urls.containsKey(key)){
@@ -51,14 +58,43 @@ public class SkinTextureManager {
     public void clearCache(){
         this.cache.clear();
         this.urls.clear();
+        this.db.clear();
     }
 
     /**
      * Gets a SkinTexture from the database
-     * @param key the key of the SkinTexture
+     * @param name the key/name of the SkinTexture
      * @return null if there is any error, otherwise the skin
      */
-    public SkinTexture fromDataBase(String key){
-        return Skulls.fromDataBase(key);
+    public SkinTexture fromDataBase(String name){
+        String key = Utils.encodeBase64(name);
+        if(!this.db.containsKey(key)){
+            this.db.put(key, Skulls.fromDataBase(name));
+        }
+        return this.db.get(key);
+    }
+
+    /**
+     * Gets the cache of the player skulls
+     * @return the cache of the players skulls
+     */
+    public HashMap<String, SkinTexture> getPlayersCache() {
+        return this.cache;
+    }
+
+    /**
+     * Gets the cache of the database skulls
+     * @return the cache of the database skulls
+     */
+    public HashMap<String, SkinTexture> getDataBaseCache() {
+        return this.db;
+    }
+
+    /**
+     * Gets the cache of the URLs skulls
+     * @return the cache of the URLs skulls
+     */
+    public HashMap<String, SkinTexture> getURLsCache() {
+        return this.urls;
     }
 }

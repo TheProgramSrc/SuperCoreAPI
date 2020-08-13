@@ -47,7 +47,7 @@ public enum Skulls {
      */
     public static SkinTexture fromDataBase(String key){
         if(cache == null) cache = new LinkedHashMap<>();
-        return new SkinTexture(cache.getOrDefault(key, "http://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"), System.currentTimeMillis());
+        return new SkinTexture(cache.getOrDefault(key, "http://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"));
     }
 
     /**
