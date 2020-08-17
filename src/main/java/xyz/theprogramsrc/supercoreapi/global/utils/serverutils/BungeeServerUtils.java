@@ -14,7 +14,7 @@ public class BungeeServerUtils {
         this.plugin = BungeePlugin.i;
     }
 
-    public void sendToServerBungee(ProxiedPlayer player, String server){
+    public void sendToServer(ProxiedPlayer player, String server){
         this.plugin.getProxy().registerChannel("BungeeCord");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);

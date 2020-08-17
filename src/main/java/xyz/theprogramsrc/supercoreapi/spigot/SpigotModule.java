@@ -19,8 +19,8 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
      */
     public SpigotModule(boolean registerListener){
         super(SpigotPlugin.i);
-        if(registerListener) this.listener(this);
         this.spigotPlugin = SpigotPlugin.i;
+        if(registerListener) this.listener(this);
         this.onLoad();
     }
 
