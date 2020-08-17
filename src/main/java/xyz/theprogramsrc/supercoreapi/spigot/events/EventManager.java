@@ -1,17 +1,12 @@
 package xyz.theprogramsrc.supercoreapi.spigot.events;
 
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 
 public class EventManager extends SpigotModule {
 
     private static boolean timerEnabled = false;
-
-    public EventManager(SpigotPlugin plugin){
-        super(plugin);
-    }
 
     @Override
     public void onLoad() {

@@ -59,12 +59,12 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     public void onEnable() {
         if(this.emergencyStop) return;
         this.log("Enabling plugin &3v" + this.getPluginVersion());
-        this.bungeeTasks = new BungeeTasks(this);
-        this.settings = new Settings(this);
+        this.bungeeTasks = new BungeeTasks();
+        this.settings = new Settings();
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
-        new BungeeEventManager(this);
+        new BungeeEventManager();
         PluginClassLoader classLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, classLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());

@@ -12,7 +12,6 @@ import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.packets.Actionbar;
 import xyz.theprogramsrc.supercoreapi.spigot.packets.Title;
 
@@ -28,11 +27,10 @@ public abstract class Dialog extends SpigotModule {
 
     /**
      * Creates a new dialog between the plugin and a player
-     * @param plugin the plugin
      * @param player the player
      */
-    public Dialog(SpigotPlugin plugin, Player player){
-        super(plugin, false);
+    public Dialog(Player player){
+        super(false);
         this.player = player;
         this.placeholders = new HashMap<>();
         this.openDialog();

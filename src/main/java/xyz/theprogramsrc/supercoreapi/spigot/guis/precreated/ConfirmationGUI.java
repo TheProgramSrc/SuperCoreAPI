@@ -2,7 +2,6 @@ package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated;
 
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
@@ -12,8 +11,8 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 public abstract class ConfirmationGUI extends GUI {
 
-    public ConfirmationGUI(SpigotPlugin plugin, Player player) {
-        super(plugin, player);
+    public ConfirmationGUI(Player player) {
+        super(player);
     }
 
     @Override

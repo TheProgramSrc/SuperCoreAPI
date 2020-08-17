@@ -6,7 +6,6 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.ItemUtils;
 
@@ -21,11 +20,8 @@ public class RecipeCreator extends SpigotModule {
 
     /**
      * Create a new custom recipe!
-     *
-     * @param plugin The main plugin
      */
-    public RecipeCreator(SpigotPlugin plugin){
-        super(plugin);
+    public RecipeCreator(){
         this.recipes = new HashMap<>();
     }
 

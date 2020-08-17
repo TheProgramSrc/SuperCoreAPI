@@ -1,7 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot.storage;
 
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.storage.SpigotYMLConfig;
 
 /**
@@ -11,10 +10,6 @@ public class SettingsStorage extends SpigotModule {
 
     private SpigotYMLConfig cfg;
     private String defaultPrefix;
-
-    public SettingsStorage(SpigotPlugin plugin) {
-        super(plugin);
-    }
 
     @Override
     public void onLoad() {

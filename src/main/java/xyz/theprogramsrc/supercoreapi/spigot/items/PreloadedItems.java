@@ -4,17 +4,12 @@ import org.bukkit.enchantments.Enchantment;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 /**
  * Representation of the Pre-Created Items
  */
 public class PreloadedItems extends SpigotModule {
-
-    public PreloadedItems(SpigotPlugin plugin) {
-        super(plugin);
-    }
 
     /**
      * Common item that represent a back button

@@ -10,20 +10,20 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
 
     protected BungeePlugin bungeePlugin;
 
-    public BungeeModule(BungeePlugin plugin, boolean registerListener){
-        super(plugin);
-        this.bungeePlugin = plugin;
+    public BungeeModule(boolean registerListener){
+        super(BungeePlugin.i);
+        this.bungeePlugin = BungeePlugin.i;
         if(registerListener) this.listener(this);
         this.onLoad();
     }
 
-    public BungeeModule(BungeePlugin plugin){
-        this(plugin, true);
+    public BungeeModule(){
+        this(true);
     }
 
     @Override
     protected void listener(Listener... listeners) {
-        ((BungeePlugin)this.plugin).listener(listeners);
+        this.bungeePlugin.listener(listeners);
     }
 
     /**
@@ -31,7 +31,7 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
      * @return The Plugin Settings
      */
     protected Settings getSettings(){
-        return ((BungeePlugin)this.plugin).getSettings();
+        return this.bungeePlugin.getSettings();
     }
 
     /**
@@ -39,7 +39,7 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
      * @return The proxy
      */
     protected ProxyServer getProxy(){
-        return ((BungeePlugin)this.plugin).getProxy();
+        return this.bungeePlugin.getProxy();
     }
 
     /**
@@ -47,7 +47,7 @@ public class BungeeModule extends SuperModule<Listener> implements Listener {
      * @return the BungeeTasks util
      */
     protected BungeeTasks getBungeeTasks(){
-        return ((BungeePlugin)this.plugin).getBungeeTasks();
+        return this.bungeePlugin.getBungeeTasks();
     }
 
 }

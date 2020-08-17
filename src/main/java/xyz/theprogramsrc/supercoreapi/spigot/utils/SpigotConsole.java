@@ -10,10 +10,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
  */
 public class SpigotConsole extends SpigotModule {
 
-    public SpigotConsole(SpigotPlugin plugin){
-        super(plugin);
-    }
-
     /**
      * Registers listeners
      * @param listeners the listeners

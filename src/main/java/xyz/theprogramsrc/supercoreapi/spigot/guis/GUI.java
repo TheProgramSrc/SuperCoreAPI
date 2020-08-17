@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
 import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
@@ -33,11 +32,10 @@ public abstract class GUI extends SpigotModule {
 
     /**
      * Create a new {@link GUI GUI}
-     * @param plugin the plugin
      * @param player the player to show the {@link GUI GUI}
      */
-    public GUI(SpigotPlugin plugin, Player player){
-        super(plugin, false);
+    public GUI(Player player){
+        super(false);
         this.manuallyClosed = false;
         this.player = player;
         this.buttons = new HashMap<>();

@@ -10,13 +10,9 @@ public class SpigotTasks extends SpigotModule {
 
     private BukkitScheduler scheduler;
 
-    public SpigotTasks(SpigotPlugin plugin){
-        super(plugin);
-    }
-
     @Override
     public void onLoad() {
-        this.scheduler = ((SpigotPlugin)this.plugin).getServer().getScheduler();
+        this.scheduler = this.spigotPlugin.getServer().getScheduler();
     }
 
     /**

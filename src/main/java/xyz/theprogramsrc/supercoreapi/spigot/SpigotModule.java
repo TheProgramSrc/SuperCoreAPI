@@ -15,22 +15,20 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
 
     /**
      * Creates a new Spigot Module
-     * @param plugin the plugin
      * @param registerListener if the listener should be registered
      */
-    public SpigotModule(SpigotPlugin plugin, boolean registerListener){
-        super(plugin);
+    public SpigotModule(boolean registerListener){
+        super(SpigotPlugin.i);
         if(registerListener) this.listener(this);
-        this.spigotPlugin = plugin;
+        this.spigotPlugin = SpigotPlugin.i;
         this.onLoad();
     }
 
     /**
      * Creates a new Spigot Module (this will register automatically the listener)
-     * @param plugin the plugin
      */
-    public SpigotModule(SpigotPlugin plugin){
-        this(plugin, true);
+    public SpigotModule(){
+        this(true);
     }
 
     /**
@@ -38,7 +36,7 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
      * @return the spigot tasks
      */
     protected SpigotTasks getSpigotTasks() {
-        return ((SpigotPlugin)this.plugin).getSpigotTasks();
+        return this.spigotPlugin.getSpigotTasks();
     }
 
     /**
@@ -46,7 +44,7 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
      * @return the preloaded items
      */
     protected PreloadedItems getPreloadedItems(){
-        return ((SpigotPlugin)this.plugin).getPreloadedItems();
+        return this.spigotPlugin.getPreloadedItems();
     }
 
     /**
@@ -54,7 +52,7 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
      * @param listeners Listeners to register
      */
     protected void listener(Listener... listeners){
-        ((SpigotPlugin)this.plugin).listener(listeners);
+        this.spigotPlugin.listener(listeners);
     }
 
     /**
@@ -62,6 +60,6 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
      * @return the settings storage
      */
     protected SettingsStorage getSettings() {
-        return ((SpigotPlugin)this.plugin).getSettingsStorage();
+        return this.spigotPlugin.getSettingsStorage();
     }
 }

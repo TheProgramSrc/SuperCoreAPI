@@ -8,7 +8,6 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 
 import java.util.LinkedList;
 
@@ -20,12 +19,10 @@ public class Hologram extends SpigotModule {
 
     /**
      * Create a new Hologram
-     * @param plugin The Plugin
      * @param location The location
      * @param lines The content of the hologram
      */
-    public Hologram(SpigotPlugin plugin, Location location, LinkedList<String> lines){
-        super(plugin);
+    public Hologram(Location location, LinkedList<String> lines){
         this.location = location;
         this.armorStands = new LinkedList<>();
         this.lines = lines;

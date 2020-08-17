@@ -3,7 +3,6 @@ package xyz.theprogramsrc.supercoreapi.bungee.utils.tasks;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.api.scheduler.TaskScheduler;
 import xyz.theprogramsrc.supercoreapi.bungee.BungeeModule;
-import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
 import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 
 import java.util.concurrent.TimeUnit;
@@ -12,9 +11,8 @@ public class BungeeTasks extends BungeeModule {
 
     private final TaskScheduler scheduler;
 
-    public BungeeTasks(BungeePlugin plugin) {
-        super(plugin);
-        this.scheduler = plugin.getProxy().getScheduler();
+    public BungeeTasks() {
+        this.scheduler = this.getProxy().getScheduler();
     }
 
     /**
@@ -25,7 +23,7 @@ public class BungeeTasks extends BungeeModule {
      * @return the scheduled task
      */
     public ScheduledTask runAsync(Runnable task){
-        return this.scheduler.runAsync(((BungeePlugin)this.plugin), task);
+        return this.scheduler.runAsync(this.bungeePlugin, task);
     }
 
     /**
@@ -37,7 +35,7 @@ public class BungeeTasks extends BungeeModule {
      * @return the scheduled task
      */
     public ScheduledTask runAsyncLater(Runnable task, long delay){
-        return this.scheduler.schedule(((BungeePlugin)this.plugin), task, delay*50L, TimeUnit.MILLISECONDS);
+        return this.scheduler.schedule(this.bungeePlugin, task, delay*50L, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -52,7 +50,7 @@ public class BungeeTasks extends BungeeModule {
      * @return the scheduled task
      */
     public RecurringTask runAsyncTimer(Runnable task, long delay, long period){
-        ScheduledTask scheduledTask = this.scheduler.schedule(((BungeePlugin)this.plugin), task, delay*50L, period*50L, TimeUnit.MILLISECONDS);
+        ScheduledTask scheduledTask = this.scheduler.schedule(this.bungeePlugin, task, delay*50L, period*50L, TimeUnit.MILLISECONDS);
         return new RecurringTask() {
             private boolean cancelled;
             @Override

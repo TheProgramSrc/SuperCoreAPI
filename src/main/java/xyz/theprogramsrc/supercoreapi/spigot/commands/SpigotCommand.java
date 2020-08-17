@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotConsole;
 
 import java.util.ArrayList;
@@ -16,11 +15,8 @@ public abstract class SpigotCommand extends SpigotModule {
 
     /**
      * Creates a new command for Spigot and registers it
-     *
-     * @param plugin The Spigot plugin
      */
-    public SpigotCommand(final SpigotPlugin plugin) {
-        super(plugin);
+    public SpigotCommand() {
         BukkitCommand command = new BukkitCommand(this.getCommand(), "", "/", Utils.toList(this.getAliases())) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
@@ -28,7 +24,7 @@ public abstract class SpigotCommand extends SpigotModule {
                 if (sender instanceof Player) {
                     result = SpigotCommand.this.onPlayerExecute(((Player) sender), args);
                 } else {
-                    result = SpigotCommand.this.onConsoleExecute(new SpigotConsole(plugin), args);
+                    result = SpigotCommand.this.onConsoleExecute(new SpigotConsole(), args);
                 }
                 SpigotCommand.this.onResult(sender, result);
                 return true;
@@ -50,17 +46,17 @@ public abstract class SpigotCommand extends SpigotModule {
 
     private void onResult(CommandSender sender, CommandResult result){
         if(result == CommandResult.NO_PERMISSION){
-            sender.sendMessage(this.plugin.getSuperUtils().color(Base.NO_PERMISSION.toString()));
+            sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NO_PERMISSION.toString()));
         }else if(result == CommandResult.NO_ACCESS){
-            sender.sendMessage(this.plugin.getSuperUtils().color(Base.NO_ACCESS.toString()));
+            sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NO_ACCESS.toString()));
         }else if(result == CommandResult.NOT_SUPPORTED){
             if(sender instanceof Player){
-                sender.sendMessage(this.plugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.CONSOLE.toString()).toString()));
+                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.CONSOLE.toString()).toString()));
             }else{
-                sender.sendMessage(this.plugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.PLAYERS.toString()).toString()));
+                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.PLAYERS.toString()).toString()));
             }
         }else if(result == CommandResult.INVALID_ARGS){
-            sender.sendMessage(this.plugin.getSuperUtils().color(Base.INVALID_ARGUMENTS.toString()));
+            sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.INVALID_ARGUMENTS.toString()));
         }
     }
 

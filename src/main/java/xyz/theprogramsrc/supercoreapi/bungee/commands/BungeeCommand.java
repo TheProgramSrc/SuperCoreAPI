@@ -5,7 +5,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import xyz.theprogramsrc.supercoreapi.bungee.BungeeModule;
-import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeConsole;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 
@@ -17,12 +16,9 @@ public abstract class BungeeCommand extends BungeeModule {
 
     /**
      * Create a new {@link BungeeCommand BungeeCommand}
-     *
-     * @param plugin The {@link BungeePlugin BungeeCord Plugin}
      */
-    public BungeeCommand(final BungeePlugin plugin){
-        super(plugin);
-        getProxy().getPluginManager().registerCommand(plugin, new Command(this.getCommand(), this.getPermission(), this.getAliases()) {
+    public BungeeCommand(){
+        getProxy().getPluginManager().registerCommand(this.bungeePlugin, new Command(this.getCommand(), this.getPermission(), this.getAliases()) {
             @Override
             public void execute(CommandSender sender, String[] args) {
                 CommandResult result;
@@ -30,7 +26,7 @@ public abstract class BungeeCommand extends BungeeModule {
                     ProxiedPlayer player = ((ProxiedPlayer)sender);
                     result = BungeeCommand.this.onPlayerExecute(player, args);
                 }else{
-                    result = BungeeCommand.this.onConsoleExecute(new BungeeConsole(plugin), args);
+                    result = BungeeCommand.this.onConsoleExecute(new BungeeConsole(), args);
                 }
                 BungeeCommand.this.onResult(sender, result);
             }
@@ -39,17 +35,17 @@ public abstract class BungeeCommand extends BungeeModule {
 
     private void onResult(CommandSender sender, CommandResult result){
         if(result == CommandResult.NO_PERMISSION){
-            sender.sendMessage(new TextComponent(this.plugin.getSuperUtils().color(Base.NO_PERMISSION.toString())));
+            sender.sendMessage(new TextComponent(this.bungeePlugin.getSuperUtils().color(Base.NO_PERMISSION.toString())));
         }else if(result == CommandResult.NO_ACCESS){
-            sender.sendMessage(new TextComponent(this.plugin.getSuperUtils().color(Base.NO_ACCESS.toString())));
+            sender.sendMessage(new TextComponent(this.bungeePlugin.getSuperUtils().color(Base.NO_ACCESS.toString())));
         }else if(result == CommandResult.NOT_SUPPORTED){
             if(sender instanceof ProxiedPlayer){
-                sender.sendMessage(new TextComponent(this.plugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.CONSOLE.toString()).toString())));
+                sender.sendMessage(new TextComponent(this.bungeePlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.CONSOLE.toString()).toString())));
             }else{
-                sender.sendMessage(new TextComponent(this.plugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.PLAYERS.toString()).toString())));
+                sender.sendMessage(new TextComponent(this.bungeePlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.PLAYERS.toString()).toString())));
             }
         }else if(result == CommandResult.INVALID_ARGS){
-            sender.sendMessage(new TextComponent(this.plugin.getSuperUtils().color(Base.INVALID_ARGUMENTS.toString())));
+            sender.sendMessage(new TextComponent(this.bungeePlugin.getSuperUtils().color(Base.INVALID_ARGUMENTS.toString())));
         }
     }
 

@@ -75,18 +75,18 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
             setEnabled(false);
             return;
         }
-        this.settingsStorage = new SettingsStorage(this);
+        this.settingsStorage = new SettingsStorage();
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
         this.skinManager = new SkinTextureManager();
-        this.spigotTasks = new SpigotTasks(this);
-        this.preloadedItems = new PreloadedItems(this);
-        this.eventManager = new EventManager(this);
+        this.spigotTasks = new SpigotTasks();
+        this.preloadedItems = new PreloadedItems();
+        this.eventManager = new EventManager();
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
-        this.recipeCreator = new RecipeCreator(this);
+        this.recipeCreator = new RecipeCreator();
         Skulls.loadFromGitHub();
         this.onPluginEnable();
         if(this.emergencyStop) {

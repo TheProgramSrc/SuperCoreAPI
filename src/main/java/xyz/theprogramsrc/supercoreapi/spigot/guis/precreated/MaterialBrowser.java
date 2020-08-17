@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.BrowserGUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
@@ -15,8 +14,8 @@ import java.util.Arrays;
 
 public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
 
-    public MaterialBrowser(SpigotPlugin plugin, Player player) {
-        super(plugin, player);
+    public MaterialBrowser(Player player) {
+        super(player);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.bungee.storage;
 
 import xyz.theprogramsrc.supercoreapi.bungee.BungeeModule;
-import xyz.theprogramsrc.supercoreapi.bungee.BungeePlugin;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.storage.BungeeYMLConfig;
 
 /**
@@ -12,10 +11,6 @@ public class Settings extends BungeeModule {
     private BungeeYMLConfig config;
 
     private String defaultPrefix;
-
-    public Settings(BungeePlugin plugin) {
-        super(plugin);
-    }
 
     @Override
     public void onLoad() {

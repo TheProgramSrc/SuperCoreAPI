@@ -8,10 +8,6 @@ import java.io.File;
 
 public class SpigotUpdater extends SpigotModule {
 
-    public SpigotUpdater(SpigotPlugin plugin) {
-        super(plugin);
-    }
-
     /**
      * Downloads the new file from internet
      * 

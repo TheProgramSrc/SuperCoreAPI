@@ -3,7 +3,6 @@ package xyz.theprogramsrc.supercoreapi.spigot.guis;
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
@@ -22,11 +21,10 @@ public abstract class BrowserGUI<OBJ> extends GUI {
 
     /**
      * Creates a BrowserGUI
-     * @param plugin the plugin
      * @param player the player who will see the BrowserGUI
      */
-    public BrowserGUI(SpigotPlugin plugin, Player player){
-        super(plugin, player);
+    public BrowserGUI(Player player){
+        super(player);
     }
 
     @Override
@@ -55,7 +53,7 @@ public abstract class BrowserGUI<OBJ> extends GUI {
         int x = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
         buttons.add(new GUIButton(49, this.searchTerm == null ? this.getPreloadedItems().getSearchItem() : this.getPreloadedItems().getEndSearchItem()).setAction(a -> {
             if(this.searchTerm == null){
-                new Dialog(((SpigotPlugin)this.getPlugin()), this.getPlayer()){
+                new Dialog(this.getPlayer()){
 
                     @Override
                     public String getTitle() {

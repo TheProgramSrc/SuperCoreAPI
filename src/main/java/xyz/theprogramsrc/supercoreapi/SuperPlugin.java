@@ -166,7 +166,7 @@ public interface SuperPlugin<PLUGIN> {
 
     /**
      * Gets the plugin data storage
-     * @return
+     * @return the plugin data storage
      */
     PluginDataStorage getPluginDataStorage();
 }
