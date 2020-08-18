@@ -61,7 +61,7 @@ public class SkinTexture {
         String response = Utils.readWithInputStream("https://api.mojang.com/users/profiles/minecraft/" + playerName);
         if(response == null)
             return null;
-        String uuid = (new JsonParser()).parse(Utils.readWithInputStream(response)).getAsJsonObject().get("id").getAsString();
+        String uuid = (new JsonParser()).parse(response).getAsJsonObject().get("id").getAsString();
         String fullUUID = Utils.uuidToFullUUID(uuid);
         return fromMojang(UUID.fromString(fullUUID));
     }
