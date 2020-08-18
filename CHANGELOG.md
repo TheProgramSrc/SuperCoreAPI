@@ -1,4 +1,22 @@
-## v4.1.0 ChangeLog:
+## v4.2.0 Changelog:
+```
+* Code Improvement
+* SkinTexture Error Fixes
+```
+
+## v4.1.3 Changelog:
+```
+* Fixed a error that throws an Exception every time that you try to check the SkinTexture and the server doesn't give a response.
+```
+
+## v4.1.1 Changelog:
+```
++ Added HexColor Parser in SuperUtils
+* Bug Fixes with GUI not being closed if GUI#canCloseGUI is disabled
+* Changed GUI Update from 5 Ticks to 2 Ticks
+```
+
+## v4.1.0 Changelog:
 ```
 + Re-Added TimerEvent due to fixes with GUI Creators
 * Changed RecurringTask package
