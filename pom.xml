@@ -17,7 +17,7 @@
     </properties>
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
@@ -110,7 +110,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.15.2-R0.1-20200625.172449-18</version>
+            <version>1.16.2-R0.1-20200812.111009-1</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->
@@ -165,12 +165,12 @@
             <version>2.13.2</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Tests -->
+        <!-- Tests
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
     </dependencies>
 </project>
