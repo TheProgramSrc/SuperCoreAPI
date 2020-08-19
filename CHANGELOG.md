@@ -1,3 +1,8 @@
+## v4.2.1 Changelog:
+```
++ Now the API check if the MojangAPI (https://sessionserver.mojang.com) is down.
+```
+
 ## v4.2.0 Changelog:
 ```
 * Code Improvement

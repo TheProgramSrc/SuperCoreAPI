@@ -1,5 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
@@ -58,6 +60,7 @@ public class SkinTexture {
      * @return the skin
      */
     public static SkinTexture fromMojang(String playerName) {
+        if(isMojangDown()) return null;
         String response = Utils.readWithInputStream("https://api.mojang.com/users/profiles/minecraft/" + playerName);
         if(response == null)
             return null;
@@ -72,6 +75,7 @@ public class SkinTexture {
      * @return the skin
      */
     public static SkinTexture fromMojang(UUID uuid) {
+        if(isMojangDown()) return null;
         String response = Utils.readWithInputStream("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false");
         if(response == null)
             return null;
@@ -93,5 +97,36 @@ public class SkinTexture {
         String content = new String(Base64.decodeBase64(base64.getBytes()));
         JsonObject json = new JsonParser().parse(content).getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
         return json != null ? json.get("url").getAsString() : null;
+    }
+
+    private static long lastCheck;
+    private static boolean working;
+
+    private static boolean isMojangDown(){
+        long current = System.currentTimeMillis();
+        if(lastCheck == 0L){
+            lastCheck = current;
+        }else{
+            if(current - lastCheck >= 25000L){
+                lastCheck = current;
+                try{
+                    String url = "http://status.mojang.com/check";
+                    String content = Utils.readWithInputStream(url);
+                    if(content != null){
+                        JsonArray array = new JsonParser().parse(content).getAsJsonArray();
+                        for(JsonElement el : array){
+                            JsonObject json = el.getAsJsonObject();
+                            if(json.has("sessionserver.mojang.com")){
+                                working = json.get("sessionserver.mojang.com").getAsString().equals("green");
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    working = false;
+                }
+            }
+        }
+
+        return working;
     }
 }
