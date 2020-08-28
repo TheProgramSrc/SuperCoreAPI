@@ -1,7 +1,6 @@
-package xyz.theprogramsrc;
+package xyz.theprogramsrc.supercoreapi;
 
 
-import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.global.updater.SpigotUpdateChecker;
 
 /**

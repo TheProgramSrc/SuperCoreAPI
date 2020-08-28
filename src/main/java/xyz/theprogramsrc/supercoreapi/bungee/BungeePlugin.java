@@ -44,7 +44,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         long start = System.currentTimeMillis();
         i = this;
         this.emergencyStop = false;
-        new xyz.theprogramsrc.Base();
+        new xyz.theprogramsrc.supercoreapi.Base(this);
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.firstStart = !this.getDataFolder().exists();

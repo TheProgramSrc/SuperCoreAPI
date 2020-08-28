@@ -55,7 +55,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         long current = System.currentTimeMillis();
         i = this;
         this.emergencyStop = false;
-        new xyz.theprogramsrc.Base(this);
+        new xyz.theprogramsrc.supercoreapi.Base(this);
         this.disableHooks = new ArrayList<>();
         this.serverFolder = Utils.folder(new File("."));
         this.firstStart = !this.getDataFolder().exists();
