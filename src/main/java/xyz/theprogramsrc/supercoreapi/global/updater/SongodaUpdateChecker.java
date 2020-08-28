@@ -18,7 +18,7 @@ public abstract class SongodaUpdateChecker {
             if(content == null){
                 this.onFailCheck();
             }else{
-                JsonObject data = new JsonParser().parse(content).getAsJsonObject();
+                JsonObject data = new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject();
                 JsonObject json = data.get("versions").getAsJsonArray().get(0).getAsJsonObject();
                 String version = json.get("version").getAsString();
                 this.onSuccessCheck(version);

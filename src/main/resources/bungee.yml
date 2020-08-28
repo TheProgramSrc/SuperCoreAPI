@@ -1,0 +1,4 @@
+name: SuperCoreAPI
+version: ${project.version}
+main: xyz.theprogramsrc.supercoreapi.plugin.BungeePlugin
+author: TheProgramSrc

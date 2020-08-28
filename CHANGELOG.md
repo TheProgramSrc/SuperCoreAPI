@@ -1,3 +1,10 @@
+## v4.2.2 Changelog:
+```
++ Added API Update Checker
++ Now the API can be added as jar file to the plugins folder
+* Fixes with Songoda Update Checker
+```
+
 ## v4.2.1 Changelog:
 ```
 + Now the API check if the MojangAPI (https://sessionserver.mojang.com) is down.
