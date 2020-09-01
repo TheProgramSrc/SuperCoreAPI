@@ -21,6 +21,7 @@ public abstract class MySQLDataBase implements DataBase{
             this.plugin.registerLogFilter(new LogsFilter(LogsFilter.FilterResult.DENY, "com.zaxxer.hikari"));
         }
         HikariConfig cfg = new HikariConfig();
+        cfg.setDriverClassName("com.mysql.jdbc.Driver");
         cfg.setJdbcUrl("jdbc:mysql://" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port() + "/" + getDataBaseSettings().database() + "?useSSL=" + getDataBaseSettings().useSSL());
         cfg.setUsername(getDataBaseSettings().username());
         cfg.setPassword(getDataBaseSettings().password());
