@@ -21,20 +21,20 @@ import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin> {
 
     private boolean firstStart, emergencyStop;
     private List<Runnable> disableHooks;
+    private LinkedList<Exception> errors;
     private File translationsFolder;
 
     private Settings settings;
     private TranslationManager translationManager;
     private DependencyManager dependencyManager;
-
     private PluginDataStorage pluginDataStorage;
-
     private BungeeTasks bungeeTasks;
 
     public static BungeePlugin i;
@@ -43,6 +43,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     public void onLoad() {
         long start = System.currentTimeMillis();
         i = this;
+        this.errors = new LinkedList<>();
         this.emergencyStop = false;
         new xyz.theprogramsrc.supercoreapi.Base(this);
         this.log("Loading plugin &3v"+this.getPluginVersion());
@@ -203,5 +204,17 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
      */
     public BungeeTasks getBungeeTasks() {
         return bungeeTasks;
+    }
+
+    @Override
+    public LinkedList<Exception> getLastErrors() {
+        return new LinkedList<>(this.errors);
+    }
+
+    /**
+     * Add an error to the Error List
+     */
+    public void addError(Exception e){
+        this.errors.add(e);
     }
 }

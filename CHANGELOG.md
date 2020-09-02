@@ -1,3 +1,8 @@
+## v4.2.4 Changelog:
+```
++ Added a list to save the last errors
+```
+
 ## v4.2.3 Changelog:
 ```
 + Added method to build an Exception into a String

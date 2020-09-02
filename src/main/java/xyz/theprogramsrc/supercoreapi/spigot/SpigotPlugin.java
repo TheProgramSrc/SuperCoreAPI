@@ -26,10 +26,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManage
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<JavaPlugin> {
 
@@ -50,10 +47,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     private PluginDataStorage pluginDataStorage;
 
+    private LinkedList<Exception> errors;
+
     @Override
     public void onLoad() {
         long current = System.currentTimeMillis();
         i = this;
+        this.errors = new LinkedList<>();
         this.emergencyStop = false;
         new xyz.theprogramsrc.supercoreapi.Base(this);
         this.disableHooks = new ArrayList<>();
@@ -311,4 +311,15 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         return this.recipeCreator.getRecipes();
     }
 
+    @Override
+    public LinkedList<Exception> getLastErrors() {
+        return new LinkedList<>(this.errors);
+    }
+
+    /**
+     * Add an error to the Error List
+     */
+    public void addError(Exception e){
+        this.errors.add(e);
+    }
 }

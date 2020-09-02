@@ -9,6 +9,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -169,4 +170,17 @@ public interface SuperPlugin<PLUGIN> {
      * @return the plugin data storage
      */
     PluginDataStorage getPluginDataStorage();
+
+    /**
+     * Gets the last errors
+     */
+    LinkedList<Exception> getLastErrors();
+
+    default Exception getLastError(){
+        if(getLastErrors().isEmpty()){
+            return null;
+        }else{
+            return getLastErrors().getLast();
+        }
+    }
 }
