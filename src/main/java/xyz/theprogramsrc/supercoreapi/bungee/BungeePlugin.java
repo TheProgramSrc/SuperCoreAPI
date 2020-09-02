@@ -211,9 +211,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         return new LinkedList<>(this.errors);
     }
 
-    /**
-     * Add an error to the Error List
-     */
+    @Override
     public void addError(Exception e){
         this.errors.add(e);
     }

@@ -1,5 +1,10 @@
 ## v4.2.4 Changelog:
 ```
++ Added method to add an error to the last errors list
+```
+
+## v4.2.4 Changelog:
+```
 + Added a list to save the last errors
 ```
 

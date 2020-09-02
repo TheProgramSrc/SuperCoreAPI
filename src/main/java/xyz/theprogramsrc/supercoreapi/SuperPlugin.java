@@ -176,6 +176,12 @@ public interface SuperPlugin<PLUGIN> {
      */
     LinkedList<Exception> getLastErrors();
 
+    /**
+     * Add an error to the last errors list
+     * @param e the error to add
+     */
+    void addError(Exception e);
+
     default Exception getLastError(){
         if(getLastErrors().isEmpty()){
             return null;

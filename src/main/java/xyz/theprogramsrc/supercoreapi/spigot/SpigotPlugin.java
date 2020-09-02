@@ -316,9 +316,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         return new LinkedList<>(this.errors);
     }
 
-    /**
-     * Add an error to the Error List
-     */
+    @Override
     public void addError(Exception e){
         this.errors.add(e);
     }
