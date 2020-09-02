@@ -1,4 +1,4 @@
-## v4.2.4 Changelog:
+## v4.2.5 Changelog:
 ```
 + Added method to add an error to the last errors list
 ```
