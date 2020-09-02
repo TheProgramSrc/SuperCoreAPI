@@ -17,7 +17,6 @@ public class Base {
 
     private void loadUpdateChecker(){
         new SpigotUpdateChecker("77096"){
-
             @Override
             public void onCheckFail() {
                 Base.this.plugin.log("&cError while checking &4SuperCoreAPI &cupdates.");
@@ -25,7 +24,7 @@ public class Base {
 
             @Override
             public void onCheckSuccess(String lastVersion) {
-                String currentVersion = "4.2.2";
+                String currentVersion = "4.2.3";
                 int latest = Integer.parseInt(lastVersion.split(" ")[0].replaceAll("\\.", ""));
                 int current = Integer.parseInt(currentVersion.split(" ")[0].replaceAll("\\.", ""));
                 if(latest > current){

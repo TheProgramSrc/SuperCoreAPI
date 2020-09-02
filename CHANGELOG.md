@@ -1,3 +1,10 @@
+## v4.2.3 Changelog:
+```
++ Added method to build an Exception into a String
++ Added method to upload data to https://paste.theprogramsrc.xyz/
++ Added method to validate json string
+```
+
 ## v4.2.2 Changelog:
 ```
 + Added API Update Checker

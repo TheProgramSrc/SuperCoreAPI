@@ -1,10 +1,13 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -290,7 +293,7 @@ public class Utils {
         try{
             URL javaURL = new URL(url);
             URLConnection connection = javaURL.openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
             return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
         }catch (IOException ex){
             ex.printStackTrace();
@@ -623,7 +626,82 @@ public class Utils {
      * and {@code false} otherwise
      */
     public static boolean equals(Object a, Object b) {
-        return (a == b) || (a != null && a.equals(b));
+        return Objects.equals(a, b);
+    }
+
+    /**
+     * Returns {@code true} if the input is a valid json
+     * @return {@code true} if the input is a valid json, otherwise {@code false}
+     */
+    public static boolean isJSONEncoded(String input){
+        try{
+            new JsonParser().parse(input);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * Create a new post request
+     * @param url the url
+     * @param contentData the data to send
+     * @return the url response output
+     */
+    public static String postRequest(String url, String contentData) throws IOException{
+        URL javaURL = new URL(url);
+        HttpURLConnection connection = ((HttpURLConnection)javaURL.openConnection());
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        connection.addRequestProperty("Content-Type", "text/plain; charset=UTF-8");
+        connection.addRequestProperty("Content-Length", contentData.length()+"");
+        OutputStream out = connection.getOutputStream();
+        out.write(contentData.getBytes());
+        connection.connect();
+        InputStream in = connection.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String result = reader.lines().collect(Collectors.joining());
+        connection.disconnect();
+        return result;
+    }
+
+    /**
+     * Upload a new paste to <a href="https://paste.theprogramsrc.xyz/">https://paste.theprogramsrc.xyz/</a>
+     *
+     * @param body the body of the paste
+     * @return the paste key
+     */
+    public static String uploadPaste(String body){
+        String url = "https://paste.theprogramsrc.xyz/documents";
+        try{
+            String post = postRequest(url, body);
+            if(post != null){
+                if(isJSONEncoded(post)){
+                    JsonObject json = new JsonParser().parse(post).getAsJsonObject();
+                    return json.get("key").getAsString();
+                }
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Build an {@link Exception exception} into a string
+     * @param e the exception
+     * @return the stack trace as string
+     */
+    public static String exceptionToString(Exception e){
+        StringBuilder builder = new StringBuilder();
+        builder.append(e.getClass().getName()).append(": ").append(e.getMessage() != null ? e.getMessage() : "null").append("\n");
+        for (StackTraceElement ste : e.getStackTrace()) {
+            builder.append("\tat ").append(ste.getClassName()).append(".").append(ste.getMethodName()).append("(").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(")").append("\n");
+        }
+
+        return builder.toString();
     }
 }
 
