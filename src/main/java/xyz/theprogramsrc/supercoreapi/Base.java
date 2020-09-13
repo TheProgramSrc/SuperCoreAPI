@@ -24,7 +24,7 @@ public class Base {
 
             @Override
             public void onCheckSuccess(String lastVersion) {
-                String currentVersion = "4.2.3";
+                String currentVersion = "4.2.6";
                 int latest = Integer.parseInt(lastVersion.split(" ")[0].replaceAll("\\.", ""));
                 int current = Integer.parseInt(currentVersion.split(" ")[0].replaceAll("\\.", ""));
                 if(latest > current){

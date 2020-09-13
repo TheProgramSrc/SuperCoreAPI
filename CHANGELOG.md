@@ -1,3 +1,8 @@
+## v4.2.6 Changelog:
+```
+* Fixed version in SuperCoreAPI Update Checker
+```
+
 ## v4.2.5 Changelog:
 ```
 + Added method to add an error to the last errors list
