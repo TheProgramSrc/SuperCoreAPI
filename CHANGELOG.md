@@ -1,3 +1,8 @@
+## v4.2.7 Changelog:
+```
++ Added more checks to the SkinTexture to avoid errors 
+```
+
 ## v4.2.6 Changelog:
 ```
 * Fixed version in SuperCoreAPI Update Checker

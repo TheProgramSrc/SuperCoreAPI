@@ -64,7 +64,10 @@ public class SkinTexture {
         String response = Utils.readWithInputStream("https://api.mojang.com/users/profiles/minecraft/" + playerName);
         if(response == null)
             return null;
-        String uuid = (new JsonParser()).parse(response).getAsJsonObject().get("id").getAsString();
+        JsonElement el = (new JsonParser()).parse(response);
+        if(el.isJsonNull())
+            return null;
+        String uuid = el.getAsJsonObject().get("id").getAsString();
         String fullUUID = Utils.uuidToFullUUID(uuid);
         return fromMojang(UUID.fromString(fullUUID));
     }
@@ -79,7 +82,10 @@ public class SkinTexture {
         String response = Utils.readWithInputStream("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false");
         if(response == null)
             return null;
-        JsonObject properties = (new JsonParser()).parse(response).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
+        JsonElement el = (new JsonParser()).parse(response);
+        if(el.isJsonNull())
+            return null;
+        JsonObject properties = el.getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
         String value = properties.get("value").getAsString();
         return new SkinTexture(base64ToUrl(value));
     }
