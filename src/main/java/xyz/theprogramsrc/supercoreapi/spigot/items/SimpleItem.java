@@ -446,6 +446,10 @@ public class SimpleItem {
      * @return the {@link ItemStack ItemStack} of this SimpleItem
      */
     public ItemStack build(){
+        String name = this.getDisplayName();
+        LinkedList<String> lore = this.getLore();
+        this.setDisplayName(new StringUtils(name).placeholders(this.placeholders).get());
+        this.setLore(lore.stream().map(s-> new StringUtils(s).placeholders(this.placeholders).get()).toArray(String[]::new));
         return new ItemStack(this.item);
     }
 
@@ -454,7 +458,7 @@ public class SimpleItem {
      * @return this SimpleItem duplicated
      */
     public SimpleItem duplicate(){
-        return new SimpleItem(this.item);
+        return new SimpleItem(this.item).setPlaceholders(this.placeholders);
     }
 
     /**
