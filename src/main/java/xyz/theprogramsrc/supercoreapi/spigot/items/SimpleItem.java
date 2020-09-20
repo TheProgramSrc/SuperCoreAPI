@@ -380,7 +380,7 @@ public class SimpleItem {
     public String getDisplayName(){
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
-            return null;
+            return "null";
         return Utils.ct(meta.getDisplayName());
     }
 
@@ -391,8 +391,8 @@ public class SimpleItem {
     public LinkedList<String> getLore(){
         ItemMeta meta = this.item.getItemMeta();
         if(meta == null)
-            return null;
-        return meta.getLore() != null ? new LinkedList<>(this.utils.color(meta.getLore())) : null;
+            return new LinkedList<>();
+        return meta.getLore() != null ? new LinkedList<>(this.utils.color(meta.getLore())) : new LinkedList<>();
     }
 
     /**
