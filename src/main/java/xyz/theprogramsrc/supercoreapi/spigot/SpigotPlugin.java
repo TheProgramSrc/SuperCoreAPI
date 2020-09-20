@@ -13,7 +13,6 @@ import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClas
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
-import xyz.theprogramsrc.supercoreapi.global.updater.SpigotUpdateChecker;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.events.EventManager;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
@@ -270,19 +269,6 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public PluginDataStorage getPluginDataStorage() {
         return this.pluginDataStorage;
-    }
-
-    public void checkCoreUpdates(){
-        new SpigotUpdateChecker("77096"){
-            @Override
-            public void onCheckFail() { }
-
-            @Override
-            public void onCheckSuccess(String lastVersion) {
-                SpigotPlugin.this.log("&c&lThis is not an error, this is a warning for the plugin developer that the SuperCoreAPI is outdated");
-                SpigotPlugin.this.log("Please update SuperCoreAPI to v" + lastVersion);
-            }
-        }.check();
     }
 
     /**

@@ -1,3 +1,13 @@
+## v4.2.9 Changelog:
+```
+* Now SimpleItem#getDisplayName() and SimpleItem#getLore() doesn't return null to avoid errors 
+```
+
+## v4.2.8 Changelog:
+```
+* Fixed SimpleItem not applying placeholders 
+```
+
 ## v4.2.7 Changelog:
 ```
 + Added more checks to the SkinTexture to avoid errors 
