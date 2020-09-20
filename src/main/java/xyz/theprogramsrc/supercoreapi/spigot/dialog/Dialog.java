@@ -2,6 +2,7 @@ package xyz.theprogramsrc.supercoreapi.spigot.dialog;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -80,7 +81,7 @@ public abstract class Dialog extends SpigotModule {
 
     private long lastMoved;
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onMove(PlayerMoveEvent event){
         if(this.canClose()){
             if(this.getPlayer().equals(event.getPlayer())){
@@ -96,7 +97,7 @@ public abstract class Dialog extends SpigotModule {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onClick(PlayerInteractEvent event){
         if(this.getPlayer().equals(event.getPlayer())){
             if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){

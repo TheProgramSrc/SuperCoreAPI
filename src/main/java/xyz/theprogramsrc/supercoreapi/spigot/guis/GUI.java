@@ -3,6 +3,7 @@ package xyz.theprogramsrc.supercoreapi.spigot.guis;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -143,7 +144,7 @@ public abstract class GUI extends SpigotModule {
 
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onOpen(InventoryOpenEvent event){
         if(this.inv != null && this.player != null){
             if(event.getPlayer().equals(this.player)){
@@ -155,7 +156,7 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onClose(InventoryCloseEvent event){
         if(this.inv != null && this.player != null){
             if(event.getInventory().equals(this.inv)){
@@ -184,7 +185,7 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onClick(InventoryClickEvent event){
         if(this.inv != null && this.player != null){
             if(event.getInventory().equals(this.inv) && event.getWhoClicked().equals(this.player) && (!(event.getInventory() instanceof PlayerInventory))){
@@ -223,7 +224,7 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event){
         if(this.inv != null){
             if(event.getPlayer().equals(this.player)){
@@ -233,9 +234,9 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void syncItems(TimerEvent event){
-        if(event.getTime() != Time.TWO_TICKS)
+        if(event.getTime() != Time.TICK)
             return;
         if(this.inv == null)
             return;
