@@ -39,7 +39,9 @@ public abstract class BrowserGUI<OBJ> extends GUI {
             if(this.searchTerm == null){
                 return true;
             }else{
-                return this.plugin.getSuperUtils().removeColor(new SimpleItem(this.getButton(o).getItemStack()).getDisplayName().toLowerCase()).contains(this.plugin.getSuperUtils().removeColor(this.searchTerm.toLowerCase()));
+                String itemDisplayName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(o).getItemStack()).getDisplayName());
+                String searchTerm = this.getSuperUtils().removeColor(this.searchTerm);
+                return itemDisplayName.toLowerCase().contains(searchTerm.toLowerCase());
             }
         }).collect(Collectors.toList());
         int index0 = this.page * maxItemsPerPage;
@@ -73,12 +75,11 @@ public abstract class BrowserGUI<OBJ> extends GUI {
                     @Override
                     public boolean onResult(String playerInput) {
                         BrowserGUI.this.searchTerm = playerInput;
+                        BrowserGUI.this.page = 0;
+                        BrowserGUI.this.open();
                         return true;
                     }
-                }.setRecall(p-> {
-                    this.page = 0;
-                    this.open();
-                });
+                };
             }else{
                 this.page = 0;
                 this.searchTerm = null;
