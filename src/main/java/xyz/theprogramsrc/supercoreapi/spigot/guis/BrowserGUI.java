@@ -74,9 +74,11 @@ public abstract class BrowserGUI<OBJ> extends GUI {
 
                     @Override
                     public boolean onResult(String playerInput) {
-                        BrowserGUI.this.searchTerm = playerInput;
-                        BrowserGUI.this.page = 0;
-                        BrowserGUI.this.open();
+                        this.getSpigotTasks().runTask(()-> {
+                            BrowserGUI.this.searchTerm = playerInput;
+                            BrowserGUI.this.page = 0;
+                            BrowserGUI.this.open();
+                        });
                         return true;
                     }
                 };
