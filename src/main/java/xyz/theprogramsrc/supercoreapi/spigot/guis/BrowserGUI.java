@@ -37,11 +37,14 @@ public abstract class BrowserGUI<OBJ> extends GUI {
         OBJ[] objs = this.getObjects();
         List<OBJ> objectsFound = Arrays.stream(objs).filter(o->{
             if(this.searchTerm == null){
+                this.log("null search term");
                 return true;
             }else{
                 String itemDisplayName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(o).getItemStack()).getDisplayName());
                 String searchTerm = this.getSuperUtils().removeColor(this.searchTerm);
-                return itemDisplayName.toLowerCase().contains(searchTerm.toLowerCase());
+                boolean is = itemDisplayName.toLowerCase().contains(searchTerm.toLowerCase());
+                this.log("Checking for '" + itemDisplayName.toLowerCase() + "' with search term '" + searchTerm.toLowerCase() + "'");
+                return is;
             }
         }).collect(Collectors.toList());
         int index0 = this.page * maxItemsPerPage;
