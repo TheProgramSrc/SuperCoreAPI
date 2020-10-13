@@ -35,18 +35,7 @@ public abstract class BrowserGUI<OBJ> extends GUI {
     @Override
     public GUIButton[] getButtons() {
         OBJ[] objs = this.getObjects();
-        List<OBJ> objectsFound = Arrays.stream(objs).filter(o->{
-            if(this.searchTerm == null){
-                this.log("null search term");
-                return true;
-            }else{
-                String itemDisplayName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(o).getItemStack()).getDisplayName());
-                String searchTerm = this.getSuperUtils().removeColor(this.searchTerm);
-                boolean is = itemDisplayName.toLowerCase().contains(searchTerm.toLowerCase());
-                this.log("Checking for '" + itemDisplayName.toLowerCase() + "' with search term '" + searchTerm.toLowerCase() + "'");
-                return is;
-            }
-        }).collect(Collectors.toList());
+        List<OBJ> objectsFound = Arrays.stream(objs).filter(o-> this.searchTerm == null || new SimpleItem(this.getButton(o).getItemStack()).getDisplayName().toLowerCase().contains(this.searchTerm.toLowerCase())).collect(Collectors.toList());
         int index0 = this.page * maxItemsPerPage;
         int index1 = Math.min(index0 + maxItemsPerPage, objectsFound.size());
         List<GUIButton> buttons = objectsFound.subList(index0, index1).stream().map(this::getButton).collect(Collectors.toList());
@@ -55,7 +44,7 @@ public abstract class BrowserGUI<OBJ> extends GUI {
             it.next().setSlot(slot);
         }
 
-        int x = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
+        int maxPages = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
         buttons.add(new GUIButton(49, this.searchTerm == null ? this.getPreloadedItems().getSearchItem() : this.getPreloadedItems().getEndSearchItem()).setAction(a -> {
             if(this.searchTerm == null){
                 new Dialog(this.getPlayer()){
@@ -99,7 +88,7 @@ public abstract class BrowserGUI<OBJ> extends GUI {
                 this.open();
             }));
         }
-        if(this.page+1 < x){
+        if(this.page+1 < maxPages){
             buttons.add(new GUIButton(53, this.getPreloadedItems().getNextItem()).setAction(a -> {
                 this.page++;
                 this.open();
