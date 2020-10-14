@@ -1,15 +1,14 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,16 +34,34 @@ public abstract class BrowserGUI<OBJ> extends GUI {
     @Override
     public GUIButton[] getButtons() {
         OBJ[] objs = this.getObjects();
-        List<OBJ> objectsFound = Arrays.stream(objs).filter(o-> this.searchTerm == null || new SimpleItem(this.getButton(o).getItemStack()).getDisplayName().toLowerCase().contains(this.searchTerm.toLowerCase())).collect(Collectors.toList());
-        int index0 = this.page * maxItemsPerPage;
-        int index1 = Math.min(index0 + maxItemsPerPage, objectsFound.size());
-        List<GUIButton> buttons = objectsFound.subList(index0, index1).stream().map(this::getButton).collect(Collectors.toList());
-        int slot = 0;
-        for(Iterator<GUIButton> it = buttons.iterator(); it.hasNext(); ++slot){
-            it.next().setSlot(slot);
+        List<OBJ> objectsFound = new ArrayList<>();
+        for (OBJ obj : objs) {
+            if(obj != null){
+                if(this.searchTerm == null){
+                    objectsFound.add(obj);
+                }else{
+                    GUIButton button = this.getButton(obj);
+                    String name = ChatColor.stripColor(new SimpleItem(button.getItemStack()).getDisplayName()).toLowerCase();
+                    if(name.contains(ChatColor.stripColor(this.searchTerm.toLowerCase()))){
+                        objectsFound.add(obj);
+                    }
+                }
+            }
         }
-
+        int index0 = this.page * this.maxItemsPerPage;
+        int index1 = Math.min(index0 + this.maxItemsPerPage, objectsFound.size());
         int maxPages = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
+        List<GUIButton> buttons1 = new ArrayList<>();
+        int slot = 0;
+        for (GUIButton b : objectsFound.subList(index0, index1).stream().map(this::getButton).collect(Collectors.toList())) {
+            b.setSlot(slot);
+            buttons1.add(b);
+            slot++;
+        }
+        List<GUIButton> buttons = new ArrayList<>(buttons1);
+        buttons1.clear(); // Save memory
+        objectsFound.clear(); // Save memory
+
         buttons.add(new GUIButton(49, this.searchTerm == null ? this.getPreloadedItems().getSearchItem() : this.getPreloadedItems().getEndSearchItem()).setAction(a -> {
             if(this.searchTerm == null){
                 new Dialog(this.getPlayer()){
@@ -66,17 +83,16 @@ public abstract class BrowserGUI<OBJ> extends GUI {
 
                     @Override
                     public boolean onResult(String playerInput) {
-                        this.getSpigotTasks().runTask(()-> {
-                            BrowserGUI.this.searchTerm = playerInput;
-                            BrowserGUI.this.page = 0;
-                            BrowserGUI.this.open();
-                        });
+                        BrowserGUI.this.searchTerm = playerInput;
                         return true;
                     }
-                };
+                }.setRecall(player ->{
+                    this.page = 0;
+                    this.open();
+                });
             }else{
-                this.page = 0;
                 this.searchTerm = null;
+                this.page = 0;
                 this.open();
             }
         }));
@@ -95,7 +111,9 @@ public abstract class BrowserGUI<OBJ> extends GUI {
             }));
         }
 
-        return buttons.stream().filter(Utils::nonNull).toArray(GUIButton[]::new);
+        GUIButton[] guiButtons = new GUIButton[buttons.size()];
+        guiButtons = buttons.toArray(guiButtons);
+        return guiButtons;
     }
 
     /**

@@ -22,13 +22,15 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.UUID;
 
 public abstract class GUI extends SpigotModule {
 
+    private final UUID uuid = UUID.randomUUID();
     private final Player player;
     private Inventory inv;
-    private final HashMap<Integer, GUIButton> buttons;
+    private final LinkedHashMap<Integer, GUIButton> buttons;
     private boolean manuallyClosed;
 
     /**
@@ -39,16 +41,15 @@ public abstract class GUI extends SpigotModule {
         super(false);
         this.manuallyClosed = false;
         this.player = player;
-        this.buttons = new HashMap<>();
+        this.buttons = new LinkedHashMap<>();
     }
 
     /**
      * Opens the {@link GUI GUI}
      */
     public void open(){
-        if(this.inv == null)
-            this.listener(this);
-
+        HandlerList.unregisterAll(this);
+        this.listener(this);
         this.inv = Bukkit.createInventory(null, this.getRows().getSize(), this.getSuperUtils().color(this.isTitleCentered() ? this.getCenteredTitle() : this.getTitle()));
         this.player.openInventory(this.inv);
     }
@@ -57,15 +58,17 @@ public abstract class GUI extends SpigotModule {
      * Closes the {@link GUI GUI}
      */
     public void close(){
-        this.manuallyClosed = true;
         this.getSpigotTasks().runTask(()->{
-            GUICloseEvent event = new GUICloseEvent(this);
-            this.onEvent(event);
-            if(!event.isCancelled()){
-                HandlerList.unregisterAll(this);
-                this.inv = null;
-                this.player.closeInventory();
-            }
+            this.manuallyClosed = true;
+            this.getSpigotTasks().runTask(()->{
+                GUICloseEvent event = new GUICloseEvent(this);
+                this.onEvent(event);
+                if(!event.isCancelled()){
+                    HandlerList.unregisterAll(this);
+                    this.player.closeInventory();
+                    this.inv = null;
+                }
+            });
         });
     }
 
@@ -201,22 +204,18 @@ public abstract class GUI extends SpigotModule {
                 }else{
                     event.setCancelled(true);
                     GUIEmptyClickEvent emptyClickEvent = new GUIEmptyClickEvent(this, slot);
-                    if(item == null){
+                    if(item == null || item.getType() == XMaterial.AIR.parseMaterial()){
                         this.onEvent(emptyClickEvent);
-                        return;
-                    }else if(item.getType() == XMaterial.AIR.parseMaterial()){
-                        this.onEvent(emptyClickEvent);
-                        return;
-                    }
-
-                    if(this.buttons.containsKey(slot)){
-                        GUIButton button = this.buttons.get(slot);
-                        GUIClickEvent clickEvent = new GUIClickEvent(this, button, slot);
-                        this.onEvent(clickEvent);
-                        if(button.getAction() != null){
-                            ClickType clickType = ClickType.fromEvent(event);
-                            ClickAction clickAction = new ClickAction(this, who, button, clickType, slot);
-                            button.getAction().onClick(clickAction);
+                    }else{
+                        if(this.buttons.containsKey(slot)){
+                            GUIButton button = this.buttons.get(slot);
+                            GUIClickEvent clickEvent = new GUIClickEvent(this, button, slot);
+                            this.onEvent(clickEvent);
+                            if(button.getAction() != null){
+                                ClickType clickType = ClickType.fromEvent(event);
+                                ClickAction clickAction = new ClickAction(this, who, button, clickType, slot);
+                                button.getAction().onClick(clickAction);
+                            }
                         }
                     }
                 }
@@ -234,31 +233,33 @@ public abstract class GUI extends SpigotModule {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler
     public void syncItems(TimerEvent event){
-        if(event.getTime() != Time.TICK)
-            return;
-        if(this.inv == null)
-            return;
-        this.inv.clear();
-        GUIButton[] buttonsArray = this.getButtons();
-        if(buttonsArray != null){
-            if(buttonsArray.length != 0){
-                for (GUIButton button : buttonsArray)
-                    this.addButton(button);
+        if(event.getTime() == Time.TICK){
+            if(this.inv != null && this.player != null){
+                this.inv.clear();
+                GUIButton[] buttonsArray = this.getButtons();
+                if(buttonsArray != null){
+                    for (GUIButton button : buttonsArray) {
+                        if(button != null){
+                            this.addButton(button);
+                        }
+                    }
+                }
+
+                for (GUIButton button : this.buttons.values()) {
+                    int slot = button.getSlot();
+                    ItemStack item = button.getItemStack();
+                    if(item != null){
+                        if(slot <= this.getRows().getSize() && slot >= 0){
+                            this.inv.setItem(slot, item);
+                        }
+                    }
+                }
+
+                this.player.updateInventory();
             }
         }
-
-        for (GUIButton button : this.buttons.values()) {
-            int slot = button.getSlot();
-            ItemStack item = button.getItemStack();
-            if(item == null)
-                return;
-            if(slot <= this.getRows().getSize() && slot >= 0)
-                this.inv.setItem(slot, item);
-        }
-
-        this.player.updateInventory();
     }
 
     /**

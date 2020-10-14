@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>4.0.0</version>
+  <version>4.2.10_BETA4</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <defaultGoal>clean package</defaultGoal>
@@ -14,7 +14,7 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
-    <finalName>${artifactId}</finalName>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.1-R0.1-SNAPSHOT</version>
+      <version>1.16.3-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>net.md-5</groupId>
       <artifactId>bungeecord-api</artifactId>
-      <version>1.16-R0.2</version>
+      <version>1.16-R0.3</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.15.2-R0.1-20200625.172449-18</version>
+      <version>1.16.3-R0.1-20201003.002207-3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -151,35 +151,15 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>RELEASE</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>junit-jupiter-api</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-jupiter-params</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-jupiter-engine</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
   <distributionManagement>
     <repository>
-      <id>codemc-releases</id>
-      <url>https://repo.codemc.io/repository/maven-releases/</url>
+      <id>theprogramsrc-releases</id>
+      <url>https://repo.theprogramsrc.xyz/repository/maven-releases/</url>
     </repository>
     <snapshotRepository>
-      <id>codemc-snapshots</id>
-      <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+      <id>theprogramsrc-snapshots</id>
+      <url>https://repo.theprogramsrc.xyz/repository/maven-snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
   <properties>
