@@ -41,7 +41,7 @@ public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
 
     @Override
     public void onBack(ClickAction clickAction) {
-
+        this.close();
     }
 
     @Override

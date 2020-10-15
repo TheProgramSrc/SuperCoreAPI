@@ -1,3 +1,10 @@
+## v4.2.10 Changelog:
+```
++ Added Scroll Browser (Vertical Browser)
++ Added GUIUpdateEvent
+* Fixed issues with Browser Search Feature not working
+```
+
 ## v4.2.9 Changelog:
 ```
 * Now SimpleItem#getDisplayName() and SimpleItem#getLore() doesn't return null to avoid errors 

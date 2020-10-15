@@ -22,7 +22,9 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class GUI extends SpigotModule {
@@ -48,8 +50,8 @@ public abstract class GUI extends SpigotModule {
      * Opens the {@link GUI GUI}
      */
     public void open(){
-        HandlerList.unregisterAll(this);
-        this.listener(this);
+        if(this.inv == null)
+            this.listener(this);
         this.inv = Bukkit.createInventory(null, this.getRows().getSize(), this.getSuperUtils().color(this.isTitleCentered() ? this.getCenteredTitle() : this.getTitle()));
         this.player.openInventory(this.inv);
     }
@@ -73,6 +75,28 @@ public abstract class GUI extends SpigotModule {
     }
 
     /**
+     * Adds the specified buttons to the GUI
+     * @param buttons the buttons to add
+     *
+     * @see #addButton(GUIButton)
+     */
+    public void addButtons(Collection<GUIButton> buttons){
+        for(GUIButton button : buttons)
+            this.addButton(button);
+    }
+
+    /**
+     * Adds the specified buttons to the GUI
+     * @param buttons the buttons to add
+     *
+     * @see #addButton(GUIButton)
+     */
+    public void addButtons(GUIButton... buttons){
+        for(GUIButton button : buttons)
+            this.addButton(button);
+    }
+
+    /**
      * Adds a button inside the {@link GUI GUI} using the last empty slot if there is no slot specified inside the {@link GUIButton button}
      * @param button the button to add inside the {@link GUI GUI}
      */
@@ -86,13 +110,61 @@ public abstract class GUI extends SpigotModule {
      * @param button the button to add inside the {@link GUI GUI}
      */
     public void setButton(int slot, GUIButton button){
-        if(slot < 0 || slot > 53){
+        if(slot < 0){
             while(this.buttons.containsKey(slot)){
                 slot++;
             }
             button.setSlot(slot);
         }
+
+        if(this.buttons.containsKey(slot)){
+            if(this.buttons.get(slot).equals(button)){
+                return;
+            }
+        }
         this.buttons.put(slot, button);
+    }
+
+    /**
+     * Gets a button from the GUI
+     * @param slot the slot
+     * @return the button located in the slot or null if there is no button
+     */
+    public GUIButton getButton(int slot){
+        return this.buttons.get(slot);
+    }
+
+    /**
+     * Removes all the buttons in the specified slots
+     * @param slots the slots of the buttons to remove
+     */
+    public void removeButtons(int... slots){
+        for(int slot : slots)
+            this.removeButton(slot);
+    }
+
+    /**
+     * Removes a button from the GUI
+     * @param slot the slot of the button to remove
+     */
+    public void removeButton(int slot){
+        this.buttons.remove(slot);
+    }
+
+    /**
+     * Removes all the buttons from the GUI
+     */
+    public void clearButtons(){
+        this.buttons.clear();
+    }
+
+    /**
+     * Checks if there is a button in the given slot
+     * @param slot the slot to check
+     * @return true if there is a button, otherwise false
+     */
+    public boolean containsButton(int slot){
+        return this.buttons.containsKey(slot);
     }
 
     /**
@@ -237,7 +309,7 @@ public abstract class GUI extends SpigotModule {
     public void syncItems(TimerEvent event){
         if(event.getTime() == Time.TICK){
             if(this.inv != null && this.player != null){
-                this.inv.clear();
+                this.onEvent(new GUIUpdateEvent(this));
                 GUIButton[] buttonsArray = this.getButtons();
                 if(buttonsArray != null){
                     for (GUIButton button : buttonsArray) {
@@ -247,16 +319,13 @@ public abstract class GUI extends SpigotModule {
                     }
                 }
 
-                for (GUIButton button : this.buttons.values()) {
-                    int slot = button.getSlot();
-                    ItemStack item = button.getItemStack();
-                    if(item != null){
-                        if(slot <= this.getRows().getSize() && slot >= 0){
-                            this.inv.setItem(slot, item);
-                        }
-                    }
+                this.inv.clear();
+                for(Map.Entry<Integer, GUIButton> entry : new LinkedHashMap<>(this.buttons).entrySet()){
+                    int slot = entry.getKey();
+                    if(this.inv.getSize() < slot || slot > this.inv.getSize()) continue;
+                    GUIButton button = entry.getValue();
+                    this.inv.setItem(slot, button.getItemStack());
                 }
-
                 this.player.updateInventory();
             }
         }
