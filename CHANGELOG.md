@@ -1,3 +1,8 @@
+## v4.2.11 Changelog:
+```
+- Removed tests in SpigotPlugin
+```
+
 ## v4.2.10 Changelog:
 ```
 + Added Scroll Browser (Vertical Browser)
