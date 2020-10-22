@@ -1,7 +1,5 @@
 package xyz.theprogramsrc.supercoreapi;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -160,10 +158,7 @@ public interface SuperPlugin<PLUGIN> {
      * Registers a log filter
      * @param logsFilter the filter
      */
-    default void registerLogFilter(LogsFilter logsFilter){
-        Logger consoleLogger = (Logger) LogManager.getRootLogger();
-        consoleLogger.addFilter(logsFilter);
-    }
+    void registerLogFilter(LogsFilter logsFilter);
 
     /**
      * Gets the plugin data storage

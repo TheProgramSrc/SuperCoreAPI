@@ -3,12 +3,15 @@ package xyz.theprogramsrc.supercoreapi.bungee;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.tasks.BungeeTasks;
+import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -214,5 +217,11 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void addError(Exception e){
         this.errors.add(e);
+    }
+
+    @Override
+    public void registerLogFilter(LogsFilter logsFilter){
+        Logger consoleLogger = (Logger) LogManager.getRootLogger();
+        consoleLogger.addFilter(logsFilter);
     }
 }
