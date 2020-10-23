@@ -1,4 +1,0 @@
-name: SuperCoreAPI
-version: ${project.version}
-main: xyz.theprogramsrc.supercoreapi.plugin.SpigotPlugin
-author: TheProgramSrc
