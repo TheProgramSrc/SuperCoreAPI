@@ -1,6 +1,8 @@
 ## v4.2.13 Changelog:
 ```
 * Moved Log Filter register method to the LogsFilter class
+* Bungee Plugin Fixes
+* Removed executors for local jar functions
 ```
 
 ## v4.2.12 Changelog:
