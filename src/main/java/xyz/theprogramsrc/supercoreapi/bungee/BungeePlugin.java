@@ -3,8 +3,6 @@ package xyz.theprogramsrc.supercoreapi.bungee;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
@@ -221,7 +219,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     @Override
     public void registerLogFilter(LogsFilter logsFilter){
-        Logger consoleLogger = (Logger) LogManager.getRootLogger();
+        org.apache.logging.log4j.core.Logger consoleLogger = ((org.apache.logging.log4j.core.Logger) org.apache.logging.log4j.LogManager.getRootLogger());
         consoleLogger.addFilter(logsFilter);
     }
 }

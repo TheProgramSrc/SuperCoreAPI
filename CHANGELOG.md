@@ -1,3 +1,8 @@
+## v4.2.13 Changelog:
+```
+* Bungee Bug Fixes
+```
+
 ## v4.2.12 Changelog:
 ```
 * Migrated Update Checker to Songoda
