@@ -1,6 +1,5 @@
 package xyz.theprogramsrc.supercoreapi;
 
-import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
@@ -153,12 +152,6 @@ public interface SuperPlugin<PLUGIN> {
      * Stops the plugin
      */
     void emergencyStop();
-
-    /**
-     * Registers a log filter
-     * @param logsFilter the filter
-     */
-    void registerLogFilter(LogsFilter logsFilter);
 
     /**
      * Gets the plugin data storage

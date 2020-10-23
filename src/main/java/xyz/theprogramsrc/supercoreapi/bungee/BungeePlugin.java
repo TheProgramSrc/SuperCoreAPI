@@ -9,7 +9,6 @@ import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.tasks.BungeeTasks;
-import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -215,11 +214,5 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void addError(Exception e){
         this.errors.add(e);
-    }
-
-    @Override
-    public void registerLogFilter(LogsFilter logsFilter){
-        org.apache.logging.log4j.core.Logger consoleLogger = ((org.apache.logging.log4j.core.Logger) org.apache.logging.log4j.LogManager.getRootLogger());
-        consoleLogger.addFilter(logsFilter);
     }
 }

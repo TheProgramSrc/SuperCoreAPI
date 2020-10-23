@@ -1,6 +1,6 @@
 ## v4.2.13 Changelog:
 ```
-* Bungee Bug Fixes
+* Moved Log Filter register method to the LogsFilter class
 ```
 
 ## v4.2.12 Changelog:

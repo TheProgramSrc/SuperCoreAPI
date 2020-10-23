@@ -1,14 +1,11 @@
 package xyz.theprogramsrc.supercoreapi.spigot;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
-import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
@@ -308,11 +305,5 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void addError(Exception e){
         this.errors.add(e);
-    }
-
-    @Override
-    public void registerLogFilter(LogsFilter logsFilter){
-        Logger consoleLogger = (Logger) LogManager.getRootLogger();
-        consoleLogger.addFilter(logsFilter);
     }
 }

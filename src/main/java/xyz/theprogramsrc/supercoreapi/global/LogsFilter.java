@@ -1,6 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.global;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
@@ -35,6 +36,11 @@ public class LogsFilter extends AbstractFilter{
         return Result.NEUTRAL;
     }
 
+    public void register(){
+        Logger consoleLogger = ((Logger) LogManager.getRootLogger());
+        consoleLogger.addFilter(this);
+    }
+
     @Override
     public Result filter(LogEvent event) {
         return this.process(event.getMessage().getFormattedMessage());
@@ -63,7 +69,7 @@ public class LogsFilter extends AbstractFilter{
         return new String[0];
     }
 
-    public static enum FilterResult{
+    public enum FilterResult{
         DENY,
         NEUTRAL,
         NONE
