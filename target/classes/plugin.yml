@@ -1,0 +1,4 @@
+name: SuperCoreAPI
+version: 4.2.12
+main: xyz.theprogramsrc.supercoreapi.plugin.SpigotPlugin
+author: TheProgramSrc
