@@ -3,8 +3,7 @@ package xyz.theprogramsrc.supercoreapi.global.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -427,24 +426,6 @@ public class Utils {
     }
 
     /**
-     * Used to check if a plugin is installed
-     * @param name Name of the plugin
-     * @return true if is installed, otherwise false
-     */
-    public static boolean isPlugin(String name){
-        return Bukkit.getPluginManager().getPlugin(name) != null;
-    }
-
-    /**
-     * Used to get the plugin instance of a plugin
-     * @param name Name of the plugin
-     * @return Plugin instance of the requested plugin
-     */
-    public static Plugin getPlugin(String name){
-        return Bukkit.getPluginManager().getPlugin(name);
-    }
-
-    /**
      * Used to transform an Array into list
      * @param array Array to transform
      * @param <T> Type of the array
@@ -590,6 +571,18 @@ public class Utils {
     }
 
     /**
+     * Transform a boolean into a Enabled or Disabled depending on the {@code boolean} value given.
+     *
+     * The text returned will be translated using the {@link xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager translation system}
+     *
+     * @param check the boolean check
+     * @return Enabled if the check it's true, Disabled otherwise.
+     */
+    public static String parseEnabledBoolean(boolean check){
+        return check ? ("&a" + Base.ENABLED) : ("&c" + Base.DISABLED);
+    }
+
+    /**
      * Basic color text translation (Replace & by §)
      * @param text Text to translate
      * @return Translated text
@@ -671,19 +664,16 @@ public class Utils {
      *
      * @param body the body of the paste
      * @return the paste key
+     * @throws IOException in case of any problem
      */
-    public static String uploadPaste(String body){
+    public static String uploadPaste(String body) throws IOException{
         String url = "https://paste.theprogramsrc.xyz/documents";
-        try{
-            String post = postRequest(url, body);
-            if(post != null){
-                if(isJSONEncoded(post)){
-                    JsonObject json = new JsonParser().parse(post).getAsJsonObject();
-                    return json.get("key").getAsString();
-                }
+        String post = postRequest(url, body);
+        if(post != null){
+            if(isJSONEncoded(post)){
+                JsonObject json = new JsonParser().parse(post).getAsJsonObject();
+                return json.get("key").getAsString();
             }
-        }catch (IOException e){
-            e.printStackTrace();
         }
 
         return null;
@@ -696,12 +686,21 @@ public class Utils {
      */
     public static String exceptionToString(Exception e){
         StringBuilder builder = new StringBuilder();
-        builder.append(e.getClass().getName()).append(": ").append(e.getMessage() != null ? e.getMessage() : "null").append("\n");
+        builder.append(exceptionMessage(e)).append("\n");
         for (StackTraceElement ste : e.getStackTrace()) {
             builder.append("\tat ").append(ste.getClassName()).append(".").append(ste.getMethodName()).append("(").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(")").append("\n");
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Gets the message title from an exception
+     * @param e the exception
+     * @return the message of the exception (Usually it's foo.bar.Class: Message)
+     */
+    public static String exceptionMessage(Exception e){
+        return e.getClass().getName() + ": " + (e.getMessage() != null ? e.getMessage() : "null");
     }
 }
 

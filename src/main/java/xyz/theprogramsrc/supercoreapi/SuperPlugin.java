@@ -15,6 +15,11 @@ import java.util.List;
  */
 public interface SuperPlugin<PLUGIN> {
 
+    /*
+     * This need to be updated on every new release
+     */
+    String SUPER_CORE_API_VERSION = "4.3.0";
+
     /**
      * Gets if this plugin is paid, By default is set to true, but is recommended to change it if your plugin is free.
      * @return Whether the plugin is paid or not
@@ -36,12 +41,6 @@ public interface SuperPlugin<PLUGIN> {
      * @param message Message to send
      */
     void sendConsoleMessage(String message);
-
-    /**
-     * Gets a SuperUtils that only works on a specific server software
-     * @return Super Utils
-     */
-    SuperUtils getSuperUtils();
 
     /**
      * Gets the plugin name from the Plugin.yml in Bukkit/Spigot/Paper Servers and Bungee.yml in Proxies
@@ -170,6 +169,12 @@ public interface SuperPlugin<PLUGIN> {
      */
     void addError(Exception e);
 
+    /**
+     * Removes an error from the errors list
+     * @param i the index to delete
+     */
+    void removeError(int i);
+
     default Exception getLastError(){
         if(getLastErrors().isEmpty()){
             return null;
@@ -177,4 +182,10 @@ public interface SuperPlugin<PLUGIN> {
             return getLastErrors().getLast();
         }
     }
+
+    /**
+     * Gets if the current plugin is running on a bungeecord instance
+     * @return true if it's running in bungeecord, false otherwise
+     */
+    boolean isBungeeInstance();
 }

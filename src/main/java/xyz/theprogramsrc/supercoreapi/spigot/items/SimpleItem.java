@@ -3,8 +3,10 @@ package xyz.theprogramsrc.supercoreapi.spigot.items;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.apache.commons.codec.binary.Base64;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -475,5 +477,35 @@ public class SimpleItem {
      */
     public boolean hasLore(){
         return this.getLore() != null;
+    }
+
+    /**
+     * Adds the current item to the player inventory, and if it's full it's dropped
+     * @param player the player to give the item
+     */
+    public void give(Player player) {
+        this.give(player, true);
+    }
+
+    /**
+     * Adds the current item to the player inventory. If the parameter {@code dropIfFull} it's true the item will be dropped in the ground only if the inventory it's ful
+     * @param player the player to give the item
+     * @param dropIfFull if true the item will be dropped in the ground only if the inventory it's full, otherwise nothing will happen
+     */
+    public void give(Player player, boolean dropIfFull){
+        if(player.getInventory().firstEmpty() == -1){
+            this.drop(player.getLocation());
+        }else{
+            player.getInventory().addItem(this.build());
+        }
+    }
+
+    /**
+     * Drops the current item in the ground
+     * @param location the location of the dropped item
+     */
+    public void drop(Location location){
+        if(location.getWorld() != null)
+            location.getWorld().dropItemNaturally(location, this.build());
     }
 }

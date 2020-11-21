@@ -14,6 +14,7 @@ import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
+import xyz.theprogramsrc.supercoreapi.global.placeholders.BungeePlaceholderManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
@@ -72,10 +73,10 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){
-            if(this.isPaid()){
-                this.log("Thanks for buying this plugin from &3" + this.getPluginAuthor());
-            }else{
+            if(!this.isPaid()){
                 this.log("Thanks for downloading this plugin from &3" + this.getPluginAuthor());
+            }else{
+                this.log("Thanks for buying this plugin from &3" + this.getPluginAuthor());
             }
             this.log("If you need help you can contact the developer");
             this.log("Consider leaving a positive rating");
@@ -96,8 +97,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.getProxy().getConsole().sendMessage(new TextComponent(this.getSuperUtils().color(message)));
     }
 
-    @Override
-    public SuperUtils getSuperUtils() {
+    public BungeeUtils getSuperUtils() {
         return new BungeeUtils();
     }
 
@@ -214,5 +214,25 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     @Override
     public void addError(Exception e){
         this.errors.add(e);
+    }
+
+    @Override
+    public void removeError(int i) {
+        if(i <= this.errors.size()){
+            this.errors.remove(i);
+        }
+    }
+
+    /**
+     * Gets the {@link BungeePlaceholderManager}
+     * @return the {@link BungeePlaceholderManager}
+     */
+    public BungeePlaceholderManager getPlaceholderManager(){
+        return new BungeePlaceholderManager();
+    }
+
+    @Override
+    public boolean isBungeeInstance() {
+        return true;
     }
 }

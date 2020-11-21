@@ -4,6 +4,7 @@ import org.bukkit.event.Listener;
 import xyz.theprogramsrc.supercoreapi.SuperModule;
 import xyz.theprogramsrc.supercoreapi.spigot.items.PreloadedItems;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
 /**
@@ -32,34 +33,42 @@ public class SpigotModule extends SuperModule<Listener> implements Listener {
     }
 
     /**
-     * Gets the spigot tasks
-     * @return the spigot tasks
+     * Gets the {@link SpigotTasks}
+     * @return the {@link SpigotTasks}
      */
     protected SpigotTasks getSpigotTasks() {
         return this.spigotPlugin.getSpigotTasks();
     }
 
     /**
-     * Gets the preloaded items
-     * @return the preloaded items
+     * Gets the {@link PreloadedItems}
+     * @return the {@link PreloadedItems}
      */
     protected PreloadedItems getPreloadedItems(){
         return this.spigotPlugin.getPreloadedItems();
     }
 
     /**
-     * Registers listeners
-     * @param listeners Listeners to register
+     * Registers {@link Listener listeners}
+     * @param listeners the array of {@link Listener listeners} to register
      */
     protected void listener(Listener... listeners){
         this.spigotPlugin.listener(listeners);
     }
 
     /**
-     * Gets the plugin settings storage
-     * @return the settings storage
+     * Gets the plugin {@link SettingsStorage}
+     * @return the {@link SettingsStorage}
      */
     protected SettingsStorage getSettings() {
         return this.spigotPlugin.getSettingsStorage();
+    }
+
+    /**
+     * Gets the {@link SpigotUtils}
+     * @return the {@link SpigotUtils}
+     */
+    protected SpigotUtils getSuperUtils(){
+        return this.spigotPlugin.getSuperUtils();
     }
 }

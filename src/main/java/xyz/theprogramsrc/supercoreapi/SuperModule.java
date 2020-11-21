@@ -68,14 +68,6 @@ public abstract class SuperModule<LISTENER> {
     }
 
     /**
-     * Gets the plugin utils
-     * @return plugin utils
-     */
-    protected SuperUtils getSuperUtils(){
-        return this.plugin.getSuperUtils();
-    }
-
-    /**
      * Gets the plugin version
      * @return plugin version
      */

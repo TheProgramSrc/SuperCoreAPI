@@ -7,15 +7,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.Time;
-import xyz.theprogramsrc.supercoreapi.spigot.events.timer.TimerEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickType;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
@@ -33,7 +31,11 @@ public abstract class GUI extends SpigotModule {
     private final Player player;
     private Inventory inv;
     private final LinkedHashMap<Integer, GUIButton> buttons;
+    private String previousTitle;
+    private int previousSize;
     private boolean manuallyClosed;
+    private RecurringTask task;
+    protected boolean compatibilityClicking = false;
 
     /**
      * Create a new {@link GUI GUI}
@@ -44,34 +46,64 @@ public abstract class GUI extends SpigotModule {
         this.manuallyClosed = false;
         this.player = player;
         this.buttons = new LinkedHashMap<>();
+        this.task = this.getSpigotTasks().runRepeatingTask(1L, 1L, ()->{
+            if(this.inv != null){
+                if(!this.previousTitle.equals(this.getTitle()) || this.getRows().getSize() != this.previousSize){
+                    this.task.stop();
+                    HandlerList.unregisterAll(this);
+                    this.open();
+                    this.task.start();
+                    this.listener(GUI.this);
+                }
+
+                GUIButton[] buttonsArray = this.getButtons();
+                this.addButtons(buttonsArray);
+
+                this.inv.clear();
+                for(Map.Entry<Integer, GUIButton> entry : new LinkedHashMap<>(this.buttons).entrySet()){
+                    int slot = entry.getKey();
+                    if(slot < this.getRows().getSize() && slot >= 0){
+                        ItemStack item = entry.getValue().getItemStack();
+                        if(item != null){
+                            this.inv.setItem(slot, item);
+                        }
+                    }
+                }
+                this.onEvent(new GUIUpdateEvent(this));
+                this.player.updateInventory();
+            }
+        });
     }
 
     /**
      * Opens the {@link GUI GUI}
      */
     public void open(){
-        if(this.inv == null)
+        if(this.inv == null){
+            this.task.start();
             this.listener(this);
+        }
+        this.manuallyClosed = false;
+        this.previousTitle = this.getTitle();
+        this.previousSize = this.getRows().getSize();
         this.inv = Bukkit.createInventory(null, this.getRows().getSize(), this.getSuperUtils().color(this.isTitleCentered() ? this.getCenteredTitle() : this.getTitle()));
-        this.player.openInventory(this.inv);
+        this.getSpigotTasks().runTask(()->{
+            GUIOpenEvent guiOpenEvent = new GUIOpenEvent(this);
+            this.onEvent(guiOpenEvent);
+            if(this.compatibilityClicking){
+                this.player.closeInventory();
+            }
+
+            this.player.openInventory(this.inv);
+        });
     }
 
     /**
      * Closes the {@link GUI GUI}
      */
     public void close(){
-        this.getSpigotTasks().runTask(()->{
-            this.manuallyClosed = true;
-            this.getSpigotTasks().runTask(()->{
-                GUICloseEvent event = new GUICloseEvent(this);
-                this.onEvent(event);
-                if(!event.isCancelled()){
-                    HandlerList.unregisterAll(this);
-                    this.player.closeInventory();
-                    this.inv = null;
-                }
-            });
-        });
+        this.manuallyClosed = true;
+        this.getSpigotTasks().runTask(this.player::closeInventory);
     }
 
     /**
@@ -81,6 +113,7 @@ public abstract class GUI extends SpigotModule {
      * @see #addButton(GUIButton)
      */
     public void addButtons(Collection<GUIButton> buttons){
+        if(buttons == null) return;
         for(GUIButton button : buttons)
             this.addButton(button);
     }
@@ -92,6 +125,7 @@ public abstract class GUI extends SpigotModule {
      * @see #addButton(GUIButton)
      */
     public void addButtons(GUIButton... buttons){
+        if(buttons == null) return;
         for(GUIButton button : buttons)
             this.addButton(button);
     }
@@ -101,6 +135,7 @@ public abstract class GUI extends SpigotModule {
      * @param button the button to add inside the {@link GUI GUI}
      */
     public void addButton(GUIButton button){
+        if(button == null) return;
         this.setButton(button.getSlot(), button);
     }
 
@@ -202,7 +237,7 @@ public abstract class GUI extends SpigotModule {
     public String getCenteredTitle() {
         String title = this.getTitle();
         StringBuilder result = new StringBuilder();
-        int spaces = (27 - this.plugin.getSuperUtils().removeColor(title).length());
+        int spaces = (27 - this.spigotPlugin.getSuperUtils().removeColor(title).length());
 
         for (int i = 0; i < spaces; i++) {
             result.append(" ");
@@ -215,47 +250,18 @@ public abstract class GUI extends SpigotModule {
      * Executed when a {@link GUIEvent GUIEvent} is called
      * @param event the {@link GUIEvent event} called
      */
-    public void onEvent(GUIEvent event){
-
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onOpen(InventoryOpenEvent event){
-        if(this.inv != null && this.player != null){
-            if(event.getPlayer().equals(this.player)){
-                if(event.getInventory().equals(this.inv)){
-                    GUIOpenEvent guiOpenEvent = new GUIOpenEvent(this);
-                    this.onEvent(guiOpenEvent);
-                }
-            }
-        }
-    }
+    public void onEvent(GUIEvent event){ }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onClose(InventoryCloseEvent event){
-        if(this.inv != null && this.player != null){
-            if(event.getInventory().equals(this.inv)){
-                if(event.getPlayer().equals(this.player)){
-                    this.getSpigotTasks().runTaskLater(5L,()->{
-                        GUICloseEvent closeEvent = new GUICloseEvent(this);
-                        this.onEvent(closeEvent);
-                        if(closeEvent.isCancelled()){
-                            this.open();
-                        }else{
-                            if(this.canCloseGUI()){
-                                HandlerList.unregisterAll(this);
-                                this.inv = null;
-                            }else{
-                                if(this.manuallyClosed){
-                                    HandlerList.unregisterAll(this);
-                                    this.inv = null;
-                                }else{
-                                    this.open();
-                                }
-                            }
-                        }
-                    });
-                }
+        if(this.inv != null && this.player != null && event.getInventory().equals(this.inv) && event.getPlayer().equals(this.player)){
+            this.inv = null;
+            this.task.stop();
+            HandlerList.unregisterAll(this);
+            GUICloseEvent closeEvent = new GUICloseEvent(this);
+            this.onEvent(closeEvent);
+            if(closeEvent.isCancelled() || (!this.canCloseGUI() && !this.manuallyClosed)){
+                this.open();
             }
         }
     }
@@ -297,37 +303,11 @@ public abstract class GUI extends SpigotModule {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event){
-        if(this.inv != null){
-            if(event.getPlayer().equals(this.player)){
-                HandlerList.unregisterAll(this);
-                this.inv = null;
-            }
-        }
-    }
-
-    @EventHandler
-    public void syncItems(TimerEvent event){
-        if(event.getTime() == Time.TICK){
-            if(this.inv != null && this.player != null){
-                this.onEvent(new GUIUpdateEvent(this));
-                GUIButton[] buttonsArray = this.getButtons();
-                if(buttonsArray != null){
-                    for (GUIButton button : buttonsArray) {
-                        if(button != null){
-                            this.addButton(button);
-                        }
-                    }
-                }
-
-                this.inv.clear();
-                for(Map.Entry<Integer, GUIButton> entry : new LinkedHashMap<>(this.buttons).entrySet()){
-                    int slot = entry.getKey();
-                    if(this.inv.getSize() < slot || slot > this.inv.getSize()) continue;
-                    GUIButton button = entry.getValue();
-                    this.inv.setItem(slot, button.getItemStack());
-                }
-                this.player.updateInventory();
-            }
+        if(this.inv != null && event.getPlayer().equals(this.player)){
+            this.inv = null;
+            this.task.stop();
+            HandlerList.unregisterAll(this);
+            this.onEvent(new GUICloseEvent(this));
         }
     }
 
@@ -336,7 +316,7 @@ public abstract class GUI extends SpigotModule {
      * @return the {@link Inventory Bukkit Inventory}
      */
     public Inventory getBukkitInventory() {
-        return inv;
+        return this.inv;
     }
 
     /**
@@ -344,7 +324,7 @@ public abstract class GUI extends SpigotModule {
      * @return the player who is viewing the {@link GUI gui}
      */
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
 }

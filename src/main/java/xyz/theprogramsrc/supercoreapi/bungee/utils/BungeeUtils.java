@@ -25,7 +25,11 @@ public class BungeeUtils implements SuperUtils {
         return ChatColor.stripColor(message);
     }
 
-    @Override
+    /**
+     * Send a message with color support
+     * @param sender the sender
+     * @param message the message
+     */
     public void sendMessage(CommandSender sender, String message) {
         sender.sendMessage(new TextComponent(color(message)));
     }

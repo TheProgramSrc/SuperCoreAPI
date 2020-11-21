@@ -1,8 +1,11 @@
 package xyz.theprogramsrc.supercoreapi.spigot.commands;
 
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
@@ -22,7 +25,16 @@ public abstract class SpigotCommand extends SpigotModule {
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {
                 CommandResult result;
                 if (sender instanceof Player) {
-                    result = SpigotCommand.this.onPlayerExecute(((Player) sender), args);
+                    Player player = ((Player) sender);
+                    if(SpigotCommand.this.getPermission() != null && !SpigotCommand.this.getPermission().isEmpty()){
+                        if(!player.hasPermission(SpigotCommand.this.getPermission())){
+                            result = CommandResult.NO_PERMISSION;
+                        }else{
+                            result = SpigotCommand.this.onPlayerExecute(player, args);
+                        }
+                    }else{
+                        result = SpigotCommand.this.onPlayerExecute(player, args);
+                    }
                 } else {
                     result = SpigotCommand.this.onConsoleExecute(new SpigotConsole(), args);
                 }
@@ -39,9 +51,14 @@ public abstract class SpigotCommand extends SpigotModule {
                     return super.tabComplete(sender, alias, args);
                 }
             }
+
+            @Override
+            public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args, @Nullable Location location) throws IllegalArgumentException {
+                return this.tabComplete(sender, alias, args);
+            }
         };
         command.setPermission(this.getPermission());
-        plugin.getSuperUtils().registerBukkitCommand(command);
+        this.spigotPlugin.getSuperUtils().registerBukkitCommand(command);
     }
 
     private void onResult(CommandSender sender, CommandResult result){

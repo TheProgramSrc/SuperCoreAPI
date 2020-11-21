@@ -3,14 +3,15 @@ package xyz.theprogramsrc.supercoreapi.spigot;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
-import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.Dependencies;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.ReflectionClassLoader;
+import xyz.theprogramsrc.supercoreapi.global.placeholders.SpigotPlaceholderManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
@@ -43,6 +44,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     private SkinTextureManager skinManager;
     private EventManager eventManager;
     private RecipeCreator recipeCreator;
+    private SpigotPlaceholderManager placeholderManager;
 
     private PluginDataStorage pluginDataStorage;
 
@@ -87,6 +89,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.dependencyManager.loadDependencies(Dependencies.get());
         this.recipeCreator = new RecipeCreator();
         Skulls.loadFromGitHub();
+        this.placeholderManager = new SpigotPlaceholderManager(this);
         this.onPluginEnable();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -99,7 +102,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
             }else{
                 this.log("Thanks for downloading this plugin from &3" + this.getPluginAuthor());
             }
-            this.log("If you need help you can contact the developer");
+            this.log("If you need help you can contact the developer" + (this.getDescription().getAuthors().size() > 1 ? "s" : ""));
             this.log("Consider leaving a positive rating");
         }
     }
@@ -114,8 +117,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.log("Disabled plugin");
     }
 
-    @Override
-    public SuperUtils getSuperUtils() {
+    public SpigotUtils getSuperUtils() {
         return new SpigotUtils();
     }
 
@@ -136,7 +138,8 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public String getPluginAuthor() {
-        return this.getDescription().getAuthors().size() != 0 ? (this.getDescription().getAuthors().get(0) != null ? this.getDescription().getAuthors().get(0) : "TheProgramSrc") : "TheProgramSrc";
+        List<String> authors = this.getDescription().getAuthors();
+        return authors.isEmpty() ? "TheProgramSrc" : String.join(",", authors);
     }
 
     @Override
@@ -305,5 +308,25 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     @Override
     public void addError(Exception e){
         this.errors.add(e);
+    }
+
+    @Override
+    public void removeError(int i) {
+        if(i <= this.errors.size()){
+            this.errors.remove(i);
+        }
+    }
+
+    /**
+     * Gets the {@link SpigotPlaceholderManager} (Useful to handle placeholders and add PlaceholderAPI Support)
+     * @return the {@link SpigotPlaceholderManager}
+     */
+    public SpigotPlaceholderManager getPlaceholderManager() {
+        return placeholderManager;
+    }
+
+    @Override
+    public boolean isBungeeInstance() {
+        return this.isBungeeEnabled();
     }
 }

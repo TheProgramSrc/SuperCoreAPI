@@ -1,6 +1,6 @@
 package xyz.theprogramsrc.supercoreapi;
 
-import org.bukkit.command.defaults.BukkitCommand;
+import net.md_5.bungee.api.ChatColor;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,7 +17,7 @@ public interface SuperUtils {
      * @param hex The color in hex
      * @return the hex color as ChatColor
      */
-    net.md_5.bungee.api.ChatColor parseHex(String hex);
+    ChatColor parseHex(String hex);
 
     /**
      * Translates the message into minecraft coloured message
@@ -67,39 +67,5 @@ public interface SuperUtils {
      */
     default Collection<String> removeColor(Collection<String> strings){
         return strings.stream().map(this::removeColor).collect(Collectors.toList());
-    }
-
-    /**
-     * Unregisters a command using Reflection
-     * @param command Command to unregister
-     */
-    default void unregisterCommand(String command){
-        throw new RuntimeException("The operation unregisterCommand(String) is not supported yet");
-    }
-
-    /**
-     * Register a command using Reflection
-     * @param command Command to register
-     */
-    default void registerBukkitCommand(BukkitCommand command){
-        throw new RuntimeException("The operation registerBukkitCommand(BukkitCommand) is not supported yet");
-    }
-
-    /**
-     * Send a message
-     * @param sender Sender to send the message
-     * @param message Message to send
-     */
-    default void sendMessage(org.bukkit.command.CommandSender sender, String message){
-        throw new RuntimeException("The operation sendMessage(CommandSender, String) is not supported yet");
-    }
-
-    /**
-     * Send a message
-     * @param sender Sender to send the message
-     * @param message Message to send
-     */
-    default void sendMessage(net.md_5.bungee.api.CommandSender sender, String message){
-        throw new RuntimeException("The operation sendMessage(CommandSender, String) is not supported yet");
     }
 }
