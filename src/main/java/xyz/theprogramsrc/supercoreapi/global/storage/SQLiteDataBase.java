@@ -3,8 +3,10 @@ package xyz.theprogramsrc.supercoreapi.global.storage;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public abstract class SQLiteDataBase implements DataBase {
 
@@ -13,7 +15,6 @@ public abstract class SQLiteDataBase implements DataBase {
 
     public SQLiteDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
-
         this.createConnection();
     }
 
@@ -23,7 +24,7 @@ public abstract class SQLiteDataBase implements DataBase {
             if(!file.exists()) file.createNewFile();
             Class.forName("org.sqlite.JDBC");
             this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
-        }catch (Exception ex){
+        }catch (SQLException | ClassNotFoundException | IOException ex){
             this.plugin.log("&cCannot create SQLite Connection:");
             ex.printStackTrace();
         }
@@ -47,7 +48,7 @@ public abstract class SQLiteDataBase implements DataBase {
             if(this.connection != null){
                 this.connection.close();
             }
-        }catch (Exception ex){
+        }catch (SQLException ex){
             this.plugin.log("&cCannot close SQLite Connection:");
             ex.printStackTrace();
         }
@@ -59,21 +60,19 @@ public abstract class SQLiteDataBase implements DataBase {
      */
     @Override
     public void connect(ConnectionCall call) {
-        if(this.connection == null){
-            try{
+        try{
+            if(this.connection == null){
                 this.createConnection();
-            }catch (Exception ex){
-                this.plugin.log("&cCannot connect with SQLite DataBase:");
-                ex.printStackTrace();
+            }else if(this.connection.isClosed()){
+                this.createConnection();
             }
+        }catch (SQLException e){
+            this.plugin.addError(e);
+            this.plugin.log("&cError while connecting to SQLite:");
+            e.printStackTrace();
         }
 
-        try{
-            call.onConnect(this.connection);
-        }catch (Exception ex){
-            this.plugin.log("&cCannot execute ConnectionCall:");
-            ex.printStackTrace();
-        }
+        call.onConnect(this.connection);
     }
 
     /**

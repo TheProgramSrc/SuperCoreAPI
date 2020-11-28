@@ -110,6 +110,7 @@ public class SuperCoreAPICommand extends SpigotCommand {
                 lastErrors = this.plugin.getLastErrors().size()+"";
         this.getSuperUtils().sendMessage(player, "&bServer information:");
         this.getSuperUtils().sendMessage(player, "&7SuperCoreAPI Version: &9" + coreVersion);
+        this.getSuperUtils().sendMessage(player, String.format("&7%s Version: &9%s", this.plugin.getPluginName(), this.plugin.getPluginVersion()));
         this.getSuperUtils().sendMessage(player, "&7Server Version: &9" + serverVersion);
         this.getSuperUtils().sendMessage(player, "&7NMS Version: &9" + nmsVersion);
         this.getSuperUtils().sendMessage(player, "&7OS: &9" + os);
