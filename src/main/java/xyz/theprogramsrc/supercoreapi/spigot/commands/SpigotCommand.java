@@ -43,18 +43,8 @@ public abstract class SpigotCommand extends SpigotModule {
             }
 
             @Override
-            public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
-                if(sender instanceof Player){
-                    List<String> complete = SpigotCommand.this.getCommandComplete(((Player) sender), alias, args);
-                    return complete != null ? complete : new ArrayList<>();
-                }else{
-                    return super.tabComplete(sender, alias, args);
-                }
-            }
-
-            @Override
             public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args, @Nullable Location location) throws IllegalArgumentException {
-                return this.tabComplete(sender, alias, args);
+                return SpigotCommand.this.getCommandComplete(((Player)sender), alias, args);
             }
         };
         command.setPermission(this.getPermission());
