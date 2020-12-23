@@ -1,7 +1,8 @@
 # SuperCoreAPI
 Create the best plugins with better code, control and more!
+<br>
+![Sonatype Nexus (Repository)](https://img.shields.io/nexus/maven-public/xyz.theprogramsrc/SuperCoreAPI?label=Latest%20Version&server=https%3A%2F%2Frepo.theprogramsrc.xyz) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TheProgramSrc/SuperCoreAPI/Java%20CI) ![Discord](https://img.shields.io/discord/722162545305190543?color=%235171FF&label=Discord)
 
-[Examples](https://github.com/TheProgramSrc/SuperCoreAPI-Examples)
 
 ## Available extensions:
 
@@ -43,7 +44,6 @@ Create the best plugins with better code, control and more!
 * [Patreon](https://go.theprogramsrc.xyz/patreon)
 * [Free Minecraft Hosting](https://go.theprogramsrc.xyz/aternos)
 * [Best Minecraft Hosting, VPS Hosting, Dedicated Hosting and more!](https://go.theprogramsrc.xyz/elixirnode)
-* [The one stop marketplace for all the Minecraft plugins you will ever need.](https://go.theprogramsrc.xyz/songoda)
 
  <br>
 If you think there is a feature that shouldn't be here remember that this API is for TheProgramSrc's and PluginsSrc Projects.
