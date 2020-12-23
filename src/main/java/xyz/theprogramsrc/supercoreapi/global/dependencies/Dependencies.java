@@ -18,7 +18,7 @@ public enum Dependencies {
             "HikariCP",
             "3.3.1",
             "SIaA1yzGHOZNpZNoIt903f5ScJrIB3u8CT2cNkaLcy0=",
-            LoaderType.REFLECTION
+            LoaderType.ISOLATED
     ),
 
     SLF4J_API(
@@ -26,7 +26,7 @@ public enum Dependencies {
             "slf4j-api",
             "1.7.25",
             "GMSgCV1cHaa4F1kudnuyPSndL1YK1033X/OWHb3iW3k=",
-            LoaderType.REFLECTION
+            LoaderType.ISOLATED
     ),
 
     SLF4J_NOP(
@@ -34,7 +34,7 @@ public enum Dependencies {
             "slf4j-nop",
             "1.7.25",
             "bLEnE49Btahp+ezdBhrRd5mg4/5yBGAHlxVOsEMu6xI=",
-            LoaderType.REFLECTION
+            LoaderType.ISOLATED
     )
 
     ;

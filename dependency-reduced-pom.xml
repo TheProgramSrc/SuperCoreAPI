@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>4.3.0</version>
+  <version>4.5.0</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <defaultGoal>clean package</defaultGoal>
@@ -36,6 +36,16 @@
             <configuration>
               <createDependencyReducedPom>true</createDependencyReducedPom>
               <minimizeJar>true</minimizeJar>
+              <relocations>
+                <relocation>
+                  <pattern>org.apache.commons</pattern>
+                  <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.gson</pattern>
+                  <shadedPattern>xyz.theprogramsrc.supercoreapi.google.gson</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -128,7 +138,19 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.16.4-R0.1-20201104.085205-3</version>
+      <version>1.16.4-R0.1-20201213.004254-5</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-nop</artifactId>
+      <version>1.7.30</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
