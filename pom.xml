@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.5.1</version>
+    <version>4.5.2</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -42,15 +42,19 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
-                            <minimizeJar>true</minimizeJar>
+                            <minimizeJar>false</minimizeJar>
                             <relocations>
-                                <relocation>
-                                    <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons</shadedPattern>
-                                </relocation>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.io</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.io</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -65,7 +69,6 @@
             </resource>
         </resources>
     </build>
-
 
     <distributionManagement>
         <repository>
