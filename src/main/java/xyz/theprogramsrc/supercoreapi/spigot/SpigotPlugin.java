@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot;
 
+import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -62,6 +63,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.pluginDataStorage = new PluginDataStorage(this);
+        CommandAPI.onLoad(false);
         this.onPluginLoad();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -90,6 +92,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.recipeCreator = new RecipeCreator();
         Skulls.loadFromGitHub();
         this.placeholderManager = new SpigotPlaceholderManager(this);
+        CommandAPI.onEnable(this);
         this.onPluginEnable();
         if(this.emergencyStop) {
             setEnabled(false);
