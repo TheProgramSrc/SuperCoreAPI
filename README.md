@@ -25,6 +25,7 @@ Create the best plugins with better code, control and more!
 
 ### [Spigot](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/spigot)
 * Custom Command Creator
+* [CommandAPI by JorelAli](http://commandapi.jorel.dev/)
 * Dialog Creator
 * Custom Events
 * Interactive GUI Creator
@@ -40,6 +41,7 @@ Create the best plugins with better code, control and more!
 
 
 ## Links:
+* [CommandAPI Docs by JorelAli](http://commandapi.jorel.dev/)
 * [Donate](https://go.theprogramsrc.xyz/donate)
 * [Patreon](https://go.theprogramsrc.xyz/patreon)
 * [Free Minecraft Hosting](https://go.theprogramsrc.xyz/aternos)
