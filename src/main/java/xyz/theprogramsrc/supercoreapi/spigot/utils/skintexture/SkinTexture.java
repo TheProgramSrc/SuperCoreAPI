@@ -8,8 +8,11 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.entity.Player;
+import xyz.theprogramsrc.supercoreapi.global.networking.ConnectionBuilder;
+import xyz.theprogramsrc.supercoreapi.global.networking.CustomConnection;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @SuppressWarnings("ALL")
@@ -61,15 +64,18 @@ public class SkinTexture {
      */
     public static SkinTexture fromMojang(String playerName) {
         if(isMojangDown()) return null;
-        String response = Utils.readWithInputStream("https://api.mojang.com/users/profiles/minecraft/" + playerName);
-        if(response == null)
+        try {
+            CustomConnection connection = new ConnectionBuilder("https://api.mojang.com/users/profiles/minecraft/" + playerName).connect();
+            if(connection.getResponseCode() == 429) return null;
+            JsonObject response = connection.getResponseJson();
+            if(response == null) return null;
+            String uuid = response.get("id").getAsString();
+            String fullUUID = Utils.uuidToFullUUID(uuid);
+            return fromMojang(UUID.fromString(fullUUID));
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
-        JsonElement el = (new JsonParser()).parse(response);
-        if(el.isJsonNull())
-            return null;
-        String uuid = el.getAsJsonObject().get("id").getAsString();
-        String fullUUID = Utils.uuidToFullUUID(uuid);
-        return fromMojang(UUID.fromString(fullUUID));
+        }
     }
 
     /**
@@ -79,15 +85,18 @@ public class SkinTexture {
      */
     public static SkinTexture fromMojang(UUID uuid) {
         if(isMojangDown()) return null;
-        String response = Utils.readWithInputStream("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false");
-        if(response == null)
+        try {
+            CustomConnection connection = new ConnectionBuilder("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false").connect();
+            if(connection.getResponseCode() == 429) return null;
+            JsonObject response = connection.getResponseJson();
+            if(response == null) return null;
+            JsonObject properties = response.get("properties").getAsJsonArray().get(0).getAsJsonObject();
+            String value = properties.get("value").getAsString();
+            return new SkinTexture(base64ToUrl(value));
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
-        JsonElement el = (new JsonParser()).parse(response);
-        if(el.isJsonNull())
-            return null;
-        JsonObject properties = el.getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
-        String value = properties.get("value").getAsString();
-        return new SkinTexture(base64ToUrl(value));
+        }
     }
 
     /**
@@ -116,8 +125,8 @@ public class SkinTexture {
             if(current - lastCheck >= 25000L){
                 lastCheck = current;
                 try{
-                    String url = "http://status.mojang.com/check";
-                    String content = Utils.readWithInputStream(url);
+                    CustomConnection connection = new ConnectionBuilder("http://status.mojang.com/check").connect();
+                    String content = connection.getResponseString();
                     if(content != null){
                         JsonArray array = new JsonParser().parse(content).getAsJsonArray();
                         for(JsonElement el : array){
