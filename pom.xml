@@ -137,7 +137,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.4-R0.1-20201213.004254-5</version>
+            <version>1.16.4-R0.1-20201231.220651-6</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->
