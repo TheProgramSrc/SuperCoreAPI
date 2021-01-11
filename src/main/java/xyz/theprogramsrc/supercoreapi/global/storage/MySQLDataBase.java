@@ -17,9 +17,10 @@ public abstract class MySQLDataBase implements DataBase{
     public MySQLDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
         this.plugin.log("Connecting to '" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port()+"'...");
-        if(this.hideHikariLogs()){
+        if(this.hideHikariLogs() && !plugin.isDebugEnabled()){
             new LogsFilter(LogsFilter.FilterResult.DENY, "com.zaxxer.hikari").register();
         }
+        this.plugin.debug("Loading HikariConfig");
         HikariConfig cfg = new HikariConfig();
         cfg.setDriverClassName("com.mysql.jdbc.Driver");
         cfg.setJdbcUrl("jdbc:mysql://" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port() + "/" + getDataBaseSettings().database() + "?useSSL=" + getDataBaseSettings().useSSL());
@@ -27,10 +28,12 @@ public abstract class MySQLDataBase implements DataBase{
         cfg.setPassword(getDataBaseSettings().password());
         cfg.setMaximumPoolSize(3);
 
+        this.plugin.debug("Loading HikariDataSource");
         try{
             this.dataSource = new HikariDataSource(cfg);
             this.loaded = true;
         }catch (Exception ex){
+            this.plugin.addError(ex);
             this.plugin.log("&cCannot connect to MySQL DataBase:");
             ex.printStackTrace();
         }
@@ -50,11 +53,13 @@ public abstract class MySQLDataBase implements DataBase{
      */
     @Override
     public void closeConnection() {
+        this.plugin.debug("Closing connection with DataBase");
         try{
             if(this.dataSource != null){
                 this.dataSource.close();
             }
         }catch (Exception ex){
+            this.plugin.addError(ex);
             this.plugin.log("&cCannot close MySQL Connection:");
             ex.printStackTrace();
         }
@@ -69,6 +74,7 @@ public abstract class MySQLDataBase implements DataBase{
         try(Connection connection = this.dataSource.getConnection()){
             call.onConnect(connection);
         }catch (Exception ex){
+            this.plugin.addError(ex);
             this.plugin.log("&cCannot execute MySQL Connection Call:");
             ex.printStackTrace();
         }

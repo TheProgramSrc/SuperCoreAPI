@@ -23,6 +23,8 @@ public class Hologram extends SpigotModule {
      * @param lines The content of the hologram
      */
     public Hologram(Location location, LinkedList<String> lines){
+        String worldName = location.getWorld() == null ? "Unknown World" : location.getWorld().getName();
+        this.debug("Registering Hologram with " + lines.size() + " lines in the world '" + worldName + "'");
         this.location = location;
         this.armorStands = new LinkedList<>();
         this.lines = lines;

@@ -46,12 +46,13 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         i = this;
         this.errors = new LinkedList<>();
         this.emergencyStop = false;
-        new xyz.theprogramsrc.supercoreapi.Base(this);
         this.log("Loading plugin &3v"+this.getPluginVersion());
         this.disableHooks = new ArrayList<>();
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.pluginDataStorage = new PluginDataStorage(this);
+        this.debug("Checking for updates");
+        new xyz.theprogramsrc.supercoreapi.Base(this);
         this.onPluginLoad();
         if(this.emergencyStop) return;
         this.log("Loaded plugin in " + (System.currentTimeMillis() - start) + "ms");
@@ -61,12 +62,17 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     public void onEnable() {
         if(this.emergencyStop) return;
         this.log("Enabling plugin &3v" + this.getPluginVersion());
+        this.debug("Loading BungeeTasks");
         this.bungeeTasks = new BungeeTasks();
+        this.debug("Loading Settings");
         this.settings = new Settings();
+        this.debug("Loading Translations");
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
+        this.debug("Loading EventManager");
         new BungeeEventManager();
+        this.debug("Loading DependencyManager");
         PluginClassLoader classLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, classLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
@@ -87,6 +93,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     public void onDisable() {
         if(this.emergencyStop) return;
         this.log("Disabling plugin &3v" + this.getPluginVersion());
+        this.debug("Running disable hooks");
         this.getDisableHooks().forEach(Runnable::run);
         this.onPluginDisable();
         this.log("Disabled plugin");
@@ -162,6 +169,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     }
 
     public void listener(Listener... listeners) {
+        this.debug("Registering '" + listeners.length + "' listeners");
         Arrays.stream(listeners).forEach(l->this.getProxy().getPluginManager().registerListener(this, l));
     }
 
@@ -179,6 +187,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
      */
     @Override
     public void emergencyStop() {
+        this.debug("Running emergency stop");
         this.emergencyStop = true;
         this.getProxy().getPluginManager().unregisterCommands(this);
         this.getProxy().getPluginManager().unregisterListeners(this);
@@ -213,12 +222,15 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
 
     @Override
     public void addError(Exception e){
+        this.debug("Adding error with message '"+e.getMessage()+"'");
         this.errors.add(e);
     }
 
     @Override
     public void removeError(int i) {
         if(i <= this.errors.size()){
+            Exception e = this.errors.get(i);
+            this.debug("Removing error with message '"+e.getMessage()+"'");
             this.errors.remove(i);
         }
     }

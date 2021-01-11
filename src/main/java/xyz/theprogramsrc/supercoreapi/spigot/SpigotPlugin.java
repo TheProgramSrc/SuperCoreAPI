@@ -22,6 +22,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.ServerVersion;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
@@ -57,13 +58,20 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         i = this;
         this.errors = new LinkedList<>();
         this.emergencyStop = false;
-        new xyz.theprogramsrc.supercoreapi.Base(this);
         this.disableHooks = new ArrayList<>();
         this.serverFolder = Utils.folder(new File("."));
         this.firstStart = !this.getDataFolder().exists();
         Utils.folder(this.getDataFolder());
         this.pluginDataStorage = new PluginDataStorage(this);
-        CommandAPI.onLoad(false);
+        this.debug("Checking for updates");
+        new xyz.theprogramsrc.supercoreapi.Base(this);
+        if(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
+            this.debug("Enabling CommandAPI by Jorel (https://commandapi.jorel.dev)");
+            CommandAPI.onLoad(false);
+        }else{
+            this.debug("CommandAPI by Jorel (https://commandapi.jorel.dev) could not be enabled because of the version incompatibility. This might bring issues. Please consider updating your server to 1.13+");
+        }
+        this.debug("Loading plugin");
         this.onPluginLoad();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -78,21 +86,38 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
             setEnabled(false);
             return;
         }
+        this.debug("Enabling SuperCoreAPI");
+        this.debug("Loading SettingsStorage");
         this.settingsStorage = new SettingsStorage();
+        this.debug("Loading Translations");
         this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
+        this.debug("Loading SkinManager");
         this.skinManager = new SkinTextureManager();
+        this.debug("Loading SpigotTasks");
         this.spigotTasks = new SpigotTasks();
+        this.debug("Loading PreloadedItems");
         this.preloadedItems = new PreloadedItems();
+        this.debug("Loading EventManager");
         this.eventManager = new EventManager();
+        this.debug("Loading Dependency Manager");
         PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
         this.dependencyManager = new DependencyManager(this, pluginClassLoader);
         this.dependencyManager.loadDependencies(Dependencies.get());
+        this.debug("Loading RecipeCreator [BETA]");
         this.recipeCreator = new RecipeCreator();
+        this.debug("Loading SkullsDatabase from GitHub");
         Skulls.loadFromGitHub();
+        this.debug("Loading Placeholder Manager");
         this.placeholderManager = new SpigotPlaceholderManager(this);
-        CommandAPI.onEnable(this);
+        if(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)){
+            this.debug("Enabling CommandAPI by Jorel (https://commandapi.jorel.dev)");
+            CommandAPI.onEnable(this);
+        }else{
+            this.debug("Cannot enable CommandAPI by Jorel (https://commandapi.jorel.dev). This might bring issues. Please consider updating your server software to 1.13+");
+        }
+        this.debug("Enabling plugin");
         this.onPluginEnable();
         if(this.emergencyStop) {
             setEnabled(false);
@@ -115,6 +140,8 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         if(this.emergencyStop) {
             return;
         }
+        this.debug("Disabling plugin...");
+        this.debug("Running disable hooks");
         this.getDisableHooks().forEach(Runnable::run);
         this.onPluginDisable();
         this.log("Disabled plugin");
@@ -196,6 +223,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      * @param listeners Listeners to register
      */
     public void listener(Listener... listeners){
+        this.debug("Registering " + listeners.length + " listeners.");
         Arrays.stream(listeners).forEach(l->this.getServer().getPluginManager().registerEvents(l, this));
     }
 
@@ -224,7 +252,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     }
 
     /**
-     * Checks if the server has bungeecord enabled
+     * Checks if the server has BungeeCord enabled
      * @return True if BungeeCord is enabled, otherwise false
      */
     public boolean isBungeeEnabled(){
@@ -255,6 +283,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public void emergencyStop() {
+        this.debug("Initializing emergency stop");
         this.emergencyStop = true;
         HandlerList.unregisterAll(this);
         this.getServer().getPluginManager().disablePlugin(this);
@@ -284,6 +313,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      * @param recipe the recipe
      */
     public void registerRecipe(String id, CustomRecipe recipe){
+        this.debug("Registering the recipe with id '" + id + "'");
         this.recipeCreator.addRecipe(id, recipe);
     }
 
@@ -292,6 +322,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
      * @param id the identifier
      */
     public void unregisterRecipe(String id){
+        this.debug("Unregistering the recipe with id '" + id + "'");
         this.recipeCreator.removeRecipe(id);
     }
 
@@ -310,12 +341,15 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
 
     @Override
     public void addError(Exception e){
+        this.debug("Adding new exception with message '" + e.getMessage() + "'");
         this.errors.add(e);
     }
 
     @Override
     public void removeError(int i) {
         if(i <= this.errors.size()){
+            Exception e = this.errors.get(i);
+            this.debug("Removing the error with message '" + e.getMessage() + "'");
             this.errors.remove(i);
         }
     }

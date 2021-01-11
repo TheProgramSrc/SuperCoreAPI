@@ -17,6 +17,11 @@ public class PluginDataStorage extends JsonConfig {
     public PluginDataStorage(SuperPlugin<?> plugin){
         super(plugin.getPluginFolder(), "PluginData.json");
         this.add("stats_id", UUID.randomUUID().toString());
+        this.add("debug", "false");
+    }
+
+    public boolean isDebugEnabled(){
+        return this.getBoolean("debug");
     }
 
     public void saveNotification(Notification notification){

@@ -30,6 +30,22 @@ public abstract class SuperModule<LISTENER> {
     }
 
     /**
+     * Show a debug message if the debug mode is enabled
+     * @param message the message to show if the debug mode is enabled
+     */
+    protected void debug(String message){
+        this.plugin.debug(message);
+    }
+
+    /**
+     * Checks if the debug mode is enabled
+     * @return if the debug mode is enabled
+     */
+    protected boolean isDebugEnabled(){
+        return this.plugin.isDebugEnabled();
+    }
+
+    /**
      * Registers new listeners
      * @param listeners Listeners to register
      */

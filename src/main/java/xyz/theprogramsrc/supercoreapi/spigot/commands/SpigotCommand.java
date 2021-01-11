@@ -20,6 +20,7 @@ public abstract class SpigotCommand extends SpigotModule {
      * Creates a new command for Spigot and registers it
      */
     public SpigotCommand() {
+        this.debug("Registering command '" + this.getCommand() + "'");
         BukkitCommand command = new BukkitCommand(this.getCommand(), "", "/", Utils.toList(this.getAliases())) {
             @Override
             public boolean execute(CommandSender sender, String commandLabel, String[] args) {

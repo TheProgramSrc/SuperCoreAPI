@@ -99,3 +99,7 @@ fabric.properties
 
 # Target
 target/
+
+# Custom
+SuperCoreAPI.iml
+.idea/

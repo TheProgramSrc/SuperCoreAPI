@@ -32,6 +32,7 @@ public abstract class Dialog extends SpigotModule {
      */
     public Dialog(Player player){
         super(false);
+        this.debug("Registering and opening dialog to '" + player.getName() + "'");
         this.player = player;
         this.placeholders = new HashMap<>();
         this.openDialog();
@@ -114,10 +115,12 @@ public abstract class Dialog extends SpigotModule {
         if(event.getPlayer().equals(this.getPlayer())){
             event.setCancelled(true);
             String message = event.getMessage();
-            boolean result = this.onResult(message);
-            if(result){
-                this.close();
-            }
+            this.getSpigotTasks().runTask(() -> {
+                boolean result = this.onResult(message);
+                if(result){
+                    this.close();
+                }
+            });
         }
     }
 

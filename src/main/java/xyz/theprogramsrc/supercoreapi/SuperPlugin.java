@@ -18,7 +18,7 @@ public interface SuperPlugin<PLUGIN> {
     /*
      * This need to be updated on every new release
      */
-    String SUPER_CORE_API_VERSION = "4.7.1";
+    String SUPER_CORE_API_VERSION = "4.8.0";
 
     /**
      * Gets if this plugin is paid, By default is set to true, but is recommended to change it if your plugin is free.
@@ -188,4 +188,22 @@ public interface SuperPlugin<PLUGIN> {
      * @return true if it's running in bungeecord, false otherwise
      */
     boolean isBungeeInstance();
+
+    /**
+     * Checks if the debug mode is enabled
+     * @return if the debug mode is enabled
+     */
+    default boolean isDebugEnabled(){
+        return this.getPluginDataStorage().isDebugEnabled();
+    }
+
+    /**
+     * Show a debug message if the debug mode is enabled
+     * @param message if the debug mode is enabled shows the specified debug message
+     */
+    default void debug(String message){
+        if(this.isDebugEnabled()) {
+            this.sendConsoleMessage("&b&l[" + this.getPluginName() + " DEBUG]&r: " + message);
+        }
+    }
 }

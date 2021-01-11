@@ -43,6 +43,7 @@ public abstract class GUI extends SpigotModule {
      */
     public GUI(Player player){
         super(false);
+        this.debug("Registering GUI with title '" + this.getTitle() + "&r'");
         this.manuallyClosed = false;
         this.player = player;
         this.buttons = new LinkedHashMap<>();

@@ -19,12 +19,14 @@ public abstract class SQLiteDataBase implements DataBase {
     }
 
     private void createConnection() {
+        this.plugin.debug("Connecting to SQLite DataBase");
         try{
             File file = new File(this.plugin.getPluginFolder(), this.plugin.getPluginName().toLowerCase()+".db");
             if(!file.exists()) file.createNewFile();
             Class.forName("org.sqlite.JDBC");
             this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
         }catch (SQLException | ClassNotFoundException | IOException ex){
+            this.plugin.addError(ex);
             this.plugin.log("&cCannot create SQLite Connection:");
             ex.printStackTrace();
         }
@@ -44,11 +46,13 @@ public abstract class SQLiteDataBase implements DataBase {
      */
     @Override
     public void closeConnection() {
+        this.plugin.debug("Closing connection with SQLite DataBase");
         try{
             if(this.connection != null){
                 this.connection.close();
             }
         }catch (SQLException ex){
+            this.plugin.addError(ex);
             this.plugin.log("&cCannot close SQLite Connection:");
             ex.printStackTrace();
         }

@@ -25,6 +25,7 @@ public class TranslationManager {
      * @param clazz {@link TranslationPack} class to register
      */
     public void registerTranslation(Class<? extends TranslationPack> clazz){
+        this.plugin.debug("Registering translation '" + clazz.getName() + "'");
         try{
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafe.setAccessible(true);
@@ -61,6 +62,7 @@ public class TranslationManager {
      * Clear the caches and load all the available translations
      */
     public void reloadTranslations(){
+        this.plugin.debug("Reloading translations");
         if(this.translations == null) this.translations = new HashMap<>();
         this.translations.clear();
         File[] translationsFiles = this.plugin.getTranslationsFolder().listFiles();
@@ -107,6 +109,7 @@ public class TranslationManager {
      * @return Translated identifier
      */
     public String translate(String id, String def){
+        this.plugin.debug("Translating phrase with id '" + id + "' and default '" + def + "'");
         String currentLanguage = this.plugin.getLanguage();
         Locale locale = new Locale(currentLanguage.split("_")[0], currentLanguage.split("_")[1]);
         if(!this.translations.containsKey(locale)){

@@ -18,6 +18,7 @@ public abstract class BungeeCommand extends BungeeModule {
      * Create a new {@link BungeeCommand BungeeCommand}
      */
     public BungeeCommand(){
+        this.debug("Registering command '" + this.getCommand() + "'");
         getProxy().getPluginManager().registerCommand(this.bungeePlugin, new Command(this.getCommand(), this.getPermission(), this.getAliases()) {
             @Override
             public void execute(CommandSender sender, String[] args) {

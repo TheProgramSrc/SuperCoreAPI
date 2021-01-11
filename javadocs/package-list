@@ -15,6 +15,7 @@ xyz.theprogramsrc.supercoreapi.global.dependencies
 xyz.theprogramsrc.supercoreapi.global.dependencies.classloader
 xyz.theprogramsrc.supercoreapi.global.files
 xyz.theprogramsrc.supercoreapi.global.files.utils
+xyz.theprogramsrc.supercoreapi.global.networking
 xyz.theprogramsrc.supercoreapi.global.notifications
 xyz.theprogramsrc.supercoreapi.global.objects
 xyz.theprogramsrc.supercoreapi.global.placeholders
