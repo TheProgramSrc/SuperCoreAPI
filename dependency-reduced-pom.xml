@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>4.7.1</version>
+  <version>4.8.0</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <defaultGoal>clean package</defaultGoal>
@@ -150,7 +150,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.16.4-R0.1-20201213.004254-5</version>
+      <version>1.16.4-R0.1-20210108.224241-7</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

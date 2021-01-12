@@ -33,7 +33,7 @@ public class SettingsStorage extends SpigotModule {
      * @return the prefix
      */
     public String getPrefix(){
-        return this.cfg.getString("Prefix");
+        return this.cfg.getString("Prefix", this.defaultPrefix);
     }
 
     /**
@@ -41,7 +41,7 @@ public class SettingsStorage extends SpigotModule {
      * @return the language
      */
     public String getLanguage() {
-        return this.cfg.getString("Language");
+        return this.cfg.getString("Language", "en_US");
     }
 
     private void loadDefaults(){

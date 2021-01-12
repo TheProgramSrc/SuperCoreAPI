@@ -21,8 +21,20 @@ public class Settings extends BungeeModule {
         }
     }
 
+    /**
+     * Gets the current language of the plugin
+     * @return the current language of the plugin
+     */
     public String getLanguage(){
-        return this.config.getString("Language");
+        return this.config.getString("Language", "en_US");
+    }
+
+    /**
+     * Gets the prefix from the plugin or returns the default prefix if there is no prefix in config
+     * @return the prefix of the plugin
+     */
+    public String getPrefix(){
+        return this.config.getString("Prefix", this.defaultPrefix);
     }
 
     public BungeeYMLConfig getConfig() {
