@@ -109,7 +109,6 @@ public class TranslationManager {
      * @return Translated identifier
      */
     public String translate(String id, String def){
-        this.plugin.debug("Translating phrase with id '" + id + "' and default '" + def + "'");
         String currentLanguage = this.plugin.getLanguage();
         Locale locale = new Locale(currentLanguage.split("_")[0], currentLanguage.split("_")[1]);
         if(!this.translations.containsKey(locale)){

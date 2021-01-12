@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class SQLiteDataBase implements DataBase {
+public class SQLiteDataBase implements DataBase {
 
     protected Connection connection;
     protected SuperPlugin<?> plugin;
