@@ -32,7 +32,6 @@ public abstract class Dialog extends SpigotModule {
      */
     public Dialog(Player player){
         super(false);
-        this.debug("Registering and opening dialog to '" + player.getName() + "'");
         this.player = player;
         this.placeholders = new HashMap<>();
         this.openDialog();
@@ -50,13 +49,14 @@ public abstract class Dialog extends SpigotModule {
             if(this.canClose()){
                 this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
             }
-        });
+            this.debug("Opening dialog with title '" + this.getTitle() + "&r'");
 
-        if(this.task == null){
-            this.task = this.getSpigotTasks().runRepeatingTask(0L, 1L, this::sendTitleAndActionbar);
-        }else{
-            this.task.start();
-        }
+            if(this.task == null){
+                this.task = this.getSpigotTasks().runRepeatingTask(1L, 1L, this::sendTitleAndActionbar);
+            }else{
+                this.task.start();
+            }
+        });
     }
 
     private void sendTitleAndActionbar() {
@@ -69,7 +69,7 @@ public abstract class Dialog extends SpigotModule {
      */
     public void close(){
         this.getSpigotTasks().runTask(()->{
-            this.task.stop();
+            if(this.task != null) this.task.stop();
             HandlerList.unregisterAll(this);
             Title.clearTitle(this.getPlayer());
             Actionbar.clearActionbar(this.getPlayer());

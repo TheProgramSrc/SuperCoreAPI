@@ -43,10 +43,10 @@ public abstract class GUI extends SpigotModule {
      */
     public GUI(Player player){
         super(false);
-        this.debug("Registering GUI with title '" + this.getTitle() + "&r'");
         this.manuallyClosed = false;
         this.player = player;
         this.buttons = new LinkedHashMap<>();
+        this.debug("Registering GUI with title '" + this.getTitle() + "&r'");
         this.task = this.getSpigotTasks().runRepeatingTask(1L, 1L, ()->{
             if(this.inv != null){
                 if(!this.previousTitle.equals(this.getTitle()) || this.getRows().getSize() != this.previousSize){
