@@ -6,10 +6,9 @@ The following list can tell you if the version is supported or not. If the versi
 
 | Version | Supported          |
 | ------- | ------------------ |
-| [3.2.1](https://github.com/TheProgramSrc/SuperCoreAPI/tree/v3.2.1)   | :white_check_mark: |
-| [3.2.0](https://github.com/TheProgramSrc/SuperCoreAPI/tree/v3.2.0)   | :white_check_mark: |
-| < 3.1.X   | :x:                |
+| [![Sonatype Nexus (Repository)](https://img.shields.io/nexus/maven-public/xyz.theprogramsrc/SuperCoreAPI?label=Current%20Release&server=https%3A%2F%2Frepo.theprogramsrc.xyz)](https://github.com/TheProgramSrc/SuperCoreAPI)   | :white_check_mark: |
+| < 4.8.5   | :x:                |
 
 ## Reporting a Vulnerability
 
-If you find any vulnerability with something you can create a new [issue](https://github.com/TheProgramSrc/SuperCoreAPI/issues)
+If you find any vulnerability, you can create a new [issue](https://github.com/TheProgramSrc/SuperCoreAPI/issues)
