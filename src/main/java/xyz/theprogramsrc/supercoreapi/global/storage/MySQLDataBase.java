@@ -66,7 +66,7 @@ public abstract class MySQLDataBase implements DataBase{
     }
 
     /**
-     * Used to connect to the DataBase and execute a {@link ConnectionCall}
+     * Used to connect to the DataBase and execute a {@link xyz.theprogramsrc.supercoreapi.global.storage.DataBase.ConnectionCall ConnectionCall}
      * @param call ConnectionCall to execute
      */
     @Override

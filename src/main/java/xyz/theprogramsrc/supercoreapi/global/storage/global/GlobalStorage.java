@@ -25,15 +25,15 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     }
 
     /**
-     * Gets the table where the {@link OBJ object} should be saved
+     * Gets the table where the object should be saved
      * @return the name of the table
      */
     public abstract String getTableName();
 
     /**
      * Used to serialize and store in the database
-     * @param obj the {@link OBJ object}
-     * @return the serialized {@link OBJ object}
+     * @param obj the object
+     * @return the serialized object
      */
     public abstract String serialize(OBJ obj);
 
@@ -45,7 +45,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     public abstract OBJ deserialize(String data);
 
     /**
-     * Store the {@link OBJ object} in the database
+     * Store the object in the database
      * @param key the key
      * @param value the object
      */
@@ -68,7 +68,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     }
 
     /**
-     * Gets the {@link OBJ object} from the database
+     * Gets the object from the database
      * @param key the key
      * @return the object
      */
@@ -91,7 +91,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     }
 
     /**
-     * Used to get all the {@link OBJ object} stored in the database
+     * Used to get all the object stored in the database
      * @return the objects
      */
     public HashMap<String, OBJ> getAll(){
@@ -117,7 +117,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     }
 
     /**
-     * Checks if the {@link OBJ object} is stored in the database
+     * Checks if the object is stored in the database
      * @param key the key
      * @return true if is stored, otherwise false
      */

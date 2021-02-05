@@ -18,7 +18,7 @@ public interface SuperPlugin<PLUGIN> {
     /*
      * This need to be updated on every new release
      */
-    String SUPER_CORE_API_VERSION = "4.8.0";
+    String SUPER_CORE_API_VERSION = "4.9.0";
 
     /**
      * Gets if this plugin is paid, By default is set to true, but is recommended to change it if your plugin is free.
