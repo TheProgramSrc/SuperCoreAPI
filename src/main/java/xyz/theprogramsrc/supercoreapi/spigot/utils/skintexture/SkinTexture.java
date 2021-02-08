@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.networking.ConnectionBuilder;
 import xyz.theprogramsrc.supercoreapi.global.networking.CustomConnection;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -65,6 +66,11 @@ public class SkinTexture {
     public static SkinTexture fromMojang(String playerName) {
         if(isMojangDown()) return null;
         try {
+            if(SpigotPlugin.i.getSuperUtils().isPlugin("Geyser-Spigot")){ // Remove the '*' to avoid errors
+                if(playerName.startsWith("*")){
+                    playerName = playerName.substring(1);
+                }
+            }
             CustomConnection connection = new ConnectionBuilder("https://api.mojang.com/users/profiles/minecraft/" + playerName).connect();
             if(connection.getResponseCode() == 429) return null;
             JsonObject response = connection.getResponseJson();
