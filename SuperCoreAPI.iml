@@ -50,6 +50,5 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.logging.log4j:log4j-api:2.13.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.10.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jetbrains:annotations:19.0.0" level="project" />
-    <orderEntry type="library" name="Maven: dev.jorel:commandapi-shade:5.8" level="project" />
   </component>
 </module>

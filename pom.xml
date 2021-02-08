@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.9.1</version>
+    <version>4.10.0</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -55,10 +55,6 @@
                                 <relocation>
                                     <pattern>org.apache.commons.io</pattern>
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.io</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>dev.jorel.commandapi-shade</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.commandapi</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -110,11 +106,6 @@
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <!-- Command API -->
-        <repository>
-            <id>commandapi</id>
-            <url>https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/</url>
         </repository>
         <!-- Jitpack -->
         <repository>
@@ -204,13 +195,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.9</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- CommandAPI -->
-        <dependency>
-            <groupId>dev.jorel</groupId>
-            <artifactId>commandapi-shade</artifactId>
-            <version>5.8</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

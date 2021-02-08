@@ -24,7 +24,6 @@ This is the list of included extensions in the SuperCoreAPI Package.
 
 ### [Spigot](https://github.com/TheProgramSrc/SuperCoreAPI/tree/master/src/main/java/xyz/theprogramsrc/supercoreapi/spigot)
 * Custom Command Creator
-* [CommandAPI by JorelAli](http://commandapi.jorel.dev/)
 * Dialog Creator
 * Custom Events
 * Interactive GUI Creator
@@ -47,7 +46,6 @@ This is the list of included extensions in the SuperCoreAPI Package.
 * [sqlite-jdbc](https://github.com/xerial/sqlite-jdbc/) ([License](https://github.com/xerial/sqlite-jdbc/blob/master/LICENSE))
 * [log4j2](https://github.com/apache/logging-log4j2) ([License](https://github.com/apache/logging-log4j2/blob/master/LICENSE.txt))
 * [PlaceholderAPI](https://github.com/PlaceholderAPI/PlaceholderAPI) ([License](https://github.com/PlaceholderAPI/PlaceholderAPI/blob/master/LICENSE))
-* [CommandAPI by JorelAli](http://commandapi.jorel.dev/) ([License](https://github.com/JorelAli/CommandAPI/blob/master/LICENSE))
 
 
 ## Links

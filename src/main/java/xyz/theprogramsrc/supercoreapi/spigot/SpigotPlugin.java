@@ -1,6 +1,5 @@
 package xyz.theprogramsrc.supercoreapi.spigot;
 
-import dev.jorel.commandapi.CommandAPI;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -65,12 +64,6 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.pluginDataStorage = new PluginDataStorage(this);
         this.debug("Checking for updates");
         new xyz.theprogramsrc.supercoreapi.Base(this);
-        if(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
-            this.debug("Enabling CommandAPI by Jorel (https://commandapi.jorel.dev)");
-            CommandAPI.onLoad(false);
-        }else{
-            this.debug("CommandAPI by Jorel (https://commandapi.jorel.dev) could not be enabled because of the version incompatibility. This might bring issues. Please consider updating your server to 1.13+");
-        }
         this.debug("Loading plugin");
         this.onPluginLoad();
         if(this.emergencyStop) {
@@ -111,12 +104,6 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         Skulls.loadFromGitHub();
         this.debug("Loading Placeholder Manager");
         this.placeholderManager = new SpigotPlaceholderManager(this);
-        if(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)){
-            this.debug("Enabling CommandAPI by Jorel (https://commandapi.jorel.dev)");
-            CommandAPI.onEnable(this);
-        }else{
-            this.debug("Cannot enable CommandAPI by Jorel (https://commandapi.jorel.dev). This might bring issues. Please consider updating your server software to 1.13+");
-        }
         this.debug("Enabling plugin");
         this.onPluginEnable();
         if(this.emergencyStop) {
