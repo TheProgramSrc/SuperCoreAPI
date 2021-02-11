@@ -46,7 +46,6 @@ public abstract class GUI extends SpigotModule {
         this.manuallyClosed = false;
         this.player = player;
         this.buttons = new LinkedHashMap<>();
-        this.debug("Registering GUI with title '" + this.getTitle() + "&r'");
         this.task = this.getSpigotTasks().runRepeatingTask(1L, 1L, ()->{
             if(this.inv != null){
                 if(!this.previousTitle.equals(this.getTitle()) || this.getRows().getSize() != this.previousSize){
@@ -305,10 +304,7 @@ public abstract class GUI extends SpigotModule {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onQuit(PlayerQuitEvent event){
         if(this.inv != null && event.getPlayer().equals(this.player)){
-            this.inv = null;
-            this.task.stop();
-            HandlerList.unregisterAll(this);
-            this.onEvent(new GUICloseEvent(this));
+            this.close();
         }
     }
 
