@@ -68,7 +68,7 @@ public class PreloadedItems extends SpigotModule {
      * @return the item
      */
     public SimpleItem emptyItem(){
-        return new SimpleItem(XMaterial.WHITE_STAINED_GLASS).setDisplayName("&7").addEnchantment(Enchantment.DURABILITY).setShowEnchantments(false);
+        return new SimpleItem(XMaterial.WHITE_STAINED_GLASS_PANE).setDisplayName("&7").addEnchantment(Enchantment.DURABILITY).setShowEnchantments(false);
     }
 
 

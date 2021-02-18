@@ -57,6 +57,22 @@ public class GUIButton {
      * Constructor of a GUI Button
      * @param itemStack The item to place {@link SimpleItem}
      */
+    public GUIButton(ItemStack itemStack, Action action){
+        this(-1, itemStack, action);
+    }
+
+    /**
+     * Constructor of a GUI Button
+     * @param simpleItem The item to place
+     */
+    public GUIButton(SimpleItem simpleItem, Action action){
+        this(simpleItem.build(), action);
+    }
+
+    /**
+     * Constructor of a GUI Button
+     * @param itemStack The item to place {@link SimpleItem}
+     */
     public GUIButton(ItemStack itemStack){
         this(-1, itemStack);
     }

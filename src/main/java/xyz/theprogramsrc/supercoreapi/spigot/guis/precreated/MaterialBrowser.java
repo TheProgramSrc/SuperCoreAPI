@@ -34,8 +34,11 @@ public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
     @Override
     public GUIButton getButton(XMaterial xMaterial) {
         SimpleItem item = new SimpleItem(xMaterial)
-                .setDisplayName(Base.MATERIAL_SELECTOR_ITEM_NAME.options().vars(xMaterial.getHumanName()).toString())
-                .setLore(Base.MATERIAL_SELECTOR_ITEM_DESCRIPTION.options().vars(xMaterial.getHumanName()).toString());
+                .setDisplayName("&a"+Base.MATERIAL_SELECTOR_ITEM_NAME.toString())
+                .setLore(
+                        "&7",
+                        "&7" + Base.MATERIAL_SELECTOR_ITEM_DESCRIPTION
+                ).addPlaceholder("{Material}", xMaterial.getHumanName());
         return new GUIButton(item).setAction(a-> this.onSelect(a, xMaterial));
     }
 

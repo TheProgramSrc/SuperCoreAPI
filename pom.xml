@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.10.2</version>
+    <version>4.11.0_BETA8</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -87,6 +87,11 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <!-- Bungee -->
+        <repository>
+            <id>bungee-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/public/</url>
+        </repository>
         <!-- NMS -->
         <repository>
             <id>nms-repo</id>
@@ -126,14 +131,14 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.5-SNAPSHOT</version>
+            <version>1.16-R0.4-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--  NMS  -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-20210130.231704-4</version>
+            <version>1.16.5-R0.1-20210212.233721-6</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->

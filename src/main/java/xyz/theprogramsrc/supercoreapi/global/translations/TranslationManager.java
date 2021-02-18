@@ -10,12 +10,12 @@ import java.util.*;
 
 public class TranslationManager {
 
-    private HashMap<Locale, HashMap<String, String>> translations;
+    private LinkedHashMap<Locale, LinkedHashMap<String, String>> translations;
     protected SuperPlugin<?> plugin;
 
     public TranslationManager(SuperPlugin<?> plugin) {
         this.plugin = plugin;
-        this.translations = new HashMap<>();
+        this.translations = new LinkedHashMap<>();
         this.reloadTranslations();
     }
 
@@ -63,7 +63,7 @@ public class TranslationManager {
      */
     public void reloadTranslations(){
         this.plugin.debug("Reloading translations");
-        if(this.translations == null) this.translations = new HashMap<>();
+        if(this.translations == null) this.translations = new LinkedHashMap<>();
         this.translations.clear();
         File[] translationsFiles = this.plugin.getTranslationsFolder().listFiles();
         if(translationsFiles != null){
@@ -74,7 +74,7 @@ public class TranslationManager {
                         String lang = name.split("_")[0];
                         String country = name.split("_")[1];
                         Locale locale = new Locale(lang, country);
-                        HashMap<String, String> translations = this.translations.getOrDefault(locale, new HashMap<>());
+                        LinkedHashMap<String, String> translations = this.translations.getOrDefault(locale, new LinkedHashMap<>());
                         try{
                             List<String> lines = Utils.readLines(file);
                             lines.stream().filter(l-> !l.startsWith("#") && l.contains("=")).forEach(l->{
@@ -120,5 +120,13 @@ public class TranslationManager {
         }else{
             return this.translations.get(locale).getOrDefault(id, def);
         }
+    }
+
+    /**
+     * Gets the available translations
+     * @return the available translations
+     */
+    public Locale[] getTranslations() {
+        return this.translations.keySet().toArray(new Locale[0]);
     }
 }

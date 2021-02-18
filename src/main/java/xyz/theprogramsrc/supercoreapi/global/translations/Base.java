@@ -30,7 +30,7 @@ public enum Base implements TranslationPack{
     /* MESSAGES */
     NO_PERMISSION("&cYou dont have permission."),
     NO_ACCESS("&cYou dont have access!"),
-    NOT_SUPPORTED("&cThis command it's only for &e$1"),
+    NOT_SUPPORTED("&cThis command it's only for &e{Supported}"),
     INVALID_ARGUMENTS("&cInvalid Arguments!"),
 
     DIALOG_HOW_TO_CLOSE("&7Use &aLeft Click &7to close the dialog."),
@@ -41,31 +41,38 @@ public enum Base implements TranslationPack{
     DIALOG_SEARCH_SUBTITLE("&7Write a search term"),
     DIALOG_SEARCH_ACTIONBAR("&aWrite in the chat a search term to find a object"),
 
+    DIALOG_CHANGE_PREFIX_TITLE("&9Prefix"),
+    DIALOG_CHANGE_PREFIX_SUBTITLE("&7Write a new prefix"),
+    DIALOG_CHANGE_PREFIX_ACTIONBAR("&aCurrent prefix: &r{Prefix}"),
+
     /* GUIs */
+    SETTINGS_GUI_TITLE("&cSettings"),
+    SETTING_PANE_GUI_TITLE("&cSettings &8> &9{Setting}"),
+
     SETTINGS_EDITOR_NAME("&aSettings Editor"),
     SETTINGS_EDITOR_DESCRIPTION("&7Click to edit some settings"),
+
+    LANGUAGE_SELECTOR_NAME("&aLanguages"),
     LANGUAGE_SELECTOR_DESCRIPTION("&7Click to select a new Language."),
-    LANGUAGE_SELECT_DESCRIPTION("&7Click to select &athis &7language."),
-    LANGUAGE_SELECTED_DESCRIPTION("&aThis &7language is selected."),
+
+    LANGUAGE_SELECT_DESCRIPTION("&7Click to select&a {Language}&7 as the current language."),
+    LANGUAGE_SELECTED_DESCRIPTION("&a{Language}&7 is selected as the current language."),
 
     SETTINGS_TOGGLE_UPDATER_NAME("&aToggle Updater"),
-    SETTINGS_TOGGLE_UPDATER_DESCRIPTION("&7Current Status: &9$1"),
+    SETTINGS_TOGGLE_UPDATER_DESCRIPTION("&7Current Status: &9{Status}"),
 
     SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME("&aToggle Translation Downloader"),
-    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("&7Current Status: &9$1"),
+    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("&7Current Status: &9{Status}"),
 
     SETTINGS_TOGGLE_SQL_NAME("&aToggle SQL"),
-    SETTINGS_TOGGLE_SQL_DESCRIPTION("&7Current Status: &9$1"),
-
-    SET_CLOSE_WORD_NAME("&aSet Close Word"),
-    SET_CLOSE_WORD_DESCRIPTION("&7Current Word: &9$1"),
+    SETTINGS_TOGGLE_SQL_DESCRIPTION("&7Current Status: &9{Status}"),
 
     SET_PREFIX_NAME("&aSet Prefix"),
-    SET_PREFIX_DESCRIPTION("&7Current Prefix: &r$1"),
+    SET_PREFIX_DESCRIPTION("&7Current Prefix: &r{Prefix}"),
 
     MATERIAL_SELECTOR_TITLE("&7Select a Material"),
-    MATERIAL_SELECTOR_ITEM_NAME("&a$1"),
-    MATERIAL_SELECTOR_ITEM_DESCRIPTION("&7Click to select &a$1"),
+    MATERIAL_SELECTOR_ITEM_NAME("&a{Material}"),
+    MATERIAL_SELECTOR_ITEM_DESCRIPTION("&7Click to select &a{Material}"),
 
     /* Items */
     ITEM_BACK_NAME("&aBack"),

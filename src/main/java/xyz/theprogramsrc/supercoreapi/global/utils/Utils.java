@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
+    private static long lastInternetCheck = 0L;
+    private static boolean internetCheck = false;
+
     /**
      * Used to check if a object is not null
      * @param object Object to check
@@ -272,15 +275,20 @@ public class Utils {
      * @return if is connected true, otherwise false
      */
     public static boolean isConnected() {
-        try {
-            URL url = new URL("http://www.google.com");
-            URLConnection conn = url.openConnection();
-            conn.connect();
-            conn.getInputStream().close();
-            return true;
-        } catch (IOException var2) {
-            return false;
+        long now = System.currentTimeMillis();
+        if(lastInternetCheck == 0L || (now - lastInternetCheck >= (30 * 1000))){
+            lastInternetCheck = now;
+            try {
+                URL url = new URL("https://api.theprogramsrc.xyz/connection");
+                URLConnection conn = url.openConnection();
+                conn.connect();
+                conn.getInputStream().close();
+                internetCheck = true;
+            } catch (IOException var2) {
+                internetCheck = false;
+            }
         }
+        return internetCheck;
     }
 
     /**

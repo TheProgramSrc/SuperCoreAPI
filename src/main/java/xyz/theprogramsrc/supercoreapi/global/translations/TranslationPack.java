@@ -47,4 +47,17 @@ public interface TranslationPack {
     default StringUtils options(){
         return this.get().options();
     }
+
+    /**
+     *
+     * This will return the language display name in his own language
+     *
+     * If the language is es_ES it will return "Español",
+     * if the language is en_US it will return "English"
+     *
+     * @return The name of the language
+     */
+    default String getDisplayLanguage(){
+        return this.getLanguage().getDisplayLanguage(this.getLanguage());
+    }
 }

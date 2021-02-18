@@ -47,4 +47,18 @@ public class ClickAction {
     public SpigotPlugin getPlugin(){
         return ((SpigotPlugin)this.gui.getPlugin());
     }
+
+    /**
+     * Opens the GUI
+     */
+    public void openGUI() {
+        this.getGui().open();
+    }
+
+    /**
+     * Closed the GUI
+     */
+    public void closeGUI(){
+        this.getGui().close();
+    }
 }

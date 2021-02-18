@@ -29,6 +29,14 @@ public class SettingsStorage extends SpigotModule {
     }
 
     /**
+     * Sets the language of the Plugin
+     * @param language the language
+     */
+    public void setLanguage(String language) {
+        this.cfg.set("Language", language);
+    }
+
+    /**
      * Gets the prefix of the plugin
      * @return the prefix
      */

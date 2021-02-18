@@ -59,9 +59,9 @@ public abstract class SpigotCommand extends SpigotModule {
             sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NO_ACCESS.toString()));
         }else if(result == CommandResult.NOT_SUPPORTED){
             if(sender instanceof Player){
-                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.CONSOLE.toString()).toString()));
+                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().placeholder("{Supported}", Base.CONSOLE.toString()).toString()));
             }else{
-                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().vars(Base.PLAYERS.toString()).toString()));
+                sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.NOT_SUPPORTED.options().placeholder("{Supported}", Base.PLAYERS.toString()).toString()));
             }
         }else if(result == CommandResult.INVALID_ARGS){
             sender.sendMessage(this.spigotPlugin.getSuperUtils().color(Base.INVALID_ARGUMENTS.toString()));

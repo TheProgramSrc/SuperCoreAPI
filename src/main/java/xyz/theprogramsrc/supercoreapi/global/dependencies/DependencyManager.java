@@ -102,43 +102,39 @@ public class DependencyManager {
      * @param dependencies The dependencies to load
      */
     public void loadDependencies(Dependency... dependencies) {
-        if(!Utils.isConnected()){
-            this.plugin.log("&cCannot download dependencies. Please connect to internet. Some features will be disabled");
-        }else{
-            File saveDirectory = getSaveDirectory();
+        File saveDirectory = getSaveDirectory();
 
-            // create a list of file sources
-            List<Source> sources = new ArrayList<>();
+        // create a list of file sources
+        List<Source> sources = new ArrayList<>();
 
-            // obtain a file for each of the dependencies
-            for (Dependency dependency : dependencies) {
-                if (this.loaded.containsKey(dependency)) {
-                    continue;
-                }
-
-                try {
-                    Path file = downloadDependency(saveDirectory.toPath(), dependency);
-                    sources.add(new Source(dependency, file));
-                } catch (Throwable e) {
-                    this.plugin.log("Exception whilst downloading dependency " + dependency.getName());
-                    e.printStackTrace();
-                }
+        // obtain a file for each of the dependencies
+        for (Dependency dependency : dependencies) {
+            if (this.loaded.containsKey(dependency)) {
+                continue;
             }
 
-            // load each of the jars
-            for (Source source : sources) {
-                if (!source.dependency.isAutoLoad()) {
-                    this.loaded.put(source.dependency, source.file);
-                    continue;
-                }
+            try {
+                Path file = downloadDependency(saveDirectory.toPath(), dependency);
+                sources.add(new Source(dependency, file));
+            } catch (Throwable e) {
+                this.plugin.log("Exception whilst downloading dependency " + dependency.getName());
+                e.printStackTrace();
+            }
+        }
 
-                try {
-                    this.pluginClassLoader.loadJar(source.file);
-                    this.loaded.put(source.dependency, source.file);
-                } catch (Throwable e) {
-                    this.plugin.log("&cFailed to load dependency jar '" + source.file.getFileName().toString() + "'.");
-                    e.printStackTrace();
-                }
+        // load each of the jars
+        for (Source source : sources) {
+            if (!source.dependency.isAutoLoad()) {
+                this.loaded.put(source.dependency, source.file);
+                continue;
+            }
+
+            try {
+                this.pluginClassLoader.loadJar(source.file);
+                this.loaded.put(source.dependency, source.file);
+            } catch (Throwable e) {
+                this.plugin.log("&cFailed to load dependency jar '" + source.file.getFileName().toString() + "'.");
+                e.printStackTrace();
             }
         }
     }
