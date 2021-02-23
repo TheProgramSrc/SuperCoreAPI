@@ -139,12 +139,54 @@ public class JsonConfig {
     }
 
     /**
+     * Used to insert data into the file
+     * @param key Key of the value to store
+     * @param value Boolean to save
+     */
+    public void set(String key, Boolean value){
+        this.json.addProperty(key, value);
+        this.save();
+    }
+
+    /**
+     * Used to insert data into the file
+     * @param key Key of the value to store
+     * @param value Number to save
+     */
+    public void set(String key, Number value){
+        this.json.addProperty(key, value);
+        this.save();
+    }
+
+    /**
      * Used to add data if not exists into the file
      * If you want to replace data use {@link #set(String, String)}
      * @param key Key of the value to store
      * @param value Object to save
      */
     public void add(String key, String value){
+        if(!this.contains(key)) this.set(key, value);
+    }
+
+
+    /**
+     * Used to add data if not exists into the file
+     * If you want to replace data use {@link #set(String, Boolean)}
+     * @param key Key of the value to store
+     * @param value Object to save
+     */
+    public void add(String key, Boolean value){
+        if(!this.contains(key)) this.set(key, value);
+    }
+
+
+    /**
+     * Used to add data if not exists into the file
+     * If you want to replace data use {@link #set(String, Number)}
+     * @param key Key of the value to store
+     * @param value Object to save
+     */
+    public void add(String key, Number value){
         if(!this.contains(key)) this.set(key, value);
     }
 
@@ -211,7 +253,46 @@ public class JsonConfig {
         return this.get(key).getAsBoolean();
     }
 
+    /**
+     * Used to request a {@link Number} from the json file
+     * @param key Key of the requested {@link Number}
+     * @return {@link Number} stored in the key inside the file
+     */
+    public Number getNumber(String key){
+        return this.get(key).getAsNumber();
+    }
 
+    /**
+     * Toggle a boolean value using the specified {@code key}
+     * @param key the key of the path to toggle the boolean
+     * @return the new value
+     */
+    public boolean toggle(String key){
+        boolean b = !this.getBoolean(key);
+        this.set(key, b);
+        return b;
+    }
 
+    /**
+     * Increases the value of an Integer object by 1 in the file
+     * @param key the key of the Integer object
+     * @return the new value
+     */
+    public int incr(String key){
+        int i = this.getInt(key)+1;
+        this.set(key, i);
+        return i;
+    }
+
+    /**
+     * Decreases the value of an Integer object by 1 in the file
+     * @param key the key of the Integer object
+     * @return the new value
+     */
+    public int decr(String key){
+        int i = this.getInt(key)-1;
+        this.set(key, i);
+        return i;
+    }
 
 }

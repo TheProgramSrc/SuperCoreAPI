@@ -227,7 +227,7 @@ public abstract class GUI extends SpigotModule {
      * @return true if the title must be centered, otherwise false
      */
     public boolean isTitleCentered(){
-        return true;
+        return false;
     }
 
     /**

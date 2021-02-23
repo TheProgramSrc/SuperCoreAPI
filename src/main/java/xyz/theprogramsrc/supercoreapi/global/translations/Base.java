@@ -26,6 +26,7 @@ public enum Base implements TranslationPack{
     CONSOLE("Console"),
     CONFIRM("Confirm"),
     DECLINE("Decline"),
+    GENERAL("General"),
 
     /* MESSAGES */
     NO_PERMISSION("&cYou dont have permission."),
@@ -52,8 +53,17 @@ public enum Base implements TranslationPack{
     SETTINGS_EDITOR_NAME("&aSettings Editor"),
     SETTINGS_EDITOR_DESCRIPTION("&7Click to edit some settings"),
 
+    SETTINGS_GENERAL_NAME("&aGeneral Settings"),
+    SETTINGS_GENERAL_DESCRIPTION("&7Click to edit general settings"),
+
     LANGUAGE_SELECTOR_NAME("&aLanguages"),
     LANGUAGE_SELECTOR_DESCRIPTION("&7Click to select a new Language."),
+
+    GENERAL_SET_PREFIX_NAME("&aSet Prefix"),
+    GENERAL_SET_PREFIX_DESCRIPTION("&7Current Prefix: &r{Prefix}"),
+
+    GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_NAME("&aToggle Translation Downloader"),
+    GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("&7Current Status: &9{Status}"),
 
     LANGUAGE_SELECT_DESCRIPTION("&7Click to select&a {Language}&7 as the current language."),
     LANGUAGE_SELECTED_DESCRIPTION("&a{Language}&7 is selected as the current language."),
@@ -61,14 +71,8 @@ public enum Base implements TranslationPack{
     SETTINGS_TOGGLE_UPDATER_NAME("&aToggle Updater"),
     SETTINGS_TOGGLE_UPDATER_DESCRIPTION("&7Current Status: &9{Status}"),
 
-    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_NAME("&aToggle Translation Downloader"),
-    SETTINGS_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("&7Current Status: &9{Status}"),
-
     SETTINGS_TOGGLE_SQL_NAME("&aToggle SQL"),
     SETTINGS_TOGGLE_SQL_DESCRIPTION("&7Current Status: &9{Status}"),
-
-    SET_PREFIX_NAME("&aSet Prefix"),
-    SET_PREFIX_DESCRIPTION("&7Current Prefix: &r{Prefix}"),
 
     MATERIAL_SELECTOR_TITLE("&7Select a Material"),
     MATERIAL_SELECTOR_ITEM_NAME("&a{Material}"),

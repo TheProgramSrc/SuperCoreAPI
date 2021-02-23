@@ -2,6 +2,7 @@ package xyz.theprogramsrc.supercoreapi;
 
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
+import xyz.theprogramsrc.supercoreapi.global.translations.TranslationDownloader;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 
@@ -204,6 +205,28 @@ public interface SuperPlugin<PLUGIN> {
     default void debug(String message){
         if(this.isDebugEnabled()) {
             this.sendConsoleMessage("&b&l[" + this.getPluginName() + " DEBUG]&r: " + message);
+        }
+    }
+
+    /**
+     * Configures the plugin to automatically
+     * download the plugin translations from GitHub
+     */
+    default void setupGithubTranslationDownloader(String githubUser, String githubRepo, String folder){
+        this.getPluginDataStorage().add("TranslationDownloader", true);
+        if(this.getPluginDataStorage().getBoolean("TranslationDownloader")){
+            TranslationDownloader.downloadFromGitHub(this, githubUser, githubRepo, folder);
+        }
+    }
+
+    /**
+     * Configures the plugin to automatically
+     * download the plugin translations from GitHub
+     */
+    default void setupRawTranslationDownloader(String url, String filename){
+        this.getPluginDataStorage().add("TranslationDownloader", true);
+        if(this.getPluginDataStorage().getBoolean("TranslationDownloader")){
+            TranslationDownloader.downloadTranslation(this, url, filename);
         }
     }
 }

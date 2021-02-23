@@ -9,7 +9,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.Locale;
 
-public class LanguageSelectionPane extends CustomSettingPane<Locale> {
+public class LanguageSelectionSettingPane extends CustomSettingPane<Locale> {
 
     @Override
     public String getDisplayName() {
@@ -45,5 +45,10 @@ public class LanguageSelectionPane extends CustomSettingPane<Locale> {
     @Override
     public Locale[] getObjects() {
         return this.spigotPlugin.getTranslationManager().getTranslations();
+    }
+
+    @Override
+    public boolean showItemsForEmpty() {
+        return true;
     }
 }

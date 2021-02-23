@@ -60,6 +60,7 @@ public abstract class SettingsGUI extends GUI {
     @Override
     protected GUIButton[] getButtons() {
         LinkedList<GUIButton> buttons = new LinkedList<>();
+        this.clearButtons();
         if(this.current == -1){
             buttons.add(new GUIButton(0, this.getPreloadedItems().getBackItem(), this::onBack));
 
@@ -76,13 +77,24 @@ public abstract class SettingsGUI extends GUI {
                 }
             }
         }else{
+            SettingPane pane = this.settingPanes[current];
+            int[] _containerSlots = pane.getContainerSlots();
+            GUIButton[] paneButtons = pane.getButtons();
+            for(int i = 0; i < _containerSlots.length; ++i){
+                int slot = _containerSlots[i];
+                if(i < paneButtons.length){
+                    buttons.add(paneButtons[i].setSlot(slot));
+                }else{
+                    if(pane.showItemsForEmpty()){
+                        buttons.add(new GUIButton(slot, this.getPreloadedItems().emptyItem()));
+                    }
+                }
+            }
             buttons.add(new GUIButton(0, this.getPreloadedItems().getBackItem(), a-> {
                 this.current = -1;
                 this.open();
             }));
-            buttons.addAll(Utils.toList(this.settingPanes[current].getButtons()));
         }
-
         return buttons.toArray(new GUIButton[0]);
     }
 

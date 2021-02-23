@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.11.0_BETA8</version>
+    <version>4.11.0_BETA12</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
