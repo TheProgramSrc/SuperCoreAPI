@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.11.0_BETA12</version>
+    <version>4.11.0</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -131,14 +131,14 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.4-SNAPSHOT</version>
+            <version>1.16-R0.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--  NMS  -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-20210212.233721-6</version>
+            <version>1.16.5-R0.1-20210303.214249-7</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->
