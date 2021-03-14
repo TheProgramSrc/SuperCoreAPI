@@ -1,6 +1,8 @@
 package xyz.theprogramsrc.supercoreapi.global.storage;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface DataBase{
 
@@ -34,5 +36,23 @@ public interface DataBase{
      */
     interface ConnectionCall{
         void onConnect(Connection connection);
+    }
+
+    /**
+     * Tests the current database connection by requesting the database name
+     * @return true if the connection is successful, false otherwise
+     */
+    default boolean testConnection(){
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        this.connect(c-> {
+            try{
+                c.getMetaData().getDatabaseProductName();
+                atomicBoolean.set(true);
+            }catch (SQLException ex){
+                ex.printStackTrace();
+            }
+        });
+
+        return atomicBoolean.get();
     }
 }

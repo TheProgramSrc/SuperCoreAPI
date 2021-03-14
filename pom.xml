@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.11.0</version>
+    <version>4.12.0_BETA1</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-20210303.214249-7</version>
+            <version>1.16.5-R0.1-20210308.215741-8</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->
