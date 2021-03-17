@@ -31,6 +31,18 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
     public abstract String getTableName();
 
     /**
+     * Gets the name of the key column
+     * @return the name of the key column
+     */
+    public abstract String getKeyColumnName();
+
+    /**
+     * Gets the name of the value column
+     * @return the name of the value column
+     */
+    public abstract String getValueColumnName();
+
+    /**
      * Used to serialize and store in the database
      * @param obj the object
      * @return the serialized object
@@ -56,9 +68,9 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
             try{
                 Statement s = c.createStatement();
                 if(this.exists(key)){
-                    s.executeUpdate("UPDATE " + this.getTableName() + " SET object_value='"+data+"' WHERE object_key='"+key+"';");
+                    s.executeUpdate("UPDATE " + this.getTableName() + " SET `" + this.getValueColumnName() + "`='"+data+"' WHERE `" + this.getKeyColumnName() + "`='"+key+"';");
                 }else{
-                    s.executeUpdate("INSERT INTO " + this.getTableName() + " (object_key, object_value) VALUES ('"+key+"','"+data+"')");
+                    s.executeUpdate("INSERT INTO " + this.getTableName() + " (`" + this.getKeyColumnName() + "`,`" + this.getValueColumnName() + "`) VALUES ('"+key+"','"+data+"')");
                 }
             }catch (Exception ex){
                 this.plugin.log("&cCannot save data with key: '" + key + "'");
@@ -78,9 +90,9 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
         this.dataBase.connect(c->{
             try{
                 Statement s = c.createStatement();
-                ResultSet rs = s.executeQuery("SELECT * FROM " + this.getTableName() + " WHERE object_key='"+key+"'");
+                ResultSet rs = s.executeQuery("SELECT * FROM " + this.getTableName() + " WHERE `" + this.getKeyColumnName() + "`='"+key+"'");
                 if(rs.next()){
-                    obj.set(this.deserialize(rs.getString("object_value")));
+                    obj.set(this.deserialize(rs.getString(this.getValueColumnName())));
                 }
             }catch (Exception ex){
                 this.plugin.log("&cCannot fetch data with key: '" + key + "'");
@@ -102,8 +114,8 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
                 Statement s = c.createStatement();
                 ResultSet rs = s.executeQuery("SELECT * FROM " + this.getTableName() + ";");
                 while(rs.next()){
-                    String key = rs.getString("object_key");
-                    String value = rs.getString("object_value");
+                    String key = rs.getString(this.getKeyColumnName());
+                    String value = rs.getString(this.getValueColumnName());
                     OBJ obj = this.deserialize(value);
                     objs.put(key, obj);
                 }
@@ -126,7 +138,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
         this.dataBase.connect(c->{
             try{
                 Statement s = c.createStatement();
-                exist.set(s.executeQuery("SELECT * FROM " + this.getTableName() + " WHERE object_key='"+key+"';").next());
+                exist.set(s.executeQuery("SELECT * FROM " + this.getTableName() + " WHERE `" + this.getKeyColumnName() + "`='"+key+"';").next());
             }catch (Exception ex){
                 this.plugin.log("&cCannot fetch data with key: '" + key + "'");
                 ex.printStackTrace();
@@ -140,7 +152,7 @@ public abstract class GlobalStorage<OBJ> extends DataBaseStorage {
         this.dataBase.connect(c->{
             try{
                 Statement s = c.createStatement();
-                s.executeUpdate("CREATE TABLE IF NOT EXISTS " + this.getTableName() + " (object_key VARCHAR(200), object_value LONGTEXT);");
+                s.executeUpdate("CREATE TABLE IF NOT EXISTS " + this.getTableName() + " (`" + this.getKeyColumnName() + "` VARCHAR(1000), `" + this.getValueColumnName() + "` VARCHAR(150000));");
             }catch (Exception ex){
                 this.plugin.log("&cCouldn't load Table:");
                 ex.printStackTrace();

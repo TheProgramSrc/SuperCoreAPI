@@ -1,102 +1,26 @@
-package xyz.theprogramsrc.supercoreapi.global.files;
+package xyz.theprogramsrc.supercoreapi.global.json;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
-import java.io.File;
+import java.util.UUID;
 
-/**
- * This can be used to create files with JSON Format
- */
-public class JsonConfig {
+public class JSONUtil {
 
-    protected final File file;
     protected JsonObject json;
+    protected UUID jsonUtilUuid;
 
     /**
-     * A JsonConfig is a representation of a file written in Json format
-     * @param file File to save and write all the data
+     * @param json JsonObject to use in the util
      */
-    public JsonConfig(File file){
-        JsonObject json;
-        if(file.exists()){
-            try{
-                String content = Utils.readFile(file);
-                if(content == null){
-                    json = new JsonObject();
-                }else{
-                    if(content.isEmpty() || content.equals(" ")){
-                        json = new JsonObject();
-                    }else{
-                        json = new JsonParser().parse(Utils.readFile(file)).getAsJsonObject();
-                    }
-                }
-            }catch (Exception ex){
-                ex.printStackTrace();
-                json = new JsonObject();
-            }
-        }else{
-            try{
-                file.createNewFile();
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-            json = new JsonObject();
-        }
+    public JSONUtil(JsonObject json){
         this.json = json;
-        this.file = file;
+        this.jsonUtilUuid = UUID.randomUUID();
     }
 
-    /**
-     * A JsonConfig is a representation of a file written in Json format
-     * @param folder Directory where the file will be located
-     * @param name Name of the file to save and write all the data
-     */
-    public JsonConfig(File folder, String name){
-        this(new File(folder, name));
-    }
-
-    /**
-     * Use it to save all the data you modified
-     */
-    public void save(){
-        try{
-            Utils.writeFile(this.file, this.json.toString());
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * This will refresh the information
-     * (Is recommended to save before do this)
-     */
-    public void reload() {
-        try{
-            if(!file.exists()){
-                file.createNewFile();
-                this.json = new JsonObject();
-            }else{
-                json = new JsonParser().parse(Utils.readFile(file)).getAsJsonObject();
-            }
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Use it to delete the file
-     * (Is not recommended to use, YOU WILL LOOSE ALL THE DATA!)
-     */
-    public void destroy(){
-        try{
-            Utils.destroyFile(this.file);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+    public JSONUtil(){
+        this(new JsonObject());
     }
 
     /**
@@ -115,7 +39,6 @@ public class JsonConfig {
      */
     public void set(String key, JsonElement value){
         this.json.add(key,value);
-        this.save();
     }
 
     /**
@@ -135,7 +58,6 @@ public class JsonConfig {
      */
     public void set(String key, String value){
         this.json.addProperty(key, value);
-        this.save();
     }
 
     /**
@@ -145,7 +67,6 @@ public class JsonConfig {
      */
     public void set(String key, Boolean value){
         this.json.addProperty(key, value);
-        this.save();
     }
 
     /**
@@ -155,7 +76,6 @@ public class JsonConfig {
      */
     public void set(String key, Number value){
         this.json.addProperty(key, value);
-        this.save();
     }
 
     /**
@@ -198,7 +118,7 @@ public class JsonConfig {
      */
     public JsonElement get(String key){
         if(!this.contains(key)){
-            throw new NullPointerException("Cannot find JsonElement with key '" + key + "' in file '" + this.file.getName() + "'!");
+            throw new NullPointerException("Cannot find JsonElement with key '" + key + "' in the JSON Util with id '" + this.jsonUtilUuid + "'!");
         }
         return this.json.get(key);
     }
@@ -295,4 +215,7 @@ public class JsonConfig {
         return this.getInt(key);
     }
 
+    public JsonObject getJsonObject() {
+        return json;
+    }
 }

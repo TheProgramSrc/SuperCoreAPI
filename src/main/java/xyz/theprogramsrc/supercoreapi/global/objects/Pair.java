@@ -1,20 +1,55 @@
 package xyz.theprogramsrc.supercoreapi.global.objects;
 
-public class Pair<A,B> {
+public class Pair<L,R> {
 
-    private final A a;
-    private final B b;
+    private final L l;
+    private final R r;
 
-    public Pair(A a, B b){
-        this.a = a;
-        this.b = b;
+    /**
+     * Initializer
+     * @param left the object in the left side of the pair
+     * @param right the object in the right side of the pair
+     */
+    public Pair(L left, R right){
+        this.l = left;
+        this.r = right;
     }
 
-    public A getA() {
-        return a;
+    /**
+     * Gets the object in the left side of the pair
+     * @return the object in the left side
+     * @deprecated As of v4.12.0. Replaced by {@link #getLeft()}
+     *
+     * <i>NOTE: This will be removed in the release v4.13.0 or higher</i>
+     */
+    public L getA() {
+        return l;
     }
 
-    public B getB() {
-        return b;
+    /**
+     * Gets the object in the right side of the pair
+     * @return the object in the right side
+     * @deprecated As of v4.12.0. Replaced by {@link #getRight()}
+     *
+     * <i>NOTE: This will be removed in the release v4.13.0 or higher</i>
+     */
+    public R getB() {
+        return r;
+    }
+
+    /**
+     * Gets the object in the left side of the pair
+     * @return the object in the left side
+     */
+    public L getLeft() {
+        return l;
+    }
+
+    /**
+     * Gets the object in the right side of the pair
+     * @return the object in the right side
+     */
+    public R getRight() {
+        return r;
     }
 }

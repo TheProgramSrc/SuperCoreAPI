@@ -12,22 +12,28 @@ public class SQLiteDataBase implements DataBase {
 
     protected Connection connection;
     protected SuperPlugin<?> plugin;
+    private final File databaseFile;
 
     public SQLiteDataBase(SuperPlugin<?> plugin){
         this.plugin = plugin;
+        this.databaseFile = new File(this.plugin.getPluginFolder(), this.plugin.getPluginName().toLowerCase()+".db");
+        this.createConnection();
+    }
+
+    public SQLiteDataBase(File databaseFile){
+        this.databaseFile = databaseFile;
         this.createConnection();
     }
 
     private void createConnection() {
-        this.plugin.debug("Connecting to SQLite DataBase");
+        if(this.plugin != null) this.plugin.debug("Connecting to SQLite DataBase");
         try{
-            File file = new File(this.plugin.getPluginFolder(), this.plugin.getPluginName().toLowerCase()+".db");
-            if(!file.exists()) file.createNewFile();
+            if(!databaseFile.exists()) databaseFile.createNewFile();
             Class.forName("org.sqlite.JDBC");
-            this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getPath());
+            this.connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getPath());
         }catch (SQLException | ClassNotFoundException | IOException ex){
-            this.plugin.addError(ex);
-            this.plugin.log("&cCannot create SQLite Connection:");
+            if(this.plugin != null) this.plugin.addError(ex);
+            this.log("&cCannot create SQLite Connection:");
             ex.printStackTrace();
         }
     }
@@ -46,14 +52,14 @@ public class SQLiteDataBase implements DataBase {
      */
     @Override
     public void closeConnection() {
-        this.plugin.debug("Closing connection with SQLite DataBase");
+        if(this.plugin != null) this.plugin.debug("Closing connection with SQLite DataBase");
         try{
             if(this.connection != null){
                 this.connection.close();
             }
         }catch (SQLException ex){
-            this.plugin.addError(ex);
-            this.plugin.log("&cCannot close SQLite Connection:");
+            if(this.plugin != null) this.plugin.addError(ex);
+            this.log("&cCannot close SQLite Connection:");
             ex.printStackTrace();
         }
     }
@@ -71,8 +77,8 @@ public class SQLiteDataBase implements DataBase {
                 this.createConnection();
             }
         }catch (SQLException e){
-            this.plugin.addError(e);
-            this.plugin.log("&cError while connecting to SQLite:");
+            if(this.plugin != null) this.plugin.addError(e);
+            this.log("&cError while connecting to SQLite:");
             e.printStackTrace();
         }
 
@@ -86,5 +92,12 @@ public class SQLiteDataBase implements DataBase {
     @Override
     public DataBaseSettings getDataBaseSettings() {
         return null;
+    }
+
+    private void log(String msg){
+        if(this.plugin == null)
+            System.out.println(msg);
+        else
+            this.plugin.log(msg);
     }
 }
