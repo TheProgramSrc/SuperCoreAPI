@@ -1,3 +1,5 @@
+<h1>This repo has been moved to https://git.theprogramsrc.xyz/TheProgramSrc/SuperCoreAPI</h1>
+
 # SuperCoreAPI
 _The best way to create a plugin_<br>![Sonatype Nexus (Repository)](https://img.shields.io/nexus/maven-public/xyz.theprogramsrc/SuperCoreAPI?label=Latest%20Version&server=https%3A%2F%2Frepo.theprogramsrc.xyz) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/TheProgramSrc/SuperCoreAPI/Java%20CI) 
 <br>[![Discord](https://i.imgur.com/J1XhmMd.png)](https://go.theprogramsrc.xyz/discord) [![Terms of Service](https://i.imgur.com/4tFAGtE.png)](https://go.theprogramsrc.xyz/tos) [![Wiki](https://i.imgur.com/x0ZMnSx.png)](https://wiki.theprogramsrc.xyz/)  [![Become a Patron](https://i.imgur.com/h9Y1X2X.png)](https://go.theprogramsrc.xyz/patreon)
