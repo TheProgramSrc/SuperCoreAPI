@@ -15,6 +15,7 @@ xyz.theprogramsrc.supercoreapi.global.dependencies
 xyz.theprogramsrc.supercoreapi.global.dependencies.classloader
 xyz.theprogramsrc.supercoreapi.global.files
 xyz.theprogramsrc.supercoreapi.global.files.utils
+xyz.theprogramsrc.supercoreapi.global.json
 xyz.theprogramsrc.supercoreapi.global.networking
 xyz.theprogramsrc.supercoreapi.global.notifications
 xyz.theprogramsrc.supercoreapi.global.objects
@@ -22,6 +23,7 @@ xyz.theprogramsrc.supercoreapi.global.placeholders
 xyz.theprogramsrc.supercoreapi.global.storage
 xyz.theprogramsrc.supercoreapi.global.storage.global
 xyz.theprogramsrc.supercoreapi.global.storage.memory
+xyz.theprogramsrc.supercoreapi.global.storage.universal
 xyz.theprogramsrc.supercoreapi.global.translations
 xyz.theprogramsrc.supercoreapi.global.updater
 xyz.theprogramsrc.supercoreapi.global.utils
@@ -36,6 +38,8 @@ xyz.theprogramsrc.supercoreapi.spigot.guis.action
 xyz.theprogramsrc.supercoreapi.spigot.guis.events
 xyz.theprogramsrc.supercoreapi.spigot.guis.objects
 xyz.theprogramsrc.supercoreapi.spigot.guis.precreated
+xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings
+xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated
 xyz.theprogramsrc.supercoreapi.spigot.hologram
 xyz.theprogramsrc.supercoreapi.spigot.items
 xyz.theprogramsrc.supercoreapi.spigot.packets

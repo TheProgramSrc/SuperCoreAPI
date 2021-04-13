@@ -334,7 +334,7 @@ public class Utils {
      * @return Seconds in ticks
      */
     public static long toTicks(int seconds){
-        return (seconds * 20);
+        return (seconds * 20L);
     }
 
     /**
@@ -343,7 +343,7 @@ public class Utils {
      * @return Seconds in milliseconds
      */
     public static long toMillis(int seconds) {
-        return (seconds * 1000);
+        return (seconds * 1000L);
     }
 
     /**
@@ -369,6 +369,34 @@ public class Utils {
         } while(num > max - 1);
 
         return num;
+    }
+
+    /**
+     * Get the hypotenuse of multiple values.
+     * @param values array of values to parse the hypotenuse
+     * @return The hypotenuse length.
+     *
+     * @since 4.12.1
+     * @author Larskrs
+     */
+    public static double parseHypotenuse(double... values) {
+        double result = 0.0;
+        for (double d : values) {
+            result = result + d * d;
+        }
+
+        return result;
+    }
+
+    /**
+     * Calculate the square root of the specified value
+     * @param a value to calculate the square root.
+     * @return the positive square root of a. If the argument is NaN or less than zero, the result is NaN.
+     *
+     * @since 4.12.1
+     */
+    public static double squareRoot(double a){
+        return Math.sqrt(a);
     }
 
     /* Others */
