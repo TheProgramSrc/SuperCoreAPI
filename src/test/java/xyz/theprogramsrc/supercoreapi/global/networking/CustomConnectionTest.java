@@ -14,7 +14,7 @@ class CustomConnectionTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        this.customConnection = new ConnectionBuilder("https://api.theprogramsrc.xyz/connection").connect();
+        this.customConnection = new ConnectionBuilder("https://raw.githubusercontent.com/TheProgramSrc/PluginsResources/master/SuperCoreAPI/connection-test").connect();
     }
 
     @Test
@@ -29,6 +29,6 @@ class CustomConnectionTest {
 
     @Test
     void URLStringTest() throws URISyntaxException {
-        assertEquals("https://api.theprogramsrc.xyz/connection", this.customConnection.getURLString());
+        assertEquals("https://raw.githubusercontent.com/TheProgramSrc/PluginsResources/master/SuperCoreAPI/connection-test", this.customConnection.getURLString());
     }
 }
