@@ -79,12 +79,12 @@
 
     <distributionManagement>
         <repository>
-            <id>theprogramsrc-releases</id>
-            <url>https://repo.theprogramsrc.xyz/repository/maven-releases/</url>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>theprogramsrc-snapshots</id>
-            <url>https://repo.theprogramsrc.xyz/repository/maven-snapshots/</url>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
