@@ -279,7 +279,7 @@ public class Utils {
         if(lastInternetCheck == 0L || (now - lastInternetCheck >= (30 * 1000))){
             lastInternetCheck = now;
             try {
-                URL url = new URL("https://api.theprogramsrc.xyz/connection");
+                URL url = new URL("https://raw.githubusercontent.com/TheProgramSrc/PluginsResources/master/SuperCoreAPI/connection-test");
                 URLConnection conn = url.openConnection();
                 conn.connect();
                 conn.getInputStream().close();
