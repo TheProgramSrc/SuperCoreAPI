@@ -26,4 +26,14 @@ public class ConnectionBuilder {
     public CustomConnection connect() throws IOException {
         return new CustomConnection(url, ((HttpURLConnection) this.url.openConnection()));
     }
+
+    /**
+     * Create the Custom Connection
+     * @param url the url
+     * @return the {@link CustomConnection}
+     * @throws IOException if any error occurs
+     */
+    public static CustomConnection connect(String url) throws IOException{
+        return new ConnectionBuilder(url).connect();
+    }
 }

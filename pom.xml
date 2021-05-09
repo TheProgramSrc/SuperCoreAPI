@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>4.12.2</version>
+    <version>4.12.3</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -79,12 +79,12 @@
 
     <distributionManagement>
         <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
+            <id>theprogramsrc-releases</id>
+            <url>https://repo.theprogramsrc.xyz/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+            <id>theprogramsrc-snapshots</id>
+            <url>https://repo.theprogramsrc.xyz/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -145,7 +145,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.5-R0.1-20210427.222236-12</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- SLF4J -->

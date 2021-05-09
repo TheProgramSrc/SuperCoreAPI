@@ -2,7 +2,7 @@ package xyz.theprogramsrc.supercoreapi.global.updater;
 
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
-public abstract class SpigotUpdateChecker {
+public abstract class SpigotUpdateChecker implements IUpdateChecker{
 
     private final String apiEndpoint;
 
@@ -14,17 +14,14 @@ public abstract class SpigotUpdateChecker {
         try{
             String content = Utils.readWithInputStream(this.apiEndpoint);
             if(content == null){
-                this.onCheckFail();
+                this.onFailCheck();
             }else{
-                this.onCheckSuccess(content);
+                this.onSuccessCheck(content);
             }
         }catch (Exception ex){
             ex.printStackTrace();
-            this.onCheckFail();
+            this.onFailCheck();
         }
     }
 
-    public abstract void onCheckSuccess(String lastVersion);
-
-    public abstract void onCheckFail();
 }

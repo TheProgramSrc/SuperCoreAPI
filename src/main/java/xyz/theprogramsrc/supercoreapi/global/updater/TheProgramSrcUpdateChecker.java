@@ -6,30 +6,32 @@ import xyz.theprogramsrc.supercoreapi.global.networking.CustomConnection;
 
 import java.io.IOException;
 
-public abstract class SongodaUpdateChecker implements IUpdateChecker{
+public abstract class TheProgramSrcUpdateChecker implements IUpdateChecker{
 
     private final String apiEndpoint;
 
-    public SongodaUpdateChecker(String product){
-        this.apiEndpoint = "https://songoda.com/api/v2/products/" + product;
+    public TheProgramSrcUpdateChecker(String productId){
+        this.apiEndpoint = "https://theprogramsrc.xyz/api/v1/products/id/" + productId;
     }
 
-    public void checkUpdates(){
+    @Override
+    public void checkUpdates() {
         try{
             CustomConnection connection = ConnectionBuilder.connect(this.apiEndpoint);
             if(connection.isValidResponse() && connection.isResponseNotNull()){
                 JsonObject json = connection.getResponseJson();
                 if(json != null && !json.isJsonNull()){
                     JsonObject versionJson = json.get("data").getAsJsonObject().get("versions").getAsJsonArray().get(0).getAsJsonObject();
-                    this.onSuccessCheck(versionJson.getAsString());
+                    String version = versionJson.get("version").getAsString();
+                    this.onSuccessCheck(version);
                 }else{
                     this.onFailCheck();
                 }
             }else{
                 this.onFailCheck();
             }
-        }catch (IOException ex){
-            ex.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
             this.onFailCheck();
         }
     }

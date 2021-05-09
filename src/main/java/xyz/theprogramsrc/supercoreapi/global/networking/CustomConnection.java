@@ -106,4 +106,22 @@ public class CustomConnection {
         if(element.isJsonNull()) return null;
         return element.getAsJsonObject();
     }
+
+    /**
+     * Checks if the connection is not a null response
+     * @return true if is not null, false otherwise
+     * @throws IOException if any error occurs
+     */
+    public boolean isResponseNotNull() throws IOException {
+        return this.getResponseString() != null;
+    }
+
+    /**
+     * Checks if the connection has a valid response
+     * @return true if the response code is 2xx, false otherwise
+     * @throws IOException if any error occurs
+     */
+    public boolean isValidResponse() throws IOException {
+        return (this.getResponseCode()+"").startsWith("2");
+    }
 }
