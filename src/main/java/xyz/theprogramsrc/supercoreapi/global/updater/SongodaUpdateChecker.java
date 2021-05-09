@@ -20,8 +20,8 @@ public abstract class SongodaUpdateChecker implements IUpdateChecker{
             if(connection.isValidResponse() && connection.isResponseNotNull()){
                 JsonObject json = connection.getResponseJson();
                 if(json != null && !json.isJsonNull()){
-                    JsonObject versionJson = json.get("data").getAsJsonObject().get("versions").getAsJsonArray().get(0).getAsJsonObject();
-                    this.onSuccessCheck(versionJson.getAsString());
+                    String version = json.get("data").getAsJsonObject().get("versions").getAsJsonArray().get(0).getAsJsonObject().get("version").getAsString();
+                    this.onSuccessCheck(version);
                 }else{
                     this.onFailCheck();
                 }

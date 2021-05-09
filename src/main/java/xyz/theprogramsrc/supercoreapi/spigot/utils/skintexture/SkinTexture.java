@@ -72,7 +72,7 @@ public class SkinTexture {
                 }
             }
             CustomConnection connection = new ConnectionBuilder("https://api.mojang.com/users/profiles/minecraft/" + playerName).connect();
-            if(connection.getResponseCode() == 429) return null;
+            if(connection.getResponseCode() == "429") return null;
             JsonObject response = connection.getResponseJson();
             if(response == null) return null;
             String uuid = response.get("id").getAsString();
@@ -93,7 +93,7 @@ public class SkinTexture {
         if(isMojangDown()) return null;
         try {
             CustomConnection connection = new ConnectionBuilder("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false").connect();
-            if(connection.getResponseCode() == 429) return null;
+            if(connection.getResponseCode() == "429") return null;
             JsonObject response = connection.getResponseJson();
             if(response == null) return null;
             JsonObject properties = response.get("properties").getAsJsonArray().get(0).getAsJsonObject();
