@@ -27,8 +27,7 @@ public abstract class SuperCoreAPICommand extends SpigotCommand {
         }
 
 
-        String coreVersion = this.plugin.SUPER_CORE_API_VERSION,
-                serverVersion = Bukkit.getVersion(),
+        String serverVersion = Bukkit.getVersion(),
                 nmsVersion = ReflectionUtils.VERSION,
                 os = System.getProperty("os.name"),
                 ram = format.format(Runtime.getRuntime().maxMemory() / (1024 * 1024)) + "Mb",
@@ -36,7 +35,6 @@ public abstract class SuperCoreAPICommand extends SpigotCommand {
                 bungee = this.plugin.isBungeeInstance()+"",
                 lastErrors = this.plugin.getLastErrors().size()+"";
         this.getSuperUtils().sendMessage(sender, "&bServer information:");
-        this.getSuperUtils().sendMessage(sender, "&7SuperCoreAPI Version: &9" + coreVersion);
         this.getSuperUtils().sendMessage(sender, String.format("&7%s Version: &9%s", this.plugin.getPluginName(), this.plugin.getPluginVersion()));
         this.getSuperUtils().sendMessage(sender, "&7Server Version: &9" + serverVersion);
         this.getSuperUtils().sendMessage(sender, "&7NMS Version: &9" + nmsVersion);
@@ -61,20 +59,24 @@ public abstract class SuperCoreAPICommand extends SpigotCommand {
     }
 
     protected void executePasteCommand(CommandSender sender){
-        StringBuilder builder = new StringBuilder();
-        builder.append(Utils.exceptionToString(this.plugin.getLastError())).append("\n\n");
-        builder.append("Server ID: ").append(this.plugin.getPluginDataStorage().getString("stats_id"));
-        try{
-            String key = Utils.uploadPaste(builder.toString());
-            if(key == null){
+        if(!this.plugin.getLastErrors().isEmpty()){
+            StringBuilder builder = new StringBuilder();
+            builder.append(Utils.exceptionToString(this.plugin.getLastError())).append("\n\n");
+            builder.append("Server ID: ").append(this.plugin.getPluginDataStorage().getString("stats_id"));
+            try{
+                String key = Utils.uploadPaste(builder.toString());
+                if(key == null){
+                    this.getSuperUtils().sendMessage(sender, "&cUnable to upload paste to https://paste.theprogramsrc.xyz/");
+                }else{
+                    this.getSuperUtils().sendMessage(sender, "&aPaste successfully uploaded to&c https://paste.theprogramsrc.xyz/" + key);
+                    this.plugin.removeError(this.plugin.getLastErrors().size()-1);
+                }
+            }catch (IOException e){
                 this.getSuperUtils().sendMessage(sender, "&cUnable to upload paste to https://paste.theprogramsrc.xyz/");
-            }else{
-                this.getSuperUtils().sendMessage(sender, "&aPaste successfully uploaded to&c https://paste.theprogramsrc.xyz/" + key);
-                this.plugin.removeError(this.plugin.getLastErrors().size()-1);
+                e.printStackTrace();
             }
-        }catch (IOException e){
-            this.getSuperUtils().sendMessage(sender, "&cUnable to upload paste to https://paste.theprogramsrc.xyz/");
-            e.printStackTrace();
+        }else{
+            this.getSuperUtils().sendMessage(sender, "&cNo previous errors found. Try again later.");
         }
     }
 }

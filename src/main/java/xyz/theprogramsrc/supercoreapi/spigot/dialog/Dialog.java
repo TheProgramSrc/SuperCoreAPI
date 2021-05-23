@@ -52,7 +52,7 @@ public abstract class Dialog extends SpigotModule {
             this.debug("Opening dialog with title '" + this.getTitle() + "&r'");
 
             if(this.task == null){
-                this.task = this.getSpigotTasks().runRepeatingTask(1L, 1L, this::sendTitleAndActionbar);
+                this.task = this.getSpigotTasks().runAsyncRepeatingTask(1L, 1L, this::sendTitleAndActionbar);
             }else{
                 this.task.start();
             }

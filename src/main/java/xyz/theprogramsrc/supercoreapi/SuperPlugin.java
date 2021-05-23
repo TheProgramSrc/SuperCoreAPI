@@ -16,11 +16,6 @@ import java.util.List;
  */
 public interface SuperPlugin<PLUGIN> {
 
-    /*
-     * This need to be updated on every new release
-     */
-    String SUPER_CORE_API_VERSION = "4.12.5";
-
     /**
      * Gets if this plugin is paid, By default is set to true, but is recommended to change it if your plugin is free.
      * @return Whether the plugin is paid or not
