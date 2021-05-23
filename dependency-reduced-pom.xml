@@ -19,8 +19,9 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
+          <proc>none</proc>
           <source>${java.version}</source>
           <target>${java.version}</target>
         </configuration>
