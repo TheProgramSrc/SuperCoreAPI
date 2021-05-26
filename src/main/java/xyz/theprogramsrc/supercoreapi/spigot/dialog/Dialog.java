@@ -44,11 +44,13 @@ public abstract class Dialog extends SpigotModule {
         this.getSpigotTasks().runTask(()->{
             HandlerList.unregisterAll(this);
             this.getPlayer().closeInventory();
-            sendTitleAndActionbar();
             this.listener(this);
-            if(this.canClose()){
-                this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
-            }
+            this.getSpigotTasks().runAsyncTask(() -> {
+                this.sendTitleAndActionbar();
+                if(this.canClose()){
+                    this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+                }
+            });
             this.debug("Opening dialog with title '" + this.getTitle() + "&r'");
 
             if(this.task == null){
@@ -71,8 +73,10 @@ public abstract class Dialog extends SpigotModule {
         this.getSpigotTasks().runTask(()->{
             if(this.task != null) this.task.stop();
             HandlerList.unregisterAll(this);
-            Title.clearTitle(this.getPlayer());
-            Actionbar.clearActionbar(this.getPlayer());
+            this.getSpigotTasks().runAsyncTask(() -> {
+                Title.clearTitle(this.getPlayer());
+                Actionbar.clearActionbar(this.getPlayer());
+            });
             this.onDialogClose();
             if(this.recall != null){
                 this.recall.run(this.getPlayer());
@@ -83,31 +87,35 @@ public abstract class Dialog extends SpigotModule {
     private long lastMoved;
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onMove(PlayerMoveEvent event){
-        if(this.canClose()){
-            if(this.getPlayer().equals(event.getPlayer())){
-                if(this.lastMoved == 0){
-                    this.lastMoved = System.currentTimeMillis();
-                }
+    public void onMove(final PlayerMoveEvent event){
+        this.getSpigotTasks().runAsyncTask(() -> {
+            if(this.canClose()){
+                if(this.getPlayer().equals(event.getPlayer())){
+                    if(this.lastMoved == 0){
+                        this.lastMoved = System.currentTimeMillis();
+                    }
 
-                if((System.currentTimeMillis() - this.lastMoved) >= 5000){
-                    this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
-                    this.lastMoved = System.currentTimeMillis();
+                    if((System.currentTimeMillis() - this.lastMoved) >= 5000){
+                        this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+                        this.lastMoved = System.currentTimeMillis();
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onClick(PlayerInteractEvent event){
-        if(this.getPlayer().equals(event.getPlayer())){
-            if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
-                if(this.canClose()){
-                    this.getSuperUtils().sendMessage(event.getPlayer(), Base.DIALOG_CLOSED.toString());
-                    this.close();
+        this.getSpigotTasks().runAsyncTask(() -> {
+            if(this.getPlayer().equals(event.getPlayer())){
+                if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
+                    if(this.canClose()){
+                        this.getSuperUtils().sendMessage(event.getPlayer(), Base.DIALOG_CLOSED.toString());
+                        this.close();
+                    }
                 }
             }
-        }
+        });
     }
 
     @EventHandler

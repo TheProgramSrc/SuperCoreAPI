@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>4.13.0</version>
+  <version>5.0.0-Alpha0.1</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -239,7 +239,7 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>1.16</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

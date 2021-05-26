@@ -4,7 +4,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
-import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
