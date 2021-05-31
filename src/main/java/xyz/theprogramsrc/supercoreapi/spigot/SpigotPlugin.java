@@ -20,10 +20,12 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
+import xyz.theprogramsrc.supercoreapi.spigot.utils.ServerVersion;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
@@ -92,10 +94,13 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.preloadedItems = new PreloadedItems();
         this.debug("Loading EventManager");
         this.eventManager = new EventManager();
-        this.debug("Loading Dependency Manager");
-        PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
-        this.dependencyManager = new DependencyManager(this, pluginClassLoader);
-        this.dependencyManager.loadDependencies(Dependencies.get());
+        double javaVersion = Utils.getJavaVersion();
+        if((javaVersion == 1.8 || javaVersion == 11) && ServerVersion.isServerVersionBelow(ServerVersion.V1_16)){ // We can only use it with Java 8 or Java 11 and older server versions
+            this.debug("Loading Dependency Manager");
+            PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
+            this.dependencyManager = new DependencyManager(this, pluginClassLoader);
+            this.dependencyManager.loadDependencies(Dependencies.get());
+        }
         this.debug("Loading RecipeCreator [BETA]");
         this.recipeCreator = new RecipeCreator();
         this.debug("Loading SkullsDatabase from GitHub");
@@ -254,6 +259,12 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     }
 
     @Override
+    public String getServerVersion() {
+        return this.getServer().getVersion();
+    }
+
+    @Override
+    @Nullable
     public DependencyManager getDependencyManager() {
         return this.dependencyManager;
     }

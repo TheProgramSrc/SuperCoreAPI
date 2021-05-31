@@ -18,6 +18,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,10 +72,14 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.getTranslationManager().registerTranslation(Base.class);
         this.debug("Loading EventManager");
         new BungeeEventManager();
-        this.debug("Loading DependencyManager");
-        PluginClassLoader classLoader = new ReflectionClassLoader(this);
-        this.dependencyManager = new DependencyManager(this, classLoader);
-        this.dependencyManager.loadDependencies(Dependencies.get());
+        double serverVersion = Double.parseDouble(this.getServerVersion().replace("_", "."));
+        double javaVersion = Utils.getJavaVersion();
+        if((javaVersion == 1.8 || javaVersion == 11) && serverVersion < 1.16){ // We can only use it with Java 8 or Java 11 and older server versions
+            this.debug("Loading DependencyManager");
+            PluginClassLoader classLoader = new ReflectionClassLoader(this);
+            this.dependencyManager = new DependencyManager(this, classLoader);
+            this.dependencyManager.loadDependencies(Dependencies.get());
+        }
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){
@@ -177,6 +182,12 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     }
 
     @Override
+    public String getServerVersion() {
+        return this.getProxy().getVersion();
+    }
+
+    @Override
+    @Nullable
     public DependencyManager getDependencyManager() {
         return this.dependencyManager;
     }

@@ -6,13 +6,13 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>5.0.0-Alpha0.1</version>
+    <version>5.0.0-Alpha0.2</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
 
     <properties>
-        <java.version>1.16</java.version>
+        <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -35,7 +35,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -48,15 +48,19 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.google.gson</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.commons.codec</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.codec</shadedPattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.google.gson</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.apache.commons.io</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.io</shadedPattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.apache.commons.io</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.slf4j</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -154,13 +158,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>1.7.30</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <!-- COMMONS -->
         <dependency>
