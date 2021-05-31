@@ -23,7 +23,8 @@ public abstract class BungeeCommand extends BungeeModule {
             @Override
             public void execute(CommandSender sender, String[] args) {
                 CommandResult result;
-                if(sender instanceof ProxiedPlayer player){
+                if(sender instanceof ProxiedPlayer){
+                    ProxiedPlayer player = ((ProxiedPlayer) sender);
                     result = BungeeCommand.this.onPlayerExecute(player, args);
                 }else{
                     result = BungeeCommand.this.onConsoleExecute(new BungeeConsole(), args);

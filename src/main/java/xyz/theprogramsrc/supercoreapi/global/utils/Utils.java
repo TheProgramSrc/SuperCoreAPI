@@ -1,5 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
+import com.google.common.base.Preconditions;
+import com.google.common.io.ByteStreams;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
@@ -11,6 +13,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -848,6 +852,49 @@ public class Utils {
         }
 
         return javaVersion;
+    }
+
+    private static final LinkedHashMap<String, MessageDigest> digestsCache = new LinkedHashMap<>();
+
+    /**
+     * Gets the {@link MessageDigest} for the given algorithm
+     * @param algorithm the algorithm to use
+     * @return the {@link MessageDigest} for the given {@code algorithm}
+     * @throws NoSuchAlgorithmException if no Provider supports a MessageDigestSpi implementation for the specified algorithm
+     */
+    public static MessageDigest getDigest(String algorithm) throws NoSuchAlgorithmException {
+        Preconditions.checkNotNull(algorithm, "Algorithm cannot not be null!");
+        if(!digestsCache.containsKey(algorithm)){
+            digestsCache.put(algorithm, MessageDigest.getInstance(algorithm));
+        }
+
+        return digestsCache.get(algorithm);
+    }
+
+    /**
+     * Validates the File Checksum using the given checksum algorithm
+     * @param digest the {@link MessageDigest} to use in order to generate the checksum
+     * @param file the file to use and generate the checksum
+     * @return the generated checksum
+     * @throws IOException if an I/O error occurs
+     */
+    public static String generateFileChecksum(MessageDigest digest, File file) throws IOException {
+        FileInputStream inputStream = new FileInputStream(file);
+        byte[] bytes = new byte[1024];
+        int bytesCount;
+        while((bytesCount = inputStream.read(bytes)) != -1){
+            digest.update(bytes, 0, bytesCount);
+        }
+
+        inputStream.close();
+        bytes = digest.digest();
+
+        StringBuilder builder = new StringBuilder();
+        for(byte _byte : bytes){
+            builder.append(Integer.toString((_byte & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return builder.toString();
     }
 
 }

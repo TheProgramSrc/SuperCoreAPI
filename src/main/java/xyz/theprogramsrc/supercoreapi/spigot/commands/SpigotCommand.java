@@ -25,7 +25,8 @@ public abstract class SpigotCommand extends SpigotModule {
             @Override
             public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
                 CommandResult result;
-                if (sender instanceof Player player) {
+                if (sender instanceof Player) {
+                    Player player = ((Player) sender);
                     if(SpigotCommand.this.getPermission() != null && !SpigotCommand.this.getPermission().isEmpty()){
                         if(!player.hasPermission(SpigotCommand.this.getPermission())){
                             result = CommandResult.NO_PERMISSION;

@@ -6,7 +6,7 @@ package xyz.theprogramsrc.supercoreapi;
  */
 public class Base {
 
-    private final SuperPlugin<?> plugin;
+    protected SuperPlugin<?> plugin;
 
     public Base(SuperPlugin<?> plugin){
         this.plugin = plugin;

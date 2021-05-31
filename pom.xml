@@ -12,7 +12,7 @@
     <name>SuperCoreAPI</name>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -66,6 +66,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Maven Jar Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
             <!-- Unit Testing -->
             <plugin>
