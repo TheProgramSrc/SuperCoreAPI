@@ -3,7 +3,6 @@ package xyz.theprogramsrc.supercoreapi.spigot;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
@@ -21,11 +20,11 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.ServerVersion;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
@@ -94,10 +93,12 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.preloadedItems = new PreloadedItems();
         this.debug("Loading EventManager");
         this.eventManager = new EventManager();
-        this.debug("Loading Dependency Manager");
-        PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
-        this.dependencyManager = new DependencyManager(this, pluginClassLoader);
-        this.dependencyManager.loadDependencies(Dependencies.get());
+        if(!Utils.hasClass("org.bukkit.plugin.java.LibraryLoader")){ // We only use it if there is no class loader. This should always be false on v1.16.5 and higher
+            this.debug("Loading Dependency Manager");
+            PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
+            this.dependencyManager = new DependencyManager(this, pluginClassLoader);
+            this.dependencyManager.loadDependencies(Dependencies.get());
+        }
         this.debug("Loading RecipeCreator [BETA]");
         this.recipeCreator = new RecipeCreator();
         this.debug("Loading SkullsDatabase from GitHub");
@@ -256,6 +257,12 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
     }
 
     @Override
+    public String getServerVersion() {
+        return this.getServer().getVersion();
+    }
+
+    @Override
+    @Nullable
     public DependencyManager getDependencyManager() {
         return this.dependencyManager;
     }

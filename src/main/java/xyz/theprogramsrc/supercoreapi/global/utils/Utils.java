@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
@@ -11,6 +12,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -102,20 +105,26 @@ public class Utils {
         return notEmpty(array, "The array " + array.getClass().getName() + " is Empty!");
     }
 
+    private static final LinkedHashMap<Enum<?>, String> enumNameCache = new LinkedHashMap<>();
+
     /**
      * Used to get a human readable string from an enum
      * @param enumToGetName Enum to translate
      * @return Human readable string
      */
     public static String getEnumName(Enum<?> enumToGetName) {
-        ArrayList<String> list = new ArrayList<>();
-        String[] splittedEnum = enumToGetName.name().split("_");
+        if(!enumNameCache.containsKey(enumToGetName)){
+            ArrayList<String> list = new ArrayList<>();
+            String[] splittedEnum = enumToGetName.name().split("_");
 
-        for(String enumName : splittedEnum){
-            list.add(enumName.toUpperCase().charAt(0) + enumName.toLowerCase().substring(1));
+            for(String enumName : splittedEnum){
+                list.add(enumName.toUpperCase().charAt(0) + enumName.toLowerCase().substring(1));
+            }
+
+            enumNameCache.put(enumToGetName, String.join(" ", list));
         }
 
-        return String.join(" ", list);
+        return enumNameCache.get(enumToGetName);
     }
 
     /**
@@ -224,13 +233,18 @@ public class Utils {
         }
     }
 
+    private static final LinkedHashMap<String, String> uuidToFullUUID = new LinkedHashMap<>();
+
     /**
      * Used to translate a full uuid into a normal uuid
      * @param uuid Full UUID
      * @return Normal UUID
      */
     public static String uuidToFullUUID(String uuid){
-        return (new StringBuffer(uuid)).insert(8, "-").insert(13, "-").insert(18, "-").insert(23, "-").toString();
+        if(!uuidToFullUUID.containsKey(uuid)){
+            uuidToFullUUID.put(uuid, (new StringBuffer(uuid)).insert(8, "-").insert(13, "-").insert(18, "-").insert(23, "-").toString());
+        }
+        return uuidToFullUUID.get(uuid);
     }
 
     /* Time */
@@ -291,22 +305,31 @@ public class Utils {
         return internetCheck;
     }
 
+
+    public static final LinkedHashMap<String, String> readWithInputStreamCache = new LinkedHashMap<>();
+
     /**
      * Used to read a whole website
      * @param url URL of the website
      * @return Content of the website
      */
     public static String readWithInputStream(String url) {
-        try{
-            URL javaURL = new URL(url);
-            URLConnection connection = javaURL.openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
-            return new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
-        }catch (IOException ex){
-            ex.printStackTrace();
-            return null;
+        if(!readWithInputStreamCache.containsKey(url)){
+            try{
+                URL javaURL = new URL(url);
+                URLConnection connection = javaURL.openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+                readWithInputStreamCache.put(url, new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
+            }catch (IOException ex){
+                ex.printStackTrace();
+                return null;
+            }
         }
+
+        return readWithInputStreamCache.get(url);
     }
+
+    public static final LinkedHashMap<String, List<String>> readLinesWithInputStreamCache = new LinkedHashMap<>();
 
     /**
      * Used to read a whole website returning a list of every line
@@ -315,15 +338,19 @@ public class Utils {
      * @return Content of the website
      */
     public static List<String> readLinesWithInputStream(String url){
-        try{
-            URL webURL = new URL(url);
-            URLConnection connection = webURL.openConnection();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            return reader.lines().collect(Collectors.toList());
-        }catch (IOException e){
-            e.printStackTrace();
-            return new ArrayList<>();
+        if(!readLinesWithInputStreamCache.containsKey(url)){
+            try{
+                URL webURL = new URL(url);
+                URLConnection connection = webURL.openConnection();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                readLinesWithInputStreamCache.put(url, reader.lines().collect(Collectors.toList()));
+            }catch (IOException e){
+                e.printStackTrace();
+                return new ArrayList<>();
+            }
         }
+
+        return readLinesWithInputStreamCache.get(url);
     }
 
     /* Maths */
@@ -430,6 +457,8 @@ public class Utils {
         return new String(Base64.getDecoder().decode(data.getBytes()));
     }
 
+    private static final LinkedHashMap<String, String[]> breakTextA = new LinkedHashMap<>();
+
     /**
      * Used to create a text-break at some point
      * @param string String to break
@@ -437,13 +466,20 @@ public class Utils {
      * @return String array of the broken text
      */
     public static String[] breakText(String string, int partitionSize) {
-        List<String> list = new ArrayList<>();
-        int len = string.length();
-        for (int i = 0; i < len; i += partitionSize) {
-            list.add(string.substring(i, Math.min(len, i + partitionSize)));
+        String id = string+";"+partitionSize;
+        if(!breakTextA.containsKey(id)){
+            List<String> list = new ArrayList<>();
+            int len = string.length();
+            for (int i = 0; i < len; i += partitionSize) {
+                list.add(string.substring(i, Math.min(len, i + partitionSize)));
+            }
+            breakTextA.put(id, toStringArray(list));
         }
-        return toStringArray(list);
+
+        return breakTextA.get(id);
     }
+
+    private static final LinkedHashMap<String, String[]> breakTextB = new LinkedHashMap<>();
 
     /**
      * Used to create a text-break at some point and add a text before the broken text
@@ -453,12 +489,17 @@ public class Utils {
      * @return String array of the broken text
      */
     public static String[] breakText(String string, int partitionSize, String textToAdd){
-        List<String> list = new ArrayList<>();
-        int len = string.length();
-        for (int i = 0; i < len; i += partitionSize) {
-            list.add(textToAdd + string.substring(i, Math.min(len, i + partitionSize)));
+        String id = string+";"+partitionSize+";"+textToAdd;
+        if(!breakTextB.containsKey(id)){
+            List<String> list = new ArrayList<>();
+            int len = string.length();
+            for (int i = 0; i < len; i += partitionSize) {
+                list.add(textToAdd + string.substring(i, Math.min(len, i + partitionSize)));
+            }
+            breakTextB.put(id, toStringArray(list));
         }
-        return toStringArray(list);
+
+        return breakTextB.get(id);
     }
 
     /**
@@ -472,18 +513,6 @@ public class Utils {
         List<T> list = new ArrayList<>();
         Collections.addAll(list, array);
         return list;
-    }
-
-    /**
-     * Used to run a delayed task
-     * @param timerTask TimerTask to schedule
-     * @param milliseconds time to start the task (in milliseconds). See {@link #toMillis(int)}
-     * @return The created timer for the task
-     */
-    public static Timer runDelayedTask(TimerTask timerTask, long milliseconds) {
-        Timer timer = new Timer();
-        timer.schedule(timerTask, milliseconds);
-        return timer;
     }
 
     /**
@@ -586,8 +615,11 @@ public class Utils {
      * @throws IOException if an IO error occurs during copying
      */
     public static void downloadFile(String url, File destination) throws IOException {
-        if(!isConnected()) throw new UnknownHostException("Cannot connect to internet!");
-        FileUtils.copyURLToFile(new URL(url), destination);
+        if(!isConnected()) throw new RuntimeException("You're not connected to internet or connections are not allowed!");
+        HttpURLConnection connection = ((HttpURLConnection) new URL(url).openConnection());
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        connection.connect();
+        FileUtils.copyInputStreamToFile(connection.getInputStream(), destination);
     }
 
     /**
@@ -695,6 +727,8 @@ public class Utils {
         return result;
     }
 
+    private static final LinkedHashMap<String, String> pastes = new LinkedHashMap<>();
+
     /**
      * Upload a new paste to <a href="https://paste.theprogramsrc.xyz/">https://paste.theprogramsrc.xyz/</a>
      *
@@ -703,17 +737,21 @@ public class Utils {
      * @throws IOException in case of any problem
      */
     public static String uploadPaste(String body) throws IOException{
-        String url = "https://paste.theprogramsrc.xyz/documents";
-        String post = postRequest(url, body);
-        if(post != null){
-            if(isJSONEncoded(post)){
-                JsonObject json = new JsonParser().parse(post).getAsJsonObject();
-                return json.get("key").getAsString();
+        if(!pastes.containsKey(body) || pastes.get(body) == null){
+            String url = "https://paste.theprogramsrc.xyz/documents";
+            String post = postRequest(url, body);
+            if(post != null){
+                if(isJSONEncoded(post)){
+                    JsonObject json = new JsonParser().parse(post).getAsJsonObject();
+                    pastes.put(body, json.get("key").getAsString());
+                }
             }
         }
 
-        return null;
+        return pastes.getOrDefault(body, null);
     }
+
+    private static final LinkedHashMap<String, String> exceptionsToString = new LinkedHashMap<>();
 
     /**
      * Build an {@link Exception exception} into a string
@@ -721,13 +759,17 @@ public class Utils {
      * @return the stack trace as string
      */
     public static String exceptionToString(Exception e){
-        StringBuilder builder = new StringBuilder();
-        builder.append(exceptionMessage(e)).append("\n");
-        for (StackTraceElement ste : e.getStackTrace()) {
-            builder.append("\tat ").append(ste.getClassName()).append(".").append(ste.getMethodName()).append("(").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(")").append("\n");
+        String id = e.toString();
+        if(exceptionsToString.containsKey(id)){
+            StringBuilder builder = new StringBuilder();
+            builder.append(exceptionMessage(e)).append("\n");
+            for (StackTraceElement ste : e.getStackTrace()) {
+                builder.append("\tat ").append(ste.getClassName()).append(".").append(ste.getMethodName()).append("(").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(")").append("\n");
+            }
+            exceptionsToString.put(id, builder.toString());
         }
 
-        return builder.toString();
+        return exceptionsToString.get(id);
     }
 
     /**
@@ -797,5 +839,78 @@ public class Utils {
     }
 
 
+    private static double javaVersion = -1;
+
+    /**
+     * Gets the java version as double
+     * @return the java version as double
+     */
+    public static double getJavaVersion(){
+        if(javaVersion == -1){
+            String version = System.getProperty("java.version");
+            int pos = version.indexOf('.');
+            pos = version.indexOf('.', pos+1);
+            javaVersion = Double.parseDouble (version.substring (0, pos));
+        }
+
+        return javaVersion;
+    }
+
+    private static final LinkedHashMap<String, MessageDigest> digestsCache = new LinkedHashMap<>();
+
+    /**
+     * Gets the {@link MessageDigest} for the given algorithm
+     * @param algorithm the algorithm to use
+     * @return the {@link MessageDigest} for the given {@code algorithm}
+     * @throws NoSuchAlgorithmException if no Provider supports a MessageDigestSpi implementation for the specified algorithm
+     */
+    public static MessageDigest getDigest(String algorithm) throws NoSuchAlgorithmException {
+        Preconditions.checkNotNull(algorithm, "Algorithm cannot not be null!");
+        if(!digestsCache.containsKey(algorithm)){
+            digestsCache.put(algorithm, MessageDigest.getInstance(algorithm));
+        }
+
+        return digestsCache.get(algorithm);
+    }
+
+    /**
+     * Validates the File Checksum using the given checksum algorithm
+     * @param digest the {@link MessageDigest} to use in order to generate the checksum
+     * @param file the file to use and generate the checksum
+     * @return the generated checksum
+     * @throws IOException if an I/O error occurs
+     */
+    public static String generateFileChecksum(MessageDigest digest, File file) throws IOException {
+        FileInputStream inputStream = new FileInputStream(file);
+        byte[] bytes = new byte[1024];
+        int bytesCount;
+        while((bytesCount = inputStream.read(bytes)) != -1){
+            digest.update(bytes, 0, bytesCount);
+        }
+
+        inputStream.close();
+        bytes = digest.digest();
+
+        StringBuilder builder = new StringBuilder();
+        for(byte _byte : bytes){
+            builder.append(Integer.toString((_byte & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Checks if the given class exists
+     * @param className the name of the class
+     * @return true if exists, false otherwise.
+     */
+    public static boolean hasClass(String className){
+        try{
+            Class.forName(className);
+            return true;
+        }catch (ClassNotFoundException e){
+            return false;
+        }
+    }
 }
 

@@ -37,7 +37,6 @@ public abstract class BrowserGUI<OBJ> extends GUI {
     public void onEvent(GUIEvent event) {
         if(event instanceof GUIOpenEvent){
             this.clearButtons();
-            OBJ[] objs = this.getObjects();
             List<OBJ> objectsFound = Arrays.stream(this.getObjects()).filter(obj->{
                 if(this.searchTerm != null){
                     String itemName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(obj).getItemStack()).getDisplayName()).toLowerCase();

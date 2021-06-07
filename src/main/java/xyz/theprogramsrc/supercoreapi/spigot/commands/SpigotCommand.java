@@ -23,7 +23,7 @@ public abstract class SpigotCommand extends SpigotModule {
         this.debug("Registering command '" + this.getCommand() + "'");
         BukkitCommand command = new BukkitCommand(this.getCommand(), "", "/", Utils.toList(this.getAliases())) {
             @Override
-            public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+            public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
                 CommandResult result;
                 if (sender instanceof Player) {
                     Player player = ((Player) sender);

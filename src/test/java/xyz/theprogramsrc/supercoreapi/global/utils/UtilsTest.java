@@ -2,7 +2,13 @@ package xyz.theprogramsrc.supercoreapi.global.utils;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UtilsTest {
 
@@ -40,5 +46,17 @@ class UtilsTest {
     void squareRootTest() {
         double sqrt = Utils.squareRoot(Utils.parseHypotenuse(3,4));
         assertEquals(5, sqrt);
+    }
+
+    @Test
+    void checksumGeneratorTest() throws IOException, NoSuchAlgorithmException {
+        // First we download the sample jar
+        File tmpFile = new File("4.13.0.pom.xml");
+        Utils.downloadFile("https://repo.theprogramsrc.xyz/repository/maven-public/xyz/theprogramsrc/SuperCoreAPI/4.13.0/SuperCoreAPI-4.13.0.pom", tmpFile);
+        String knownHash = "f70c0d83eab4bb30e8794f929299fd9a"; // We Store the known hash
+        MessageDigest messageDigest = Utils.getDigest("MD5"); // We generate the message digest
+        String generatedHash = Utils.generateFileChecksum(messageDigest, tmpFile); // Now we generate the hash
+        assertEquals(knownHash, generatedHash); // Now we check the hash
+        tmpFile.deleteOnExit();
     }
 }

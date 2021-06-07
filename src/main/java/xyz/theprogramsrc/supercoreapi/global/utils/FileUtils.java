@@ -3,6 +3,7 @@ package xyz.theprogramsrc.supercoreapi.global.utils;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -12,9 +13,9 @@ public class FileUtils {
      * Used to download a file using CommonsIO
      * @param url Url of the file
      * @param file Output file
-     * @throws Exception If occurs any exception
+     * @throws IOException If occurs any exception
      */
-    public static void downloadUsingCommons(String url, File file) throws Exception {
+    public static void downloadUsingCommons(String url, File file) throws IOException {
         org.apache.commons.io.FileUtils.copyURLToFile(new URL(url), file);
     }
 
@@ -30,7 +31,7 @@ public class FileUtils {
             BufferedInputStream bis = new BufferedInputStream(url.openStream());
             FileOutputStream fis = new FileOutputStream(output);
             byte[] buffer = new byte[1024];
-            int count=0;
+            int count;
             while((count = bis.read(buffer,0,1024)) != -1) {
                 fis.write(buffer, 0, count);
             }
@@ -71,7 +72,7 @@ public class FileUtils {
                 if (redirect) {
                     return conn.getHeaderField("Location");
                 }
-            } catch (Exception e) {}
+            } catch (Exception ignored) {}
         } else {
             return redUrl;
         }

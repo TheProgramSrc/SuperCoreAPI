@@ -6,6 +6,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.TranslationDownloader;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -117,6 +118,12 @@ public interface SuperPlugin<PLUGIN> {
     String getLanguage();
 
     /**
+     * Gets the version of the server (e.g. 1.16, 1.16.5, 1.15...)
+     * @return the version of the server
+     */
+    String getServerVersion();
+
+    /**
      * Executed while the plugin is being loaded
      */
     void onPluginLoad();
@@ -141,6 +148,7 @@ public interface SuperPlugin<PLUGIN> {
      * Gets the dependency manager
      * @return Dependency Manager
      */
+    @Nullable
     DependencyManager getDependencyManager();
 
     /**

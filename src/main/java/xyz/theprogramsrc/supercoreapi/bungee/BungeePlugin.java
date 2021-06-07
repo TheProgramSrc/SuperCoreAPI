@@ -4,7 +4,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
-import xyz.theprogramsrc.supercoreapi.SuperUtils;
 import xyz.theprogramsrc.supercoreapi.bungee.events.BungeeEventManager;
 import xyz.theprogramsrc.supercoreapi.bungee.storage.Settings;
 import xyz.theprogramsrc.supercoreapi.bungee.utils.BungeeUtils;
@@ -19,6 +18,7 @@ import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,10 +72,12 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.getTranslationManager().registerTranslation(Base.class);
         this.debug("Loading EventManager");
         new BungeeEventManager();
-        this.debug("Loading DependencyManager");
-        PluginClassLoader classLoader = new ReflectionClassLoader(this);
-        this.dependencyManager = new DependencyManager(this, classLoader);
-        this.dependencyManager.loadDependencies(Dependencies.get());
+        if(!Utils.hasClass("net.md_5.bungee.api.plugin.LibraryLoader")){ // Only use the Dependency Manager if we don't have the Library Loader (which should not happen if we use the latest release)
+            this.debug("Loading DependencyManager");
+            PluginClassLoader classLoader = new ReflectionClassLoader(this);
+            this.dependencyManager = new DependencyManager(this, classLoader);
+            this.dependencyManager.loadDependencies(Dependencies.get());
+        }
         this.onPluginEnable();
         this.log("Enabled plugin");
         if(this.isFirstStart()){
@@ -178,6 +180,12 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
     }
 
     @Override
+    public String getServerVersion() {
+        return this.getProxy().getVersion();
+    }
+
+    @Override
+    @Nullable
     public DependencyManager getDependencyManager() {
         return this.dependencyManager;
     }
