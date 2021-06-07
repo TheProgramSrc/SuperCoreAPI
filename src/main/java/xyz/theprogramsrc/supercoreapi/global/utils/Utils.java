@@ -615,8 +615,11 @@ public class Utils {
      * @throws IOException if an IO error occurs during copying
      */
     public static void downloadFile(String url, File destination) throws IOException {
-        if(!isConnected()) throw new UnknownHostException("Cannot connect to internet!");
-        FileUtils.copyURLToFile(new URL(url), destination);
+        if(!isConnected()) throw new RuntimeException("You're not connected to internet or connections are not allowed!");
+        HttpURLConnection connection = ((HttpURLConnection) new URL(url).openConnection());
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36");
+        connection.connect();
+        FileUtils.copyInputStreamToFile(connection.getInputStream(), destination);
     }
 
     /**

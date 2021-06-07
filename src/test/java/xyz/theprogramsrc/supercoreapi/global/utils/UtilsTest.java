@@ -51,10 +51,12 @@ class UtilsTest {
     @Test
     void checksumGeneratorTest() throws IOException, NoSuchAlgorithmException {
         // First we download the sample jar
-        File pomFile = new File("pom.xml");
-        String knownHash = "65b99694a741b0e3a0296f800b0dabde"; // We Store the known hash
+        File tmpFile = new File("4.13.0.pom.xml");
+        Utils.downloadFile("https://repo.theprogramsrc.xyz/repository/maven-public/xyz/theprogramsrc/SuperCoreAPI/4.13.0/SuperCoreAPI-4.13.0.pom", tmpFile);
+        String knownHash = "f70c0d83eab4bb30e8794f929299fd9a"; // We Store the known hash
         MessageDigest messageDigest = Utils.getDigest("MD5"); // We generate the message digest
-        String generatedHash = Utils.generateFileChecksum(messageDigest, pomFile); // Now we generate the hash
+        String generatedHash = Utils.generateFileChecksum(messageDigest, tmpFile); // Now we generate the hash
         assertEquals(knownHash, generatedHash); // Now we check the hash
+        tmpFile.deleteOnExit();
     }
 }
