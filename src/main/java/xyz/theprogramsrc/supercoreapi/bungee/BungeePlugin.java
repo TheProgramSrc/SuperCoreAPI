@@ -72,9 +72,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.getTranslationManager().registerTranslation(Base.class);
         this.debug("Loading EventManager");
         new BungeeEventManager();
-        double serverVersion = Double.parseDouble(this.getServerVersion().replace("_", "."));
-        double javaVersion = Utils.getJavaVersion();
-        if((javaVersion == 1.8 || javaVersion == 11) && serverVersion < 1.16){ // We can only use it with Java 8 or Java 11 and older server versions
+        if(!Utils.hasClass("net.md_5.bungee.api.plugin.LibraryLoader")){ // Only use the Dependency Manager if we don't have the Library Loader (which should not happen if we use the latest release)
             this.debug("Loading DependencyManager");
             PluginClassLoader classLoader = new ReflectionClassLoader(this);
             this.dependencyManager = new DependencyManager(this, classLoader);

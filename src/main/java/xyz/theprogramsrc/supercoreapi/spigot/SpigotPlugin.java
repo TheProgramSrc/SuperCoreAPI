@@ -20,7 +20,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.Skulls;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.CustomRecipe;
 import xyz.theprogramsrc.supercoreapi.spigot.recipes.RecipeCreator;
 import xyz.theprogramsrc.supercoreapi.spigot.storage.SettingsStorage;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.ServerVersion;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTextureManager;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.tasks.SpigotTasks;
@@ -94,8 +93,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.preloadedItems = new PreloadedItems();
         this.debug("Loading EventManager");
         this.eventManager = new EventManager();
-        double javaVersion = Utils.getJavaVersion();
-        if((javaVersion == 1.8 || javaVersion == 11) && ServerVersion.isServerVersionBelow(ServerVersion.V1_16)){ // We can only use it with Java 8 or Java 11 and older server versions
+        if(!Utils.hasClass("org.bukkit.plugin.java.LibraryLoader")){ // We only use it if there is no class loader. This should always be false on v1.16.5 and higher
             this.debug("Loading Dependency Manager");
             PluginClassLoader pluginClassLoader = new ReflectionClassLoader(this);
             this.dependencyManager = new DependencyManager(this, pluginClassLoader);

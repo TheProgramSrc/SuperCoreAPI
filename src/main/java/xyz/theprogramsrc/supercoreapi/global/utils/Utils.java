@@ -1,7 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
 import com.google.common.base.Preconditions;
-import com.google.common.io.ByteStreams;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.io.FileUtils;
@@ -897,5 +896,18 @@ public class Utils {
         return builder.toString();
     }
 
+    /**
+     * Checks if the given class exists
+     * @param className the name of the class
+     * @return true if exists, false otherwise.
+     */
+    public static boolean hasClass(String className){
+        try{
+            Class.forName(className);
+            return true;
+        }catch (ClassNotFoundException e){
+            return false;
+        }
+    }
 }
 
