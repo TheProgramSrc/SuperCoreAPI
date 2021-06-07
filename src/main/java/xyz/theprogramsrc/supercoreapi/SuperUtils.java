@@ -1,7 +1,6 @@
 package xyz.theprogramsrc.supercoreapi;
 
 import net.md_5.bungee.api.ChatColor;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,7 +57,7 @@ public interface SuperUtils {
      * @return Array without colors
      */
     default String[] removeColor(String... strings){
-        return this.removeColor(Utils.toList(strings)).toArray(String[]::new);
+        return Arrays.stream(strings).map(this::removeColor).toArray(String[]::new);
     }
 
     /**
