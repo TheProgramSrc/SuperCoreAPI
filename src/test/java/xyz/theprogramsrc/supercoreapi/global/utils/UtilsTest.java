@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UtilsTest {
 
@@ -50,14 +51,10 @@ class UtilsTest {
     @Test
     void checksumGeneratorTest() throws IOException, NoSuchAlgorithmException {
         // First we download the sample jar
-        File tempFile = new File("SuperCoreAPI-6.jar");
-        tempFile.deleteOnExit();
-        FileUtils.downloadUsingCommons("https://ci.theprogramsrc.xyz/job/MinecraftPlugins/job/SuperCoreAPI/6/artifact/target/SuperCoreAPI.jar", tempFile);
-        String knownHash = "942b01234b25118d489f5a090bb034a8"; // We Store the known hash
+        File pomFile = new File("pom.xml");
+        String knownHash = "65b99694a741b0e3a0296f800b0dabde"; // We Store the known hash
         MessageDigest messageDigest = Utils.getDigest("MD5"); // We generate the message digest
-        String generatedHash = Utils.generateFileChecksum(messageDigest, tempFile); // Now we generate the hash
-
-        assertEquals(knownHash, generatedHash);
-
+        String generatedHash = Utils.generateFileChecksum(messageDigest, pomFile); // Now we generate the hash
+        assertEquals(knownHash, generatedHash); // Now we check the hash
     }
 }

@@ -239,7 +239,9 @@ public abstract class GUI extends SpigotModule {
         StringBuilder result = new StringBuilder();
         int spaces = (27 - this.spigotPlugin.getSuperUtils().removeColor(title).length());
 
-        result.append(" ".repeat(Math.max(0, spaces)));
+        for (int i = 0; i < spaces; i++) {
+            result.append(" ");
+        }
 
         return result.append(title).toString();
     }
