@@ -1,3 +1,21 @@
+## v5.0.0-SNAPSHOT Changelog:
+```
+* Updated .gitignore file
+* Added Java 16 Support
+* Added Caching system for some utilities
+* SLF4J-api and SLF4J-nop is now compiled into SuperCoreAPI
+* Moved libraries to package xyz.theprogramsrc.supercoreapi.libs
+* Added util to retrieve Message Digest Instance
+* Added util to generate checksum from file
+* Removed placeholder injectors so checksum validation will work
+* Dependency Manager will only load if the class LibraryLoader exists
+* Added Utils#hasClass to check if a class exists
+* Fixed Utils#downloadFile (basically added User Agent)
+* Fixed some tests
+```
+
+> Sorry for the little gap here, forgot to update this. You can check the changelogs [here](https://github.com/TheProgramSrc/SuperCoreAPI/releases)
+
 ## v4.2.13 Changelog:
 ```
 * Moved Log Filter register method to the LogsFilter class
