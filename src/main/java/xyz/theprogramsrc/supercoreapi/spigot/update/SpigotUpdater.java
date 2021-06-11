@@ -2,7 +2,6 @@ package xyz.theprogramsrc.supercoreapi.spigot.update;
 
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 
 import java.io.File;
 
@@ -30,9 +29,9 @@ public class SpigotUpdater extends SpigotModule {
      */
     public void restartServer(boolean script){
         if(script){
-            ((SpigotPlugin)this.plugin).getServer().spigot().restart();
+            this.spigotPlugin.getServer().spigot().restart();
         }else{
-            ((SpigotPlugin)this.plugin).getServer().dispatchCommand(((SpigotPlugin)this.plugin).getServer().getConsoleSender(), "restart");
+            this.spigotPlugin.getServer().dispatchCommand((this.spigotPlugin).getServer().getConsoleSender(), "restart");
         }
     }
 

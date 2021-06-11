@@ -62,7 +62,19 @@
                                     <pattern>org.slf4j</pattern>
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.slf4j</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.cryptomorin.xseries</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.xseries</shadedPattern>
+                                </relocation>
                             </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>com/cryptomorin/xseries/*</include>
+                                    </includes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -165,6 +177,13 @@
             <artifactId>spigot</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- XSeries -->
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>8.0.0</version>
+            <scope>compile</scope>
         </dependency>
         <!-- SLF4J -->
         <dependency>

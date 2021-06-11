@@ -1,14 +1,15 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
+import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.BrowserGUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.Arrays;
 
@@ -21,7 +22,7 @@ public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
     @Override
     public XMaterial[] getObjects() {
         Inventory inventory = Bukkit.createInventory(null, 9);
-        return Arrays.stream(XMaterial.itemsSupported()).filter(m-> m.parseMaterial() != null).filter(m->{
+        return Arrays.stream(XMaterial.values()).filter(XMaterial::isSupported).filter(m-> m.parseMaterial() != null).filter(m->{
             inventory.setItem(4, m.parseItem());
             if(inventory.getItem(4) != null){
                 inventory.clear();
@@ -34,11 +35,11 @@ public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
     @Override
     public GUIButton getButton(XMaterial xMaterial) {
         SimpleItem item = new SimpleItem(xMaterial)
-                .setDisplayName("&a"+Base.MATERIAL_SELECTOR_ITEM_NAME.toString())
+                .setDisplayName("&a" + Base.MATERIAL_SELECTOR_ITEM_NAME)
                 .setLore(
                         "&7",
                         "&7" + Base.MATERIAL_SELECTOR_ITEM_DESCRIPTION
-                ).addPlaceholder("{Material}", xMaterial.getHumanName());
+                ).addPlaceholder("{Material}", Utils.getEnumName(xMaterial));
         return new GUIButton(item).setAction(a-> this.onSelect(a, xMaterial));
     }
 

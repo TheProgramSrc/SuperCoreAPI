@@ -2,7 +2,6 @@ package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings;
 
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
@@ -52,7 +51,7 @@ public abstract class SettingsGUI extends GUI {
             return "&c" + Base.SETTING_PANE_GUI_TITLE.options().placeholder("{Setting}", settingPane.getDisplayName()).get();
         }
 
-        return "&c" + Base.SETTINGS_GUI_TITLE.toString();
+        return "&c" + Base.SETTINGS_GUI_TITLE;
     }
 
     public abstract SettingPane[] getSettingPanes();

@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
@@ -7,7 +8,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 public abstract class ConfirmationGUI extends GUI {
 

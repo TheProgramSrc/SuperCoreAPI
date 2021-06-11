@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated;
 
+import com.cryptomorin.xseries.XMaterial;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
@@ -7,7 +8,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.SettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.LinkedList;
 
