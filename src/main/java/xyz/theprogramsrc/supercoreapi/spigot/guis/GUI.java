@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,6 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickType;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
