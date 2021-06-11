@@ -59,8 +59,8 @@
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.apache.commons.codec</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache.commons.io</pattern>
-                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.io</shadedPattern>
+                                    <pattern>com.cryptomorin.xseries</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.xseries</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
