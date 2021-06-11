@@ -1,5 +1,7 @@
 package xyz.theprogramsrc.supercoreapi.spigot.dialog;
 
+import com.cryptomorin.xseries.messages.ActionBar;
+import com.cryptomorin.xseries.messages.Titles;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,8 +15,6 @@ import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.packets.Actionbar;
-import xyz.theprogramsrc.supercoreapi.spigot.packets.Title;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -62,8 +62,8 @@ public abstract class Dialog extends SpigotModule {
     }
 
     private void sendTitleAndActionbar() {
-        Title.sendTitle(this.getPlayer(), 0, 999, 0, this.apply(Utils.ct(this.getTitle() != null ? this.getTitle() : "")), this.apply(Utils.ct(this.getSubtitle() != null ? this.getSubtitle() : "")));
-        Actionbar.sendActionBar(this.getPlayer(), this.apply(Utils.ct(this.getActionbar() != null ? this.getActionbar() : "")));
+        Titles.sendTitle(this.player, 0, 999, 0, this.apply(Utils.ct(this.getTitle() != null ? this.getTitle() : "")), this.apply(Utils.ct(this.getSubtitle() != null ? this.getSubtitle() : "")));
+        ActionBar.sendActionBar(this.getPlayer(), this.apply(Utils.ct(this.getActionbar() != null ? this.getActionbar() : "")));
     }
 
     /**
@@ -74,8 +74,8 @@ public abstract class Dialog extends SpigotModule {
             if(this.task != null) this.task.stop();
             HandlerList.unregisterAll(this);
             this.getSpigotTasks().runAsyncTask(() -> {
-                Title.clearTitle(this.getPlayer());
-                Actionbar.clearActionbar(this.getPlayer());
+                Titles.clearTitle(this.getPlayer());
+                ActionBar.clearActionBar(this.getPlayer());
             });
             this.onDialogClose();
             if(this.recall != null){

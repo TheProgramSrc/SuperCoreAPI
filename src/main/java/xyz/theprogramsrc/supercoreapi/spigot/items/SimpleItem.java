@@ -1,5 +1,6 @@
 package xyz.theprogramsrc.supercoreapi.spigot.items;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.apache.commons.codec.binary.Base64;
@@ -16,7 +17,6 @@ import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTexture;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -26,7 +26,7 @@ import java.util.*;
  */
 public class SimpleItem {
 
-    private final SpigotUtils utils = ((SpigotUtils)SpigotPlugin.i.getSuperUtils());
+    private final SpigotUtils utils = SpigotPlugin.i.getSuperUtils();
     private ItemStack item;
     private LinkedHashMap<String, String> placeholders;
 

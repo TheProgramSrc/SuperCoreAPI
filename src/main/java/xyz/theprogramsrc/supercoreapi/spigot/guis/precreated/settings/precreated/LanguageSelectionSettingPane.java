@@ -1,11 +1,10 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated;
 
+import com.cryptomorin.xseries.XMaterial;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.CustomSettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 import java.util.Locale;
 

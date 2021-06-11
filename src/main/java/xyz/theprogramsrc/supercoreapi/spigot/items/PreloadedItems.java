@@ -1,10 +1,10 @@
 package xyz.theprogramsrc.supercoreapi.spigot.items;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.enchantments.Enchantment;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.xseries.XMaterial;
 
 /**
  * Representation of the Pre-Created Items

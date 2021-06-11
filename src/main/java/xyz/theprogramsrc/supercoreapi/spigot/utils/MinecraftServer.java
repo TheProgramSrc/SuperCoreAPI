@@ -18,27 +18,25 @@ public enum MinecraftServer {
         try {
             Class.forName("net.techcable.tacospigot.TacoSpigotConfig");
             return TACO;
-        } catch (ClassNotFoundException ex) {
-        }
+        } catch (ClassNotFoundException ignored) { }
 
         // Paper used to be called "paperclip"
         try {
             Class.forName("com.destroystokyo.paperclip.Paperclip");
             return PAPER;
-        } catch (ClassNotFoundException ex) {
-        }
+        } catch (ClassNotFoundException ignored) {}
+
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
             return PAPER;
-        } catch (ClassNotFoundException ex) {
-        }
+        } catch (ClassNotFoundException ignored) { }
 
         // Spigot is the fork that pretty much all builds are based on anymore
         try {
             Class.forName("org.spigotmc.SpigotConfig");
             return SPIGOT;
-        } catch (ClassNotFoundException ex) {
-        }
+        } catch (ClassNotFoundException ignored) { }
+
         return serverPath.contains("craftbukkit") ? CRAFTBUKKIT : UNKNOWN;
     }
 

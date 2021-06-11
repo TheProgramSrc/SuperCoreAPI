@@ -12,6 +12,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.utils.ItemUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RecipeCreator extends SpigotModule {
@@ -53,7 +54,7 @@ public class RecipeCreator extends SpigotModule {
             }
 
             for (CustomRecipe recipe : this.recipes.values()) {
-                List<ItemStack> unordered = Arrays.stream(recipe.getRecipeItems()).filter(i-> i.getSlot() == -1).filter(i-> i.getItem() != null).map(RecipeItem::getItem).collect(Collectors.toList());
+                List<ItemStack> unordered = Arrays.stream(recipe.getRecipeItems()).filter(i-> i.getSlot() == -1).map(RecipeItem::getItem).filter(Objects::nonNull).collect(Collectors.toList());
                 if(!unordered.isEmpty()){
                     if(contents.containsAll(unordered)){
                         inv.setResult(recipe.getResult());

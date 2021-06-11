@@ -10,9 +10,9 @@ import java.util.List;
 
 public enum Skulls {
 
-    BACK("http://textures.minecraft.net/texture/9c042597eda9f061794fe11dacf78926d247f9eea8ddef39dfbe6022989b8395"),
-    ARROW_LEFT("http://textures.minecraft.net/texture/f7aacad193e2226971ed95302dba433438be4644fbab5ebf818054061667fbe2"),
-    ARROW_RIGHT("http://textures.minecraft.net/texture/a5fb343b2e7822c7de47abac4c3679f6ad1fa12efc5866c033c7584d6848"),
+    BACK("https://textures.minecraft.net/texture/9c042597eda9f061794fe11dacf78926d247f9eea8ddef39dfbe6022989b8395"),
+    ARROW_LEFT("https://textures.minecraft.net/texture/f7aacad193e2226971ed95302dba433438be4644fbab5ebf818054061667fbe2"),
+    ARROW_RIGHT("https://textures.minecraft.net/texture/a5fb343b2e7822c7de47abac4c3679f6ad1fa12efc5866c033c7584d6848"),
 
     ;
 
@@ -47,7 +47,7 @@ public enum Skulls {
      */
     public static SkinTexture fromDataBase(String key){
         if(cache == null) cache = new LinkedHashMap<>();
-        return new SkinTexture(cache.getOrDefault(key, "http://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"));
+        return new SkinTexture(cache.getOrDefault(key, "https://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"));
     }
 
     /**
@@ -57,7 +57,7 @@ public enum Skulls {
      */
     public static String urlFromDataBase(String key){
         if(cache == null) cache = new LinkedHashMap<>();
-        return cache.getOrDefault(key, "http://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a");
+        return cache.getOrDefault(key, "https://textures.minecraft.net/texture/badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a");
     }
 
     /**
