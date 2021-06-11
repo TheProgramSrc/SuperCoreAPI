@@ -63,14 +63,6 @@
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.apache.commons.io</shadedPattern>
                                 </relocation>
                             </relocations>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <includes>
-                                        <include>com/cryptomorin/xseries/*</include>
-                                    </includes>
-                                </filter>
-                            </filters>
                         </configuration>
                     </execution>
                 </executions>
