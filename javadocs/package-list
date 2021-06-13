@@ -4,20 +4,16 @@ xyz.theprogramsrc.supercoreapi.bungee.commands
 xyz.theprogramsrc.supercoreapi.bungee.events
 xyz.theprogramsrc.supercoreapi.bungee.storage
 xyz.theprogramsrc.supercoreapi.bungee.utils
-xyz.theprogramsrc.supercoreapi.bungee.utils.storage
 xyz.theprogramsrc.supercoreapi.bungee.utils.tasks
 xyz.theprogramsrc.supercoreapi.global
-xyz.theprogramsrc.supercoreapi.global.apis
 xyz.theprogramsrc.supercoreapi.global.apis.songoda
 xyz.theprogramsrc.supercoreapi.global.apis.spigot
 xyz.theprogramsrc.supercoreapi.global.data
 xyz.theprogramsrc.supercoreapi.global.dependencies
 xyz.theprogramsrc.supercoreapi.global.dependencies.classloader
 xyz.theprogramsrc.supercoreapi.global.files
-xyz.theprogramsrc.supercoreapi.global.files.utils
-xyz.theprogramsrc.supercoreapi.global.json
+xyz.theprogramsrc.supercoreapi.global.files.yml
 xyz.theprogramsrc.supercoreapi.global.networking
-xyz.theprogramsrc.supercoreapi.global.notifications
 xyz.theprogramsrc.supercoreapi.global.objects
 xyz.theprogramsrc.supercoreapi.global.placeholders
 xyz.theprogramsrc.supercoreapi.global.storage
@@ -27,6 +23,8 @@ xyz.theprogramsrc.supercoreapi.global.storage.universal
 xyz.theprogramsrc.supercoreapi.global.translations
 xyz.theprogramsrc.supercoreapi.global.updater
 xyz.theprogramsrc.supercoreapi.global.utils
+xyz.theprogramsrc.supercoreapi.global.utils.files
+xyz.theprogramsrc.supercoreapi.global.utils.json
 xyz.theprogramsrc.supercoreapi.global.utils.serverutils
 xyz.theprogramsrc.supercoreapi.spigot
 xyz.theprogramsrc.supercoreapi.spigot.commands
@@ -49,6 +47,4 @@ xyz.theprogramsrc.supercoreapi.spigot.storage
 xyz.theprogramsrc.supercoreapi.spigot.update
 xyz.theprogramsrc.supercoreapi.spigot.utils
 xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture
-xyz.theprogramsrc.supercoreapi.spigot.utils.storage
 xyz.theprogramsrc.supercoreapi.spigot.utils.tasks
-xyz.theprogramsrc.supercoreapi.spigot.utils.xseries

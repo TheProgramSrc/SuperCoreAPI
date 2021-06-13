@@ -5,8 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
-import xyz.theprogramsrc.supercoreapi.global.utils.FileUtils;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.global.utils.files.FileUtils;
 
 import java.io.File;
 
@@ -41,7 +41,7 @@ public class TranslationDownloader {
                     }
                 }
             }
-            core.getTranslationManager().reloadTranslations();
+            core.getTranslationManager().loadTranslations();
         }catch (Exception ex){
             ex.printStackTrace();
         }

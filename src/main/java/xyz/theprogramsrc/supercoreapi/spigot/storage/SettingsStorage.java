@@ -1,19 +1,19 @@
 package xyz.theprogramsrc.supercoreapi.spigot.storage;
 
+import xyz.theprogramsrc.supercoreapi.global.files.yml.YMLConfig;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.utils.storage.SpigotYMLConfig;
 
 /**
  * Representation of the Plugin Settings File
  */
 public class SettingsStorage extends SpigotModule {
 
-    private SpigotYMLConfig cfg;
+    private YMLConfig cfg;
     private String defaultPrefix;
 
     @Override
     public void onLoad() {
-        this.cfg = new SpigotYMLConfig(this.getPluginFolder(), "Settings.yml");
+        this.cfg = new YMLConfig(this.getPluginFolder(), "Settings.yml");
         this.defaultPrefix = "&9" + this.getPluginName() + "»&r";
         if(this.plugin.isFirstStart()){
             this.loadDefaults();
@@ -54,14 +54,14 @@ public class SettingsStorage extends SpigotModule {
 
     private void loadDefaults(){
         this.cfg.add("Prefix", this.defaultPrefix);
-        this.cfg.add("Language", "en_US");
+        this.cfg.add("Language", "en");
     }
 
     /**
      * Gets the Config
      * @return the config
      */
-    public SpigotYMLConfig getConfig() {
+    public YMLConfig getConfig() {
         return cfg;
     }
 }
