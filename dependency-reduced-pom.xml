@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>5.0.0-Alpha0.2</version>
+  <version>5.0.0-SNAPSHOT</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
@@ -50,6 +50,18 @@
                 <relocation>
                   <pattern>org.apache.commons.codec</pattern>
                   <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.apache.commons.codec</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.cryptomorin.xseries</pattern>
+                  <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.xseries</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.simpleyaml</pattern>
+                  <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.simpleyaml</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.yaml.snakeyaml</pattern>
+                  <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.snakeyaml</shadedPattern>
                 </relocation>
                 <relocation>
                   <pattern>org.slf4j</pattern>
@@ -111,13 +123,13 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <version>1.17-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>net.md-5</groupId>
       <artifactId>bungeecord-api</artifactId>
-      <version>1.16-R0.5-SNAPSHOT</version>
+      <version>1.17-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

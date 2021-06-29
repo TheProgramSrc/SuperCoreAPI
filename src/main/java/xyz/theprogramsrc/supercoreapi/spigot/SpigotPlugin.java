@@ -82,7 +82,7 @@ public abstract class SpigotPlugin extends JavaPlugin implements SuperPlugin<Jav
         this.debug("Loading SettingsStorage");
         this.settingsStorage = new SettingsStorage();
         this.debug("Loading Translations");
-        this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
+        this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "lang/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
         this.debug("Loading SkinManager");

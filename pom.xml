@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>5.0.1-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -61,6 +61,18 @@
                                 <relocation>
                                     <pattern>com.cryptomorin.xseries</pattern>
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.xseries</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.simpleyaml</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.simpleyaml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.yaml.snakeyaml</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.snakeyaml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.slf4j</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -149,14 +161,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- BUNGEE -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.16-R0.5-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--  NMS  -->
@@ -204,6 +216,13 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- YAMLConfig -->
+        <dependency>
+            <groupId>me.carleslc.Simple-YAML</groupId>
+            <artifactId>Simple-Yaml</artifactId>
+            <version>1.7.2</version>
             <scope>compile</scope>
         </dependency>
         <!-- SQL Connection -->

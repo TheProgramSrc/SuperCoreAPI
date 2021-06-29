@@ -548,7 +548,7 @@ public class Utils {
      * @return Folder checked
      */
     public static File folder(File folder) {
-        if(!folder.exists()) folder.mkdir();
+        if(!folder.exists()) folder.mkdirs();
         return folder;
     }
 

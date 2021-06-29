@@ -6,9 +6,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.CustomSettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-import java.util.Locale;
-
-public class LanguageSelectionSettingPane extends CustomSettingPane<Locale> {
+public class LanguageSelectionSettingPane extends CustomSettingPane<String> {
 
     @Override
     public String getDisplayName() {
@@ -26,23 +24,23 @@ public class LanguageSelectionSettingPane extends CustomSettingPane<Locale> {
     }
 
     @Override
-    public GUIButton getButton(Locale locale) {
-        boolean selected = this.getSettings().getLanguage().equals(locale.toString());
+    public GUIButton getButton(String language) {
+        boolean selected = this.getSettings().getLanguage().equals(language);
         SimpleItem item = new SimpleItem(XMaterial.BOOK)
-                .setDisplayName("&a" + locale.getDisplayLanguage())
+                .setDisplayName("&a" + this.plugin.getTranslationManager().translate("Display", language))
                 .setLore(
                         "&7",
                         "&7" + (selected ? Base.LANGUAGE_SELECTED_DESCRIPTION : Base.LANGUAGE_SELECT_DESCRIPTION)
-                ).addPlaceholder("{Language}", locale.getDisplayLanguage(locale));
+                ).addPlaceholder("{Language}", this.plugin.getTranslationManager().translate("Display", language));
         return new GUIButton(item, a->{
-            this.getSettings().setLanguage(locale.toString());
-            this.getSettings().getConfig().reload();
+            this.getSettings().setLanguage(language);
+            this.getSettings().getConfig().load();
             a.openGUI();
         });
     }
 
     @Override
-    public Locale[] getObjects() {
+    public String[] getObjects() {
         return this.spigotPlugin.getTranslationManager().getTranslations();
     }
 

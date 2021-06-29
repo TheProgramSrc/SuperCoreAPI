@@ -8,11 +8,11 @@ import xyz.theprogramsrc.supercoreapi.global.utils.StringUtils;
 public class Translation {
 
     private final TranslationPack pack;
-    private final String id, value;
+    private final String path, value;
 
-    public Translation(TranslationPack pack, String id, String value) {
+    public Translation(TranslationPack pack, String path, String value) {
         this.pack = pack;
-        this.id = id;
+        this.path = path;
         this.value = value;
     }
 
@@ -20,8 +20,8 @@ public class Translation {
         return pack;
     }
 
-    public String getId() {
-        return id;
+    public String getPath() {
+        return path;
     }
 
     public String getValue() {
@@ -29,7 +29,7 @@ public class Translation {
     }
 
     public String translate(){
-        return this.pack.getManager().translate(this.id);
+        return this.pack.getManager().translate(this.path);
     }
 
     public StringUtils options(){

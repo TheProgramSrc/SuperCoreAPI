@@ -1,20 +1,20 @@
 package xyz.theprogramsrc.supercoreapi.bungee.storage;
 
 import xyz.theprogramsrc.supercoreapi.bungee.BungeeModule;
-import xyz.theprogramsrc.supercoreapi.bungee.utils.storage.BungeeYMLConfig;
+import xyz.theprogramsrc.supercoreapi.global.files.yml.YMLConfig;
 
 /**
  * Basic BungeeCord Settings used by the Plugin
  */
 public class Settings extends BungeeModule {
 
-    private BungeeYMLConfig config;
+    private YMLConfig config;
 
     private String defaultPrefix;
 
     @Override
     public void onLoad() {
-        this.config = new BungeeYMLConfig(this.getPluginFolder(), "Settings.yml");
+        this.config = new YMLConfig(this.getPluginFolder(), "Settings.yml");
         this.defaultPrefix = "&9" + this.getPluginName() + "»&r";
         if(this.plugin.isFirstStart()){
             this.loadDefaults();
@@ -37,12 +37,12 @@ public class Settings extends BungeeModule {
         return this.config.getString("Prefix", this.defaultPrefix);
     }
 
-    public BungeeYMLConfig getConfig() {
+    public YMLConfig getConfig() {
         return config;
     }
 
     public void loadDefaults(){
         this.config.add("Prefix", this.defaultPrefix);
-        this.config.add("Language","en_US");
+        this.config.add("Language","en");
     }
 }

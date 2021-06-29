@@ -2,21 +2,26 @@ package xyz.theprogramsrc.supercoreapi.global.translations;
 
 import sun.misc.Unsafe;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
+import xyz.theprogramsrc.supercoreapi.global.files.yml.YMLConfig;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class TranslationManager {
 
-    private LinkedHashMap<Locale, LinkedHashMap<String, String>> translations;
     protected SuperPlugin<?> plugin;
+    private final File langFolder;
+    private final LinkedHashMap<String, LinkedHashMap<String, String>> CACHE;
 
     public TranslationManager(SuperPlugin<?> plugin) {
         this.plugin = plugin;
-        this.translations = new LinkedHashMap<>();
-        this.reloadTranslations();
+        this.langFolder = Utils.folder(new File(this.plugin.getPluginFolder(), "lang/"));
+        CACHE = new LinkedHashMap<>();
+        this.loadTranslations();
     }
 
     /**
@@ -27,32 +32,23 @@ public class TranslationManager {
     public void registerTranslation(Class<? extends TranslationPack> clazz){
         this.plugin.debug("Registering translation '" + clazz.getName() + "'");
         try{
+            // Here we initialize the class
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafe.setAccessible(true);
             Unsafe unsafe = ((Unsafe)theUnsafe.get(null));
             TranslationPack pack = ((TranslationPack)unsafe.allocateInstance(clazz));
-            List<Translation> translations = pack.translations();
-            translations.forEach(t-> t.getPack().setManager(this));
-            File file = new File(this.plugin.getTranslationsFolder(), pack.getLanguage().toString() + ".lang");
-            final LinkedHashMap<String, String> translationsMap = new LinkedHashMap<>();
-            if(file.exists()){
-                Utils.readLines(file).stream().filter(l-> !l.startsWith("#") && l.contains("=")).forEach(l->{
-                    String[] data = l.split("=",2);
-                    String key = data[0];
-                    String value = data[1];
-                    translationsMap.put(key,value);
-                });
-                file.delete();
+
+            // Now we setup the manager for every translation
+            List<Translation> defaultTranslations = pack.translations();
+            defaultTranslations.forEach(t-> t.getPack().setManager(this));
+
+            // Now we load the save translations without replacing existing ones (to allow customization)
+            YMLConfig lang = new YMLConfig(this.langFolder, pack.getLanguage() + ".yml");
+            for(Translation translation : defaultTranslations){
+                translation.getPack().setManager(this);
+                lang.add(translation.getPath(), translation.getValue());
             }
-            translations.forEach(t-> translationsMap.put(t.getId(), t.getValue()));
-            file.createNewFile();
-            String[] comments = {"# Default translation " + pack.getLanguage().toString(),"# If you want to edit the translations copy this file and rename it", "# The file name format is 'language_COUNTRY.lang'","# Also you can search about Java Locales", "#", "# If you're translating this file, remember to not translate placeholders nor keys!"};
-            String[] translationsArray = translationsMap.entrySet().stream().map(e-> e.getKey() + "=" + e.getValue()).toArray(String[]::new);
-            List<String> lines = new ArrayList<>();
-            lines.addAll(Utils.toList(comments));
-            lines.addAll(Utils.toList(translationsArray));
-            Utils.writeFile(file, lines);
-            this.reloadTranslations();
+            this.loadTranslations();
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -61,33 +57,21 @@ public class TranslationManager {
     /**
      * Clear the caches and load all the available translations
      */
-    public void reloadTranslations(){
+    public void loadTranslations(){
         this.plugin.debug("Reloading translations");
-        if(this.translations == null) this.translations = new LinkedHashMap<>();
-        this.translations.clear();
-        File[] translationsFiles = this.plugin.getTranslationsFolder().listFiles();
-        if(translationsFiles != null){
-            if(translationsFiles.length != 0){
-                for(File file : translationsFiles){
-                    if(file.getName().endsWith(".lang") && file.getName().contains("_")){
-                        String name = file.getName().replace(".lang", "");
-                        String lang = name.split("_")[0];
-                        String country = name.split("_")[1];
-                        Locale locale = new Locale(lang, country);
-                        LinkedHashMap<String, String> translations = this.translations.getOrDefault(locale, new LinkedHashMap<>());
-                        try{
-                            List<String> lines = Utils.readLines(file);
-                            lines.stream().filter(l-> !l.startsWith("#") && l.contains("=")).forEach(l->{
-                                String[] data = l.split("=",2);
-                                String key = data[0];
-                                String value = data[1];
-                                translations.put(key,value);
-                            });
-                        }catch (Exception ex){
-                            ex.printStackTrace();
-                        }
-                        this.translations.put(locale, translations);
+        this.CACHE.clear(); // We clear the cache
+        File[] files = this.langFolder.listFiles();
+        if(files != null && files.length != 0){
+            for(File file : files){ // Now we list all the files and filter by only the .yml files
+                if(file.getName().endsWith(".yml")){
+                    String lang = file.getName().replace(".yml", ""); // Now we parse the language
+                    YMLConfig cfg = new YMLConfig(file); // Generate the Config
+                    LinkedHashMap<String, String> translations = new LinkedHashMap<>(); // Generate the translations
+                    Set<String> keys = cfg.getKeys(true); // Retrieve the IDs
+                    for(String key : keys){
+                        translations.put(key, cfg.getString(key, "")); // Retrieve and save the key and value
                     }
+                    this.CACHE.put(lang, translations); // Save to cache
                 }
             }
         }
@@ -109,24 +93,20 @@ public class TranslationManager {
      * @return Translated identifier
      */
     public String translate(String id, String def){
-        String currentLanguage = this.plugin.getLanguage();
-        Locale locale = new Locale(currentLanguage.split("_")[0], currentLanguage.split("_")[1]);
-        if(!this.translations.containsKey(locale)){
-            if(!locale.equals(new Locale("en", "US"))){
-                return  this.translations.get(new Locale("en","US")).getOrDefault(id, def);
-            }else{
-                return def;
-            }
-        }else{
-            return this.translations.get(locale).getOrDefault(id, def);
+        String currentLang = this.plugin.getLanguage();
+        if(!this.CACHE.containsKey(currentLang)){
+            currentLang = "en";
         }
+
+        LinkedHashMap<String, String> translations = this.CACHE.get(currentLang);
+        return translations.getOrDefault(id, def);
     }
 
     /**
      * Gets the available translations
      * @return the available translations
      */
-    public Locale[] getTranslations() {
-        return this.translations.keySet().toArray(new Locale[0]);
+    public String[] getTranslations() {
+        return this.CACHE.keySet().toArray(new String[0]);
     }
 }

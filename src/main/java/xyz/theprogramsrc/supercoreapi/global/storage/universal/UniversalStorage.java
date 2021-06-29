@@ -4,12 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.global.files.JsonConfig;
-import xyz.theprogramsrc.supercoreapi.global.json.JSONUtil;
 import xyz.theprogramsrc.supercoreapi.global.storage.DataBase;
 import xyz.theprogramsrc.supercoreapi.global.storage.DataBaseSettings;
 import xyz.theprogramsrc.supercoreapi.global.storage.MySQLDataBase;
 import xyz.theprogramsrc.supercoreapi.global.storage.SQLiteDataBase;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
+import xyz.theprogramsrc.supercoreapi.global.utils.json.JSONUtil;
 
 import java.io.File;
 

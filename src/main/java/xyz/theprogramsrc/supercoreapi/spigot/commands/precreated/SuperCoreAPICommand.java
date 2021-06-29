@@ -18,12 +18,14 @@ public abstract class SuperCoreAPICommand extends SpigotCommand {
     protected void executeInfoCommand(CommandSender sender){
         Field tpsField = null;
         Object minecraftServer = null;
-        try {
-            minecraftServer = ReflectionUtils.getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
-            tpsField = minecraftServer.getClass().getField("recentTps");
-        } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
-            this.plugin.addError(e);
-            e.printStackTrace();
+        if(Utils.hasClass(ReflectionUtils.NMS + "MinecraftServer")){
+            try {
+                minecraftServer = ReflectionUtils.getNMSClass("MinecraftServer").getMethod("getServer").invoke(null);
+                tpsField = minecraftServer.getClass().getField("recentTps");
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+                this.plugin.addError(e);
+                e.printStackTrace();
+            }
         }
 
 
@@ -45,11 +47,11 @@ public abstract class SuperCoreAPICommand extends SpigotCommand {
         this.getSuperUtils().sendMessage(sender, "&7Last Errors: &9" + lastErrors);
         if(tpsField != null){
             try{
-                double[] tps = ((double[]) tpsField.get(minecraftServer));
+                double[] tpsData = ((double[]) tpsField.get(minecraftServer));
                 this.getSuperUtils().sendMessage(sender, "&6TPS from last 1m, 5m, 15m: &a"
-                        + format.format(tps[0]) + ", "
-                        + format.format(tps[1]) + ", "
-                        + format.format(tps[2])
+                        + format.format(tpsData[0]) + ", "
+                        + format.format(tpsData[1]) + ", "
+                        + format.format(tpsData[2])
                 );
             }catch (IllegalAccessException e){
                 this.plugin.addError(e);
