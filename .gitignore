@@ -48,6 +48,7 @@ fabric.properties
 *.tar.gz
 *.rar
 hs_err_pid*
+*.iml
 .DS_Store
 .AppleDouble
 .LSOverride
