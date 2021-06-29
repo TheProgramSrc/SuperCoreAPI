@@ -67,7 +67,7 @@ public abstract class BungeePlugin extends Plugin implements SuperPlugin<Plugin>
         this.debug("Loading Settings");
         this.settings = new Settings();
         this.debug("Loading Translations");
-        this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "translations/"));
+        this.translationsFolder = Utils.folder(new File(this.getDataFolder(), "lang/"));
         this.translationManager = new TranslationManager(this);
         this.getTranslationManager().registerTranslation(Base.class);
         this.debug("Loading EventManager");
