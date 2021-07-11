@@ -13,11 +13,13 @@ public class SkinTextureManager {
     private final HashMap<String, SkinTexture> cache;
     private final HashMap<String, SkinTexture> urls;
     private final HashMap<String, SkinTexture> db;
+    public static SkinTextureManager INSTANCE;
 
     public SkinTextureManager(){
         this.cache = new HashMap<>();
         this.urls = new HashMap<>();
         this.db = new HashMap<>();
+        INSTANCE = this;
     }
 
     /**
