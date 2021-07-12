@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import xyz.theprogramsrc.supercoreapi.SuperUtils;
 
@@ -91,7 +92,16 @@ public class SpigotUtils implements SuperUtils {
      * @param message the message
      */
     public void sendMessage(CommandSender sender, String message){
-        sender.sendMessage(color(message));
+        if(sender instanceof Player){
+            Player player = ((Player) sender);
+            if(this.isPlugin("PlaceholderAPI")){ // Here we apply the Placeholder API if is available
+                player.sendMessage(color(me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, message)));
+            }else{
+                player.sendMessage(color(message));
+            }
+        }else{
+            sender.sendMessage(color(message));
+        }
     }
 
     /**

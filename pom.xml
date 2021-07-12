@@ -182,7 +182,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.0.0</version>
+            <version>8.2.0</version>
             <scope>compile</scope>
         </dependency>
         <!-- SLF4J -->
@@ -202,7 +202,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.11</version>
+            <version>1.15</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

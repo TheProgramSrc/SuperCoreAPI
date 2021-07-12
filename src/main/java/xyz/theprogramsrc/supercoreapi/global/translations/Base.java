@@ -89,10 +89,10 @@ public enum Base implements TranslationPack{
     ITEM_PREVIOUS_DESCRIPTION("Items.Previous.Lore","&7Click to go to the previous page."),
 
     ITEM_SEARCH_NAME("Items.Search.Name","&aSearch"),
-    ITEM_SEARCH_DESCRIPTION("Items.Search.Name","&7Click to search between objects."),
+    ITEM_SEARCH_DESCRIPTION("Items.Search.Lore","&7Click to search between objects."),
 
     ITEM_END_SEARCH_NAME("Items.EndSearch.Name","&aEnd Search"),
-    ITEM_END_SEARCH_DESCRIPTION("Items.EndSearch.Name","&7Click to end with the search"),
+    ITEM_END_SEARCH_DESCRIPTION("Items.EndSearch.Lore","&7Click to end with the search"),
     ;
 
     private final String path;
