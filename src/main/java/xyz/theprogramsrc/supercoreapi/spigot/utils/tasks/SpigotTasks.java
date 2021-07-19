@@ -1,7 +1,9 @@
 package xyz.theprogramsrc.supercoreapi.spigot.utils.tasks;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+
 import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
@@ -98,7 +100,8 @@ public class SpigotTasks extends SpigotModule {
                     this.task = builder.get();
                 }
 
-                if(this.task.isCancelled()){
+                
+                if(!Bukkit.getScheduler().isCurrentlyRunning(this.task.getTaskId())){
                     this.task = builder.get();
                 }
             }

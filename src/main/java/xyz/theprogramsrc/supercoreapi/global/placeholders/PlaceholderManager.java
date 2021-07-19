@@ -1,7 +1,5 @@
 package xyz.theprogramsrc.supercoreapi.global.placeholders;
 
-import org.bukkit.entity.Player;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;

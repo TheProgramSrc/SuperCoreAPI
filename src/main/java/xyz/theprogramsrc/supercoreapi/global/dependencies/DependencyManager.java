@@ -24,13 +24,6 @@
  */
 package xyz.theprogramsrc.supercoreapi.global.dependencies;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.ByteStreams;
-import xyz.theprogramsrc.supercoreapi.SuperPlugin;
-import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.IsolatedClassLoader;
-import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -40,8 +33,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.io.ByteStreams;
+
+import xyz.theprogramsrc.supercoreapi.SuperPlugin;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.IsolatedClassLoader;
+import xyz.theprogramsrc.supercoreapi.global.dependencies.classloader.PluginClassLoader;
 
 /**
  * Responsible for loading runtime dependencies.
