@@ -1,3 +1,9 @@
+## v5.0.1-SNAPSHOT Changelog:
+```
+* Code Cleanup
+* 1.8 Support
+```
+
 ## v5.0.0-SNAPSHOT Changelog:
 ```
 * Updated .gitignore file
