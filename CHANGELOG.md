@@ -1,3 +1,8 @@
+## v5.0.2 Changelog:
+```
+* Added custom filter for Browser GUI
+```
+
 ## v5.0.1-SNAPSHOT Changelog:
 ```
 * Code Cleanup
