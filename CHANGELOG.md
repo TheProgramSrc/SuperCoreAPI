@@ -1,3 +1,9 @@
+## v5.1.0 Changelog
+```
+* New Zip Library
+* Some Cleanup
+```
+
 ## v5.0.4 Changelog
 ```
 * Fixed NullPointerException Spam

@@ -1,11 +1,10 @@
 package xyz.theprogramsrc.supercoreapi.spigot.utils;
 
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import java.util.ArrayList;
-
-@SuppressWarnings("unused")
 public class BlockUtils{
 
     /**
