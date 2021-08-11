@@ -1,3 +1,8 @@
+## v5.0.4 Changelog
+```
+* Fixed NullPointerException Spam
+```
+
 ## v5.0.3 Changelog:
 ```
 * Added missing search term argument

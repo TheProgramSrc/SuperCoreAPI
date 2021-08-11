@@ -40,7 +40,7 @@ public abstract class BrowserGUI<OBJ> extends GUI {
 
     @Override
     protected GUIButton[] getButtons() {
-        List<OBJ> objectsFound = Arrays.stream(this.getObjects()).filter(obj -> this.onItemSearch(obj, this.searchTerm)).collect(Collectors.toList());
+        List<OBJ> objectsFound = Arrays.stream(this.getObjects()).filter(obj -> this.onItemSearch(obj, this.searchTerm != null ? this.searchTerm : "")).collect(Collectors.toList());
         int index0 = this.page * this.maxItemsPerPage;
         int index1 = Math.min(index0 + this.maxItemsPerPage, objectsFound.size());
         int maxPages = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));
