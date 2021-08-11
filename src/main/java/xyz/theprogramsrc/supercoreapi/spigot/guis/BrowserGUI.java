@@ -32,19 +32,15 @@ public abstract class BrowserGUI<OBJ> extends GUI {
         return GUIRows.SIX;
     }
 
-    public boolean onItemSearch(OBJ obj){
-        if(this.searchTerm != null){
-            String itemName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(obj).getItemStack()).getDisplayName()).toLowerCase();
-            String search = this.getSuperUtils().removeColor(this.searchTerm).toLowerCase();
-            return itemName.contains(search);
-        }
-
-        return true;
+    public boolean onItemSearch(OBJ obj, String searchTerm){
+        String itemName = this.getSuperUtils().removeColor(new SimpleItem(this.getButton(obj).getItemStack()).getDisplayName()).toLowerCase();
+        String search = this.getSuperUtils().removeColor(searchTerm).toLowerCase();
+        return itemName.contains(search);
     }
 
     @Override
     protected GUIButton[] getButtons() {
-        List<OBJ> objectsFound = Arrays.stream(this.getObjects()).filter(this::onItemSearch).collect(Collectors.toList());
+        List<OBJ> objectsFound = Arrays.stream(this.getObjects()).filter(obj -> this.onItemSearch(obj, this.searchTerm)).collect(Collectors.toList());
         int index0 = this.page * this.maxItemsPerPage;
         int index1 = Math.min(index0 + this.maxItemsPerPage, objectsFound.size());
         int maxPages = (int)Math.round(Math.ceil((double)objectsFound.size() / (double)maxItemsPerPage));

@@ -1,3 +1,8 @@
+## v5.0.3 Changelog:
+```
+* Added missing search term argument
+```
+
 ## v5.0.2 Changelog:
 ```
 * Added custom filter for Browser GUI
