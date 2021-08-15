@@ -9,6 +9,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 
 import java.util.LinkedList;
 
+@Deprecated
 public abstract class SettingsGUI extends GUI {
 
     private final int[] containerSlots = {

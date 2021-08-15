@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>5.1.0</version>
+    <version>5.2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -283,7 +283,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

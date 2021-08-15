@@ -1,6 +1,12 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import com.cryptomorin.xseries.XMaterial;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,18 +19,21 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
 import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickType;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.events.*;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIClickEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUICloseEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIEmptyClickEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIOpenEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIOutsideClickEvent;
+import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIUpdateEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
-
+@Deprecated
 public abstract class GUI extends SpigotModule {
 
     private final UUID uuid = UUID.randomUUID();

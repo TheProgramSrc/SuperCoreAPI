@@ -12,6 +12,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
+@Deprecated
 public abstract class BrowserGUI<OBJ> extends GUI {
 
     private String searchTerm = null;

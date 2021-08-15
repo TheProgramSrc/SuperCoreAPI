@@ -1,12 +1,14 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
 import org.bukkit.inventory.ItemStack;
+
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.Action;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
 /**
  * Representation of a GUI Button
  */
+@Deprecated
 public class GUIButton {
 
     private int slot;

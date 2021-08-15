@@ -13,6 +13,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
 import java.util.Arrays;
 
+@Deprecated
 public abstract class MaterialBrowser extends BrowserGUI<XMaterial> {
 
     public MaterialBrowser(Player player) {

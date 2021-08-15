@@ -9,6 +9,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
+@Deprecated
 public abstract class ConfirmationGUI extends GUI {
 
     public ConfirmationGUI(Player player) {
