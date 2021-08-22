@@ -1,3 +1,10 @@
+## v5.2.0 Changelog
+```
+* New Gui System (`xyz.thepogramsrc.superocreapi.spigot.gui.Gui`)
+* Added new util to retrieve time seconds from string & word
+* Code cleanup & Fixes
+```
+
 ## v5.1.0 Changelog
 ```
 * New Zip Library
