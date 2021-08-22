@@ -1,13 +1,15 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis;
 
 import org.bukkit.inventory.ItemStack;
+
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.Action;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
 /**
  * Representation of a GUI Button
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
  */
-public class GUIButton {
+@Deprecated public class GUIButton {
 
     private int slot;
     private final ItemStack itemStack;

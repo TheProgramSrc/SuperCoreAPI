@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>5.1.0</version>
+    <version>5.2.0</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -95,6 +95,17 @@
                                     <shadedPattern>xyz.theprogramsrc.supercoreapi.libs.zip4j</shadedPattern>
                                 </relocation>
                             </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -119,12 +130,6 @@
                 <version>2.22.1</version>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
     <distributionManagement>
@@ -283,7 +288,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

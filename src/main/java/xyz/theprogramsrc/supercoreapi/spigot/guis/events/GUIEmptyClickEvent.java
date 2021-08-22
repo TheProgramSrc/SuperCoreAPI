@@ -5,8 +5,9 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 
 /**
  * Executed when a player clicks on a empty slot
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
  */
-public class GUIEmptyClickEvent extends GUIEvent {
+@Deprecated public class GUIEmptyClickEvent extends GUIEvent {
 
     private final int slot;
 

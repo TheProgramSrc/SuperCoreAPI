@@ -1,16 +1,17 @@
 package xyz.theprogramsrc.supercoreapi.global.files.yml;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.comments.CommentType;
 import org.simpleyaml.configuration.file.FileConfiguration;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.exceptions.InvalidConfigurationException;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
+import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 
 public class YMLConfig {
 
@@ -125,6 +126,15 @@ public class YMLConfig {
      */
     public void add(String path, Object value){
         if(!this.contains(path)) this.set(path, value);
+    }
+
+    /**
+     * Removes a path from the file
+     * @param path the path to remove
+     */
+    public void remove(String path){
+        this.config.remove(path);
+        this.save();
     }
 
     /**

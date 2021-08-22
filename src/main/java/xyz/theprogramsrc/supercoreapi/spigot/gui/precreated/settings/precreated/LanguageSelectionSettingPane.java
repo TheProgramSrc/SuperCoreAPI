@@ -1,16 +1,13 @@
-package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated;
+package xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings.precreated;
 
 import com.cryptomorin.xseries.XMaterial;
 
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.CustomSettingPane;
+import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiEntry;
+import xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings.CustomSettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-/**
- * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
- */
-@Deprecated public class LanguageSelectionSettingPane extends CustomSettingPane<String> {
+public class LanguageSelectionSettingPane extends CustomSettingPane<String> {
 
     @Override
     public String getDisplayName() {
@@ -28,7 +25,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
     }
 
     @Override
-    public GUIButton getButton(String language) {
+    public GuiEntry getEntry(String language) {
         boolean selected = this.getSettings().getLanguage().equals(language);
         SimpleItem item = new SimpleItem(XMaterial.BOOK)
                 .setDisplayName("&a" + this.plugin.getTranslationManager().translate("Display", language))
@@ -36,13 +33,12 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
                         "&7",
                         "&7" + (selected ? Base.LANGUAGE_SELECTED_DESCRIPTION : Base.LANGUAGE_SELECT_DESCRIPTION)
                 ).addPlaceholder("{Language}", this.plugin.getTranslationManager().translate("Display", language));
-        return new GUIButton(item, a->{
+        return new GuiEntry(item, a -> {
             this.getSettings().setLanguage(language);
-            this.getSettings().getConfig().load();
-            a.openGUI();
+            a.gui.open();
         });
     }
-
+    
     @Override
     public String[] getObjects() {
         return this.spigotPlugin.getTranslationManager().getTranslations();
@@ -52,4 +48,5 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
     public boolean showItemsForEmpty() {
         return true;
     }
+    
 }

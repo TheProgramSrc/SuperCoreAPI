@@ -1,12 +1,13 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
-import com.google.common.base.Preconditions;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.apache.commons.io.FileUtils;
-import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -16,8 +17,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Preconditions;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.apache.commons.io.FileUtils;
+
+import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 
 public class Utils {
 
@@ -282,6 +299,47 @@ public class Utils {
         return now.equals(time);
     }
 
+    /**
+     * Gets the specified time string in seconds
+     * Format:
+     * - 1h 30s
+     * - 1d 4h 30s
+     * - 5m 37s
+     * 
+     * Example: getTimeSecondsFromString("1h 30s") will return 3630 seconds
+     * @param timeString Time string to convert
+     * @return Time in seconds
+     * @since 5.2.0
+     */
+    public static long getTimeSecondsFromString(String timeString) {
+        return Arrays.stream(timeString.split(" ")).mapToLong(s -> getTimeSecondsFromWord(s)).sum();
+    }
+
+    /**
+     * Gets the specified time word in seconds.
+     * Format:
+     * - 1h
+     * - 30m
+     * - 1d
+     * - 37s
+     * 
+     * Example: getTimeSecondsFromWord("1h") will return 3600 seconds
+     * @param word Word to get the seconds from
+     * @return The amount in seconds
+     * @since 5.2.0
+     */
+    public static long getTimeSecondsFromWord(String word) {
+        if (word.length() < 2) return 0L;
+        String timeUnitString = word.toCharArray()[word.length() - 1] + "";
+        TimeUnit timeUnit = Arrays.stream(new TimeUnit[] { TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES, TimeUnit.SECONDS }).filter((t) -> t.toString().toLowerCase().startsWith(timeUnitString)).findFirst().orElse(null);
+        if(timeUnit == null) return 0L;
+        try{
+            return timeUnit == null ? 0L : timeUnit.toSeconds((long) Integer.parseInt(word.substring(0, word.length() - 1)));
+        }catch(NumberFormatException e){
+            return 0L;
+        }
+    }
+
     /* Internet */
 
     /**
@@ -404,7 +462,6 @@ public class Utils {
      * @return The hypotenuse length.
      *
      * @since 4.12.1
-     * @author Larskrs
      */
     public static double parseHypotenuse(double... values) {
         double result = 0.0;

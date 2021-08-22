@@ -1,14 +1,11 @@
-package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings;
+package xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings;
 
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
-import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
+import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiEntry;
+import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-/**
- * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
- */
-@Deprecated public abstract class SettingPane extends SpigotModule {
+public abstract class SettingPane extends SpigotModule {
 
     /**
      * Gets the name to display in the setting title
@@ -26,7 +23,7 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
      * Gets the available buttons to show in the gui
      * @return the available buttons to show
      */
-    public abstract GUIButton[] getButtons();
+    public abstract GuiEntry[] getButtons();
 
     /**
      * If this is true when a container slot is empty this will
@@ -38,8 +35,8 @@ import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
         return false;
     }
 
-    public GUIRows getRows(){
-        return GUIRows.SIX;
+    public GuiRows getRows(){
+        return GuiRows.SIX;
     }
 
     /**

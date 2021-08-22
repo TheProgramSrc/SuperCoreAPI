@@ -1,7 +1,9 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated;
 
 import com.cryptomorin.xseries.XMaterial;
+
 import org.bukkit.entity.Player;
+
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
@@ -9,7 +11,10 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-public abstract class ConfirmationGUI extends GUI {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public abstract class ConfirmationGUI extends GUI {
 
     public ConfirmationGUI(Player player) {
         super(player);
