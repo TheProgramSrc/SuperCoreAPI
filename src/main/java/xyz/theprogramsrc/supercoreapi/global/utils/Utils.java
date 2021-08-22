@@ -462,7 +462,6 @@ public class Utils {
      * @return The hypotenuse length.
      *
      * @since 4.12.1
-     * @author Larskrs
      */
     public static double parseHypotenuse(double... values) {
         double result = 0.0;
