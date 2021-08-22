@@ -13,6 +13,10 @@ import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiEntry;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiModel;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiRows;
 
+/**
+ * Representation of a Browser GUI
+ * @since 5.2.0
+ */
 public abstract class BrowserGui<OBJ> extends Gui {
 
     public boolean backEnabled = false;
@@ -20,10 +24,20 @@ public abstract class BrowserGui<OBJ> extends Gui {
     public int maxItemsPerPage = 36;
     public int page = 0;
 
+    /**
+     * Creates a new Browser GUI
+     * @param player The player
+     * @param automaticallyOpen If the GUI should be opened automatically
+     */
     public BrowserGui(Player player, boolean automaticallyOpen) {
         super(player, automaticallyOpen);
     }
 
+
+    /**
+     * Creates a new Browser GUI but automatically being opened. See {@link BrowserGui#BrowserGui(Player, boolean)}
+     * @param player The player
+     */
     public BrowserGui(Player player){
         this(player, true);
     }

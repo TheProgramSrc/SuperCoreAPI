@@ -1,16 +1,19 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings;
 
+import java.util.LinkedList;
+
 import org.bukkit.entity.Player;
+
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.action.ClickAction;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 
-import java.util.LinkedList;
-
-@Deprecated
-public abstract class SettingsGUI extends GUI {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public abstract class SettingsGUI extends GUI {
 
     private final int[] containerSlots = {
             19, 20, 21, 22, 23, 24, 25,

@@ -33,6 +33,11 @@ import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiModel;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiRows;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiTitle;
 
+/** 
+ * Representation of a GUI.
+ * @since 5.2.0
+ */
+
 public abstract  class Gui extends SpigotModule {
 
     public final UUID uuid = UUID.randomUUID(); 
@@ -138,7 +143,7 @@ public abstract  class Gui extends SpigotModule {
         }
         e.setCancelled(true);
         if(!(e.getClickedInventory() instanceof PlayerInventory) && this.actions.containsKey(e.getSlot())){
-            this.actions.get(e.getSlot()).accept(new GuiAction(this, this.player, ClickType.fromEvent(e)));
+            this.actions.get(e.getSlot()).accept(new GuiAction(this, this.player, ClickType.fromEvent(e), e));
         }
     }
 

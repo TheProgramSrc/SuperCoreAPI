@@ -1,14 +1,16 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.action;
 
 import org.bukkit.entity.Player;
+
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUI;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 
 /**
  * The ClickAction of a GUI
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
  */
-public class ClickAction {
+@Deprecated public class ClickAction {
 
     private final GUI gui;
     private final Player player;

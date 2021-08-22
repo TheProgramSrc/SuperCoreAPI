@@ -1,14 +1,14 @@
 package xyz.theprogramsrc.supercoreapi.global.utils;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 class UtilsTest {
 
@@ -58,5 +58,17 @@ class UtilsTest {
         String generatedHash = Utils.generateFileChecksum(messageDigest, tmpFile); // Now we generate the hash
         assertEquals(knownHash, generatedHash); // Now we check the hash
         tmpFile.deleteOnExit();
+    }
+
+    @Test
+    void getTimeSecondsFromStringTest(){
+        long seconds = Utils.getTimeSecondsFromString("1h 30s");
+        assertEquals(3630l, seconds);
+    }
+
+    @Test
+    void getTimeSecondsFromWordTest(){
+        long seconds = Utils.getTimeSecondsFromWord("1h");
+        assertEquals(3600l, seconds);
     }
 }

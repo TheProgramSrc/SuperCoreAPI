@@ -5,18 +5,41 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import xyz.theprogramsrc.supercoreapi.spigot.gui.Gui;
 
+/**
+ * Representation of a GUI action.
+ * @since 5.2.0
+ */
 public class GuiAction {
 
+    /**
+     * The player executing the action
+     */
     public final Player player;
+    /**
+     * The type of click
+     */
     public final ClickType clickType;
+    /**
+     * The Gui that the action is executed on
+     */
     public final Gui gui;
 
-    public GuiAction(Gui gui, Player player, ClickType clickType) {
+    /**
+     * The InventoryClickEvent that triggered the action
+     */
+    public final InventoryClickEvent inventoryClickEvent;
+
+
+    public GuiAction(Gui gui, Player player, ClickType clickType, InventoryClickEvent inventoryClickEvent){
         this.gui = gui;
         this.player = player;
         this.clickType = clickType;
+        this.inventoryClickEvent = inventoryClickEvent;
     }
 
+    /**
+     * Representation of a click type.
+     */
     public enum ClickType {
 
         LEFT_CLICK,

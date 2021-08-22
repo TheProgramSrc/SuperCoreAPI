@@ -5,7 +5,10 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-public abstract class SettingPane extends SpigotModule {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public abstract class SettingPane extends SpigotModule {
 
     /**
      * Gets the name to display in the setting title

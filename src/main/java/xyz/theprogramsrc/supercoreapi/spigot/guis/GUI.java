@@ -33,8 +33,10 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIOutsideClickEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.events.GUIUpdateEvent;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 
-@Deprecated
-public abstract class GUI extends SpigotModule {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public abstract class GUI extends SpigotModule {
 
     private final UUID uuid = UUID.randomUUID();
     private final Player player;

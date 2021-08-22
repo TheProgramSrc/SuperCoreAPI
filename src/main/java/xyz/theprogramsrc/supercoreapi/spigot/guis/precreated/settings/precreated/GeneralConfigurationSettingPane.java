@@ -1,6 +1,9 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated;
 
+import java.util.LinkedList;
+
 import com.cryptomorin.xseries.XMaterial;
+
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
@@ -9,10 +12,10 @@ import xyz.theprogramsrc.supercoreapi.spigot.guis.objects.GUIRows;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.SettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-import java.util.LinkedList;
-
-@Deprecated
-public class GeneralConfigurationSettingPane extends SettingPane {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public class GeneralConfigurationSettingPane extends SettingPane {
 
     private final boolean hasDownloader = this.getPlugin().getPluginDataStorage().contains("TranslationDownloader");
 

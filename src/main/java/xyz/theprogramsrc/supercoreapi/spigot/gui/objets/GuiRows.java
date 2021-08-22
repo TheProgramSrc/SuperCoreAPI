@@ -1,5 +1,9 @@
 package xyz.theprogramsrc.supercoreapi.spigot.gui.objets;
 
+/**
+ * Representation of the Gui Rows
+ * @since 5.2.0
+ */
 public enum GuiRows {
     ONE(9),
     TWO(18),

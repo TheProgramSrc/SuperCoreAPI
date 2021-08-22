@@ -1,10 +1,13 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings;
 
-import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
-
 import java.util.LinkedList;
 
-public abstract class CustomSettingPane<OBJ> extends SettingPane {
+import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
+
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public abstract class CustomSettingPane<OBJ> extends SettingPane {
 
     public abstract GUIButton getButton(OBJ obj);
 

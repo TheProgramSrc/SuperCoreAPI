@@ -1,12 +1,16 @@
 package xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.precreated;
 
 import com.cryptomorin.xseries.XMaterial;
+
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.GUIButton;
 import xyz.theprogramsrc.supercoreapi.spigot.guis.precreated.settings.CustomSettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
-public class LanguageSelectionSettingPane extends CustomSettingPane<String> {
+/**
+ * @deprecated As of version 5.2.0 the GUI system has been replaced with {@link xyz.theprogramsrc.supercoreapi.spigot.gui.Gui}.
+ */
+@Deprecated public class LanguageSelectionSettingPane extends CustomSettingPane<String> {
 
     @Override
     public String getDisplayName() {
