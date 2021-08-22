@@ -63,10 +63,10 @@ public class GuiModel {
      * Adds the button to the first empty slot
      * @param entry The entry of the button to add
      */
-    public void addButton(GuiEntry e){
+    public void addButton(GuiEntry entry){
         for(int i = 0; i < this.rows.size; i++){
             if(!this.buttons.containsKey(i)){
-                this.buttons.put(i, e);
+                this.buttons.put(i, entry);
                 break;
             }
         }
