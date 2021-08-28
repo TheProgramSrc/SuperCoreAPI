@@ -1,3 +1,11 @@
+## v5.2.1 Changelog
+```
+* Now the SettingsStorage#getPrefix method will add a new space at the end of the prefix.
+* Now GuiModel has an option to fill all the empty slots with an entry
+* Now GuiModel has an option to fill certain slots with an entry
+* Fixes SettingsGui not showing settings selector
+```
+
 ## v5.2.0 Changelog
 ```
 * New Gui System (`xyz.thepogramsrc.superocreapi.spigot.gui.Gui`)

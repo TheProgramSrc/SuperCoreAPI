@@ -14,7 +14,7 @@ public class SettingsStorage extends SpigotModule {
     @Override
     public void onLoad() {
         this.cfg = new YMLConfig(this.getPluginFolder(), "Settings.yml");
-        this.defaultPrefix = "&9" + this.getPluginName() + "»&r";
+        this.defaultPrefix = "&9" + this.getPluginName() + "»&r ";
         if(this.plugin.isFirstStart()){
             this.loadDefaults();
         }
@@ -41,7 +41,8 @@ public class SettingsStorage extends SpigotModule {
      * @return the prefix
      */
     public String getPrefix(){
-        return this.cfg.getString("Prefix", this.defaultPrefix);
+        String prefix = this.cfg.getString("Prefix", this.defaultPrefix);
+        return prefix.endsWith(" ") ? prefix : (prefix + " ");
     }
 
     /**
@@ -49,7 +50,7 @@ public class SettingsStorage extends SpigotModule {
      * @return the language
      */
     public String getLanguage() {
-        return this.cfg.getString("Language", "en_US");
+        return this.cfg.getString("Language", "en");
     }
 
     private void loadDefaults(){

@@ -75,7 +75,24 @@ public abstract class SettingsGui extends Gui{
                 }
             });
         }else{
+            SettingPane pane = this.settingPanes[current];
+            int[] paneContainerSlots = pane.getContainerSlots();
+            GuiEntry[] paneEntries = pane.getButtons();
+            for(int i = 0; i < paneContainerSlots.length; i++){
+                int slot = paneContainerSlots[i];
+                if(i < paneEntries.length){
+                    model.setButton(slot, paneEntries[i]);
+                }else{
+                    if(pane.showItemsForEmpty()){
+                        model.setButton(slot, new GuiEntry(this.getPreloadedItems().emptyItem()));
+                    }
+                }
+            }
 
+            model.setButton(0, new GuiEntry(this.getPreloadedItems().getBackItem(), a -> {
+                this.current = -1;
+                this.open();
+            }));
         }
     }
 
