@@ -3,15 +3,12 @@ package xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings.precreated
 import com.cryptomorin.xseries.XMaterial;
 
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
-import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiEntry;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings.SettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
 public class GeneralConfigurationSettingPane extends SettingPane {
-
-    private final boolean hasDownloader = this.getPlugin().getPluginDataStorage().contains("TranslationDownloader");
 
     @Override
     public String getDisplayName() {
@@ -31,27 +28,13 @@ public class GeneralConfigurationSettingPane extends SettingPane {
     @Override
     public GuiEntry[] getButtons() {
         return new GuiEntry[]{
-            this.getToggleTranslationButton(),
             this.getChangePrefixButton()
         };
     }
 
     @Override
     public int[] getContainerSlots() {
-        return this.hasDownloader ? new int[]{12,14} : new int[]{13};
-    }
-
-    private GuiEntry getToggleTranslationButton(){
-        SimpleItem item = new SimpleItem(XMaterial.ANVIL)
-                .setDisplayName("&a" + Base.GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_NAME)
-                .setLore(
-                        "&7",
-                        "&7" + Base.GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION
-                ).addPlaceholder("{Status}", Utils.parseEnabledBoolean(this.getPlugin().getPluginDataStorage().getBoolean("TranslationDownloader")));
-        return new GuiEntry(item, a-> {
-            this.getPlugin().getPluginDataStorage().set("TranslationDownloader", !this.hasDownloader);
-            a.gui.open();
-        });
+        return new int[]{13};
     }
 
     private GuiEntry getChangePrefixButton(){

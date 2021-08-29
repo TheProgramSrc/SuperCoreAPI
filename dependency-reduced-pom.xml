@@ -4,7 +4,7 @@
   <groupId>xyz.theprogramsrc</groupId>
   <artifactId>SuperCoreAPI</artifactId>
   <name>SuperCoreAPI</name>
-  <version>5.2.2-SNAPSHOT</version>
+  <version>5.2.2</version>
   <description>The best way to create a plugin.</description>
   <url>https://github.com/TheProgramSrc/SuperCoreAPI</url>
   <build>

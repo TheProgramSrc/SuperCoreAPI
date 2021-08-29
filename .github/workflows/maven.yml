@@ -49,9 +49,8 @@ jobs:
     - name: Build, Test & Deoploy with Maven
       run: mvn -B clean package test deploy --file pom.xml
       # Now we store the artifact in the action
-    - name: Store Artifact
-    - run: mkdir -p ./artifacts
-    - run: cp target/SuperCoreAPI.jar ./artifacts/
+    - name: Create & Copy artifact
+    - run: mkdir -p ./artifacts && cp target/SuperCoreAPI.jar ./artifacts/
     - uses: actions/upload-artifact@v2
       with:
         name: SuperCoreAPI

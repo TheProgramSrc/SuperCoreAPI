@@ -62,9 +62,6 @@ public enum Base implements TranslationPack{
     GENERAL_SET_PREFIX_NAME("GUI.GeneralSettings.Items.Prefix.Name","&aSet Prefix"),
     GENERAL_SET_PREFIX_DESCRIPTION("GUI.GeneralSettings.Items.Prefix.Lore","&7Current Prefix: &r{Prefix}"),
 
-    GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_NAME("GUI.GeneralSettings.Items.TranslationDownloader.Name","&aToggle Translation Downloader"),
-    GENERAL_TOGGLE_TRANSLATION_DOWNLOADER_DESCRIPTION("GUI.GeneralSettings.Items.TranslationDownloader.Lore","&7Current Status: &9{Status}"),
-
     SETTINGS_TOGGLE_UPDATER_NAME("GUI.GeneralSettings.Items.ToggleUpdater.Name","&aToggle Updater"),
     SETTINGS_TOGGLE_UPDATER_DESCRIPTION("GUI.GeneralSettings.Items.ToggleUpdater.Lore","&7Current Status: &9{Status}"),
 

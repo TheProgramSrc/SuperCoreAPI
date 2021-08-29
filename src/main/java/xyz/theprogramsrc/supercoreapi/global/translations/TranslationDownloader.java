@@ -1,14 +1,15 @@
 package xyz.theprogramsrc.supercoreapi.global.translations;
 
+import java.io.File;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.global.utils.files.FileUtils;
-
-import java.io.File;
 
 public class TranslationDownloader {
 
@@ -18,8 +19,9 @@ public class TranslationDownloader {
      * @param username The GitHub Username
      * @param repository The GitHub Repository
      * @param folder The folder of the Translations
+     * @deprecated due to new translation system
      */
-    public static void downloadFromGitHub(final SuperPlugin<?> core, final String username, final String repository, final String folder){
+    @Deprecated public static void downloadFromGitHub(final SuperPlugin<?> core, final String username, final String repository, final String folder){
         JsonParser parser = new JsonParser();
         try{
             String url = "https://api.github.com/repos/{Username}/{Repository}/contents/{Folder}";
@@ -52,8 +54,9 @@ public class TranslationDownloader {
      * @param core The Plugin
      * @param directUrl The DirectURl (This API doesn't support redirection)
      * @param fileName The name of the file to save
+     * @deprecated due to new translation system
      */
-    public static void downloadTranslation(final SuperPlugin<?> core, String directUrl, String fileName){
+    @Deprecated public static void downloadTranslation(final SuperPlugin<?> core, String directUrl, String fileName){
         try{
             File file = new File(core.getTranslationsFolder(), fileName.endsWith(".lang") ? fileName : (fileName+".lang"));
             file.delete();
