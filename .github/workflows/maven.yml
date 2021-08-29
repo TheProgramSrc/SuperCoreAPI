@@ -1,20 +1,60 @@
 name: Java CI
-on: [push]
+on:
+  release:
+    types: [published]
 jobs:
   build:
+    # Setup the environment
     runs-on: ubuntu-latest
+    env:
+      NEXUS_MAVEN_REPO: 'https://repo.theprogramsrc.xyz/'
+      NEXUS_USERNAME: '${{ secrets.NEXUS_USERNAME }}'
+      NEXUS_PASSWORD: '${{ secrets.NEXUS_PASSWORD }}'
+      NEXUS_RELEASE_URL: 'https://repo.theprogramsrc.xyz/repository/maven-releases/'
+      NEXUS_SNAPSHOT_URL: 'https://repo.theprogramsrc.xyz/repository/maven-snapshots/'
     steps:
-    - uses: actions/checkout@v2
+    # Setup checkout
+    - name: Setup checkout
+      uses: actions/checkout@v2
+    # Install java and maven
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven
-      run: mvn -B package test --file pom.xml
+    # We build and test again then deploy
+    - name: Setup Maven Settings
+      run: |
+        touch ~/.m2/settings.xml
+        echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+          https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+          <servers>
+            <server>
+              <id>theprogramsrc-releases</id>
+              <username>${{ secrets.NEXUS_USERNAME }}</username>
+              <password>${{ secrets.NEXUS_PASSWORD }}</password>
+              <url>${{ env.NEXUS_RELEASE_URL }}</url>
+            </server>
+            <server>
+              <id>theprogramsrc-snapshots</id>
+              <username>${{ secrets.NEXUS_USERNAME }}</username>
+              <password>${{ secrets.NEXUS_PASSWORD }}</password>
+              <url>${{ env.NEXUS_SNAPSHOT_URL }}</url>
+            </server>
+          </servers>
+
+        </settings>' > ~/.m2/settings.xml
+    - name: Build, Test & Deoploy with Maven
+      run: mvn -B clean package test deploy --file pom.xml
+      # Now we store the artifact in the action
+    - name: Store Artifact
     - run: mkdir -p ./artifacts
     - run: cp target/SuperCoreAPI.jar ./artifacts/
     - uses: actions/upload-artifact@v2
       with:
         name: SuperCoreAPI
         path: ./artifacts/SuperCoreAPI.jar
+      
       

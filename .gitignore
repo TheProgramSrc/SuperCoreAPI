@@ -69,3 +69,5 @@ Temporary Items
 .classpath
 .project
 .settings/
+.env
+.secrets.env
