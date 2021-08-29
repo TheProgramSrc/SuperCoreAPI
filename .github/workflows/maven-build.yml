@@ -16,10 +16,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Set up Maven
-      uses: aahmed-se/setup-maven@v3
-      with:
-        maven-version: 3.8.1
     # Only test the project and skip the javadoc generation
     - name: Test with Maven
       run: mvn clean test --file pom.xml -Dmaven.javadoc.skip=true
