@@ -1,3 +1,12 @@
+## v5.2.2 Changelog:
+```
+* Fix to the Settings Gui
+* New workflow for tests in pull requests
+* Now github actions will push the artifact to nexus
+* Added scheduled codeql workflow
+* Added url and description to pom.xml
+* Deprecated Translation Downloader due to the new translation system
+
 ## v5.2.1 Changelog
 ```
 * Now the SettingsStorage#getPrefix method will add a new space at the end of the prefix.
