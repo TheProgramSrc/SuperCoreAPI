@@ -6,7 +6,7 @@
 
     <groupId>xyz.theprogramsrc</groupId>
     <artifactId>SuperCoreAPI</artifactId>
-    <version>5.2.1</version>
+    <version>5.2.2</version>
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
@@ -132,6 +132,7 @@
         </plugins>
     </build>
 
+    <!-- Deployment -->
     <distributionManagement>
         <repository>
             <id>theprogramsrc-releases</id>

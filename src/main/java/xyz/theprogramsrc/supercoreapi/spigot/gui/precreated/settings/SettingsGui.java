@@ -1,7 +1,5 @@
 package xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings;
 
-import java.util.stream.IntStream;
-
 import org.bukkit.entity.Player;
 
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
@@ -61,19 +59,21 @@ public abstract class SettingsGui extends Gui{
     
     @Override
     public void onBuild(GuiModel model) {
+        model.clearButtons();
         if(this.current == -1){
             model.setButton(0, new GuiEntry(this.getPreloadedItems().getBackItem(), this::onBack));
-            IntStream.range(0, this.containerSlots.length).forEach(i -> {
+            for(int i = 0; i < this.containerSlots.length; i++){
                 int slot = this.containerSlots[i];
                 if(i < this.settingPanes.length){
+                    int newCurrent = i;
                     model.setButton(slot, new GuiEntry(this.settingPanes[i].getDisplayItem(), a -> {
-                        this.current = i;
+                        this.current = newCurrent;
                         this.open();
                     }));
                 }else{
                     model.setButton(slot, new GuiEntry(this.getPreloadedItems().emptyItem()));
                 }
-            });
+            }
         }else{
             SettingPane pane = this.settingPanes[current];
             int[] paneContainerSlots = pane.getContainerSlots();
