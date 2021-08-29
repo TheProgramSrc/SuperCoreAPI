@@ -1,3 +1,8 @@
+## v5.2.3 Changelog:
+```
+* Deprecated SimpleItem#setOwner
+* Now javadoc is hosted on github pages
+```
 ## v5.2.2 Changelog:
 ```
 * Fix to the Settings Gui
@@ -6,6 +11,7 @@
 * Added scheduled codeql workflow
 * Added url and description to pom.xml
 * Deprecated Translation Downloader due to the new translation system
+```
 
 ## v5.2.1 Changelog
 ```

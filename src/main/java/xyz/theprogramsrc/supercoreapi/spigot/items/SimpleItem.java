@@ -168,8 +168,9 @@ public class SimpleItem {
      *
      * @param name the name of the owning player
      * @return this SimpleItem
+     * @deprecated use {@link #setSkin(SkinTexture)} instead
      */
-    public SimpleItem setOwner(String name){
+    @Deprecated public SimpleItem setOwner(String name){
         SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
         if(meta != null){
             meta.setOwner(new StringUtils(name).placeholders(this.placeholders).get());
