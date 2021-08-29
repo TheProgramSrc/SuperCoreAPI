@@ -10,6 +10,8 @@
     <packaging>jar</packaging>
 
     <name>SuperCoreAPI</name>
+    <description>The best way to create a plugin.</description>
+    <url>https://github.com/TheProgramSrc/SuperCoreAPI</url>
 
     <properties>
         <java.version>1.8</java.version>
