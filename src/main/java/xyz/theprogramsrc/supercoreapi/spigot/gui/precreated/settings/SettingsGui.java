@@ -21,9 +21,10 @@ public abstract class SettingsGui extends Gui{
     private SettingPane[] settingPanes;
 
     public SettingsGui(Player player){
-        super(player);
+        super(player, false);
         this.current = -1;
         this.settingPanes = this.getSettingPanes();
+        this.open();
     }
 
     @Override
