@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.XMaterial;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.spigot.dialog.Dialog;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiEntry;
+import xyz.theprogramsrc.supercoreapi.spigot.gui.objets.GuiRows;
 import xyz.theprogramsrc.supercoreapi.spigot.gui.precreated.settings.SettingPane;
 import xyz.theprogramsrc.supercoreapi.spigot.items.SimpleItem;
 
@@ -13,6 +14,11 @@ public class GeneralConfigurationSettingPane extends SettingPane {
     @Override
     public String getDisplayName() {
         return Base.GENERAL.toString();
+    }
+
+    @Override
+    public GuiRows getRows(){
+        return GuiRows.THREE;
     }
 
     @Override
