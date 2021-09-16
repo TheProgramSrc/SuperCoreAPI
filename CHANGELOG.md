@@ -1,8 +1,14 @@
+## v5.2.4 Changelog:
+```
+* Fixed BrowserGui Search
+```
+
 ## v5.2.3 Changelog:
 ```
 * Deprecated SimpleItem#setOwner
 * Now javadoc is hosted on github pages
 ```
+
 ## v5.2.2 Changelog:
 ```
 * Fix to the Settings Gui
