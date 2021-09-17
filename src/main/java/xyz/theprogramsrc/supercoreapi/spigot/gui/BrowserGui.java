@@ -53,7 +53,7 @@ public abstract class BrowserGui<OBJ> extends Gui {
             String[] tags = this.getSearchTags(obj);
             if(tags == null || this.searchTerm == null) return true;
             if(tags.length == 0) return true;
-            return Arrays.stream(tags).anyMatch(tag -> this.getSuperUtils().removeColor(this.searchTerm).contains(this.getSuperUtils().removeColor(tag)));
+            return Arrays.stream(tags).anyMatch(tag -> this.getSuperUtils().removeColor(tag).contains(this.getSuperUtils().removeColor(this.searchTerm)));
         }).collect(Collectors.toList()));
         int offset = this.page * this.maxItemsPerPage;
         int itemsToTake = Math.min(offset + this.maxItemsPerPage, objects.size());
