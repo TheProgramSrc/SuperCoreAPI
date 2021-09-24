@@ -1,3 +1,8 @@
+## v5.3.0 Changelog:
+```
+* Added GroupeZ API Support
+```
+
 ## v5.2.4 Changelog:
 ```
 * Fixed BrowserGui Search
