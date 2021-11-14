@@ -34,7 +34,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.7'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'
-    compileOnly 'com.zaxxer:HikariCP:3.3.1'
+    implementation 'com.zaxxer:HikariCP:3.3.1'
     compileOnly 'org.xerial:sqlite-jdbc:3.25.2'
     compileOnly 'org.apache.logging.log4j:log4j-core:2.13.2'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
@@ -86,6 +86,7 @@ shadowJar {
     relocate 'org.intellij', 'xyz.theprogramsrc.supercoreapi.libs.intellij'
     relocate 'org.jetbrains', 'xyz.theprogramsrc.supercoreapi.libs.jetbrains'
     relocate 'javax.annotation', 'xyz.theprogramsrc.supercoreapi.libs.annotation'
+    relocate 'com.zaxxer.hiakari', 'xyz.theprogramsrc.supercoreapi.libs.hikari'
 
     archiveBaseName.set('SuperCoreAPI')
     archiveClassifier.set('')
