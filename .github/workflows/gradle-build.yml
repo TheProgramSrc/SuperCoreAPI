@@ -23,7 +23,7 @@ jobs:
     - name: Make gradle executable
       run: chmod +x gradlew
     - name: Test and Deploy with Gradle
-      run: ./gradlew clean test build publish
+      run: ./gradlew clean test shadow publish
       # Now we store the artifact in the action
     - name: Create & Copy artifact
       run: mkdir -p ./artifacts && cp build/libs/SuperCoreAPI.jar ./artifacts/

@@ -40,6 +40,7 @@ dependencies {
     compileOnly 'org.apache.logging.log4j:log4j-core:2.13.2'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
     compileOnly 'me.clip:placeholderapi:2.10.9'
+    implementation 'org.jetbrains:annotations:23.0.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
@@ -65,7 +66,11 @@ tasks.withType(Javadoc) {
 }
 
 tasks.withType(Copy) {
-    duplicatesStrategy = 'exclude'
+    duplicatesStrategy = 'include'
+}
+
+tasks.withType(Jar) {
+    duplicatesStrategy = 'include'
 }
 
 
@@ -79,6 +84,7 @@ shadowJar {
     relocate 'net.lingala.zip4j', 'xyz.theprogramsrc.supercoreapi.libs.zip4j'
     relocate 'org.checkerframework', 'xyz.theprogramsrc.supercoreapi.libs.checkerframework'
     relocate 'org.intellij', 'xyz.theprogramsrc.supercoreapi.libs.intellij'
+    relocate 'org.jetbrains', 'xyz.theprogramsrc.supercoreapi.libs.jetbrains'
     relocate 'javax.annotation', 'xyz.theprogramsrc.supercoreapi.libs.annotation'
 
     archiveBaseName.set('SuperCoreAPI')

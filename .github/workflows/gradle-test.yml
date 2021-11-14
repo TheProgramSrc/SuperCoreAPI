@@ -29,4 +29,4 @@ jobs:
       run: ./gradlew test
     # Test bulding without javadocs
     - name: Build Jar with Java ${{ matrix.java-version }}
-      run: ./gradlew build --no-daemon --no-build-cache --no-scan --no-javadoc
+      run: ./gradlew build --no-daemon --no-build-cache --no-scan -x javadoc
