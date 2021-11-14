@@ -1,20 +1,21 @@
 package xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.apache.commons.codec.binary.Base64;
+
 import org.bukkit.entity.Player;
+
 import xyz.theprogramsrc.supercoreapi.global.networking.ConnectionBuilder;
 import xyz.theprogramsrc.supercoreapi.global.networking.CustomConnection;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
-
-import java.io.IOException;
-import java.util.UUID;
 
 @SuppressWarnings("ALL")
 public class SkinTexture {
@@ -115,8 +116,7 @@ public class SkinTexture {
     }
 
     private static String base64ToUrl(String base64) {
-        String content = new String(Base64.decodeBase64(base64.getBytes()));
-        JsonObject json = new JsonParser().parse(content).getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
+        JsonObject json = new JsonParser().parse(Utils.decodeBase64(base64)).getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject();
         return json != null ? json.get("url").getAsString() : null;
     }
 
