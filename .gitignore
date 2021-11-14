@@ -17,7 +17,7 @@ buildNumber.properties
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
+.idea/**/sqlDataSources.xml 
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
@@ -71,3 +71,7 @@ Temporary Items
 .settings/
 .env
 .secrets.env
+.gradle/
+build/
+bin/
+*.pom.xml

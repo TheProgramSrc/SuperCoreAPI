@@ -44,4 +44,12 @@ public interface DataBaseSettings {
     default boolean useSSL(){
         return false;
     }
+
+    /**
+     * Gets the URL connection of the DataBase
+     * @return the URL connection
+     */
+    default String getURL(){
+        return "jdbc:mysql://{Host}:{Port}/{Database}?useSSL={UseSSL}";
+    }
 }

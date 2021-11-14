@@ -24,7 +24,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,9 @@ public class Utils {
 
     private static long lastInternetCheck = 0L;
     private static boolean internetCheck = false;
+    private static Random random = new Random();
+
+    private Utils(){}
 
     /**
      * Used to check if a object is not null
@@ -154,7 +159,7 @@ public class Utils {
         StringBuilder builder = new StringBuilder();
 
         while(length-- != 0) {
-            int character = (int)(Math.random() * (double)available.length());
+            int character = random.nextInt() * available.length();
             builder.append(available.charAt(character));
         }
 
@@ -258,10 +263,7 @@ public class Utils {
      * @return Normal UUID
      */
     public static String uuidToFullUUID(String uuid){
-        if(!uuidToFullUUID.containsKey(uuid)){
-            uuidToFullUUID.put(uuid, (new StringBuffer(uuid)).insert(8, "-").insert(13, "-").insert(18, "-").insert(23, "-").toString());
-        }
-        return uuidToFullUUID.get(uuid);
+        return uuidToFullUUID.computeIfAbsent(uuid, k -> (new StringBuffer(uuid)).insert(8, "-").insert(13, "-").insert(18, "-").insert(23, "-").toString());
     }
 
     /* Time */
@@ -312,7 +314,7 @@ public class Utils {
      * @since 5.2.0
      */
     public static long getTimeSecondsFromString(String timeString) {
-        return Arrays.stream(timeString.split(" ")).mapToLong(s -> getTimeSecondsFromWord(s)).sum();
+        return Arrays.stream(timeString.split(" ")).mapToLong(Utils::getTimeSecondsFromWord).sum();
     }
 
     /**
@@ -331,10 +333,10 @@ public class Utils {
     public static long getTimeSecondsFromWord(String word) {
         if (word.length() < 2) return 0L;
         String timeUnitString = word.toCharArray()[word.length() - 1] + "";
-        TimeUnit timeUnit = Arrays.stream(new TimeUnit[] { TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES, TimeUnit.SECONDS }).filter((t) -> t.toString().toLowerCase().startsWith(timeUnitString)).findFirst().orElse(null);
+        TimeUnit timeUnit = Arrays.stream(new TimeUnit[] { TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES, TimeUnit.SECONDS }).filter(t -> t.toString().toLowerCase().startsWith(timeUnitString)).findFirst().orElse(null);
         if(timeUnit == null) return 0L;
         try{
-            return timeUnit == null ? 0L : timeUnit.toSeconds((long) Integer.parseInt(word.substring(0, word.length() - 1)));
+            return timeUnit.toSeconds(Integer.parseInt(word.substring(0, word.length() - 1)));
         }catch(NumberFormatException e){
             return 0L;
         }
@@ -364,7 +366,7 @@ public class Utils {
     }
 
 
-    public static final LinkedHashMap<String, String> readWithInputStreamCache = new LinkedHashMap<>();
+    public static final Map<String, String> readWithInputStreamCache = new LinkedHashMap<>();
 
     /**
      * Used to read a whole website
@@ -387,7 +389,7 @@ public class Utils {
         return readWithInputStreamCache.get(url);
     }
 
-    public static final LinkedHashMap<String, List<String>> readLinesWithInputStreamCache = new LinkedHashMap<>();
+    public static final Map<String, List<String>> readLinesWithInputStreamCache = new LinkedHashMap<>();
 
     /**
      * Used to read a whole website returning a list of every line
@@ -450,7 +452,7 @@ public class Utils {
     public static int random(int min, int max) {
         int num;
         do {
-            num = (int)Math.floor(Math.random() * (double)(max - min) + (double)min);
+            num = (random.nextInt() * (max - min) + min);
         } while(num > max - 1);
 
         return num;
@@ -708,16 +710,16 @@ public class Utils {
     }
 
     /**
-     * Basic color text translation (Replace & by §)
+     * Basic color text translation (Replace &amp; by §)
      * @param text Text to translate
      * @return Translated text
      */
     public static String ct(String text) {
-        return text.replaceAll("&","§");
+        return text.replace("&","§");
     }
 
     /**
-     * Basic color text translation (Replace & by §)
+     * Basic color text translation (Replace &amp; by §)
      * @param array Array to translate
      * @return Translated array
      */
@@ -726,7 +728,7 @@ public class Utils {
     }
 
     /**
-     * Basic color text translation (Replace & by §)
+     * Basic color text translation (Replace &amp; by §)
      * @param list List to translate
      * @return Translated list
      */
@@ -797,11 +799,9 @@ public class Utils {
         if(!pastes.containsKey(body) || pastes.get(body) == null){
             String url = "https://paste.theprogramsrc.xyz/documents";
             String post = postRequest(url, body);
-            if(post != null){
-                if(isJSONEncoded(post)){
-                    JsonObject json = new JsonParser().parse(post).getAsJsonObject();
-                    pastes.put(body, json.get("key").getAsString());
-                }
+            if(post != null && isJSONEncoded(post)){
+                JsonObject json = new JsonParser().parse(post).getAsJsonObject();
+                pastes.put(body, json.get("key").getAsString());
             }
         }
 
@@ -938,22 +938,22 @@ public class Utils {
      * @throws IOException if an I/O error occurs
      */
     public static String generateFileChecksum(MessageDigest digest, File file) throws IOException {
-        FileInputStream inputStream = new FileInputStream(file);
-        byte[] bytes = new byte[1024];
-        int bytesCount;
-        while((bytesCount = inputStream.read(bytes)) != -1){
-            digest.update(bytes, 0, bytesCount);
+        try(FileInputStream inputStream = new FileInputStream(file)){
+            byte[] bytes = new byte[1024];
+            int bytesCount;
+            while((bytesCount = inputStream.read(bytes)) != -1){
+                digest.update(bytes, 0, bytesCount);
+            }
+
+            bytes = digest.digest();
+
+            StringBuilder builder = new StringBuilder();
+            for(byte _byte : bytes){
+                builder.append(Integer.toString((_byte & 0xff) + 0x100, 16).substring(1));
+            }
+
+            return builder.toString();
         }
-
-        inputStream.close();
-        bytes = digest.digest();
-
-        StringBuilder builder = new StringBuilder();
-        for(byte _byte : bytes){
-            builder.append(Integer.toString((_byte & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return builder.toString();
     }
 
     /**

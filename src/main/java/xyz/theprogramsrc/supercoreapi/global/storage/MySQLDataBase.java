@@ -1,11 +1,12 @@
 package xyz.theprogramsrc.supercoreapi.global.storage;
 
+import java.sql.Connection;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
 import xyz.theprogramsrc.supercoreapi.SuperPlugin;
 import xyz.theprogramsrc.supercoreapi.global.LogsFilter;
-
-import java.sql.Connection;
 
 public abstract class MySQLDataBase implements DataBase {
 
@@ -23,11 +24,17 @@ public abstract class MySQLDataBase implements DataBase {
         }
         if (plugin != null) this.plugin.debug("Loading HikariConfig");
         HikariConfig cfg = new HikariConfig();
-        cfg.setDriverClassName("com.mysql.jdbc.Driver");
-        cfg.setJdbcUrl("jdbc:mysql://" + getDataBaseSettings().host() + ":" + getDataBaseSettings().port() + "/" + getDataBaseSettings().database() + "?useSSL=" + getDataBaseSettings().useSSL());
+        cfg.setJdbcUrl(
+            getDataBaseSettings().getURL()
+                .replace("{Host}", getDataBaseSettings().host())
+                .replace("{Port}", getDataBaseSettings().port())
+                .replace("{Database}", getDataBaseSettings().database())
+                .replace("{UseSSL}", Boolean.toString(getDataBaseSettings().useSSL()))
+        );
         cfg.setUsername(getDataBaseSettings().username());
         cfg.setPassword(getDataBaseSettings().password());
         cfg.setMaximumPoolSize(3);
+        this.processSettings(cfg);
 
         if (plugin != null) this.plugin.debug("Loading HikariDataSource");
         try {
@@ -38,6 +45,14 @@ public abstract class MySQLDataBase implements DataBase {
             if (plugin != null) this.plugin.addError(ex);
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * Process the Hikari Settings
+     * @param config the hikari config
+     */
+    public void processSettings(HikariConfig config){
+
     }
 
     /**
