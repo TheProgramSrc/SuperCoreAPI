@@ -1,10 +1,7 @@
 name: Gradle Test
 # Only execute this workflow when a PR is opened or when something is pushed to a the master branch
 on:
-  push:
-    branches: [ master, development ]
-  pull_request:
-    branches: [ master, development ]
+  push
 jobs:
   testBuilds:
     strategy:
