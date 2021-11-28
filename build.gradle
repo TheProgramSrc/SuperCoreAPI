@@ -95,6 +95,9 @@ shadowJar {
     minimize()
 }
 
+shadowJar.finalizedBy javadocJar
+shadowJar.finalizedBy sourcesJar
+
 configurations {
     testImplementation {
         extendsFrom(compileOnly)
