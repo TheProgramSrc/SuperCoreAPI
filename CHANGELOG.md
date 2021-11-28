@@ -1,3 +1,14 @@
+## v5.3.1 Changelog:
+```
+* Migration to Gradle
+* Fixes to workflows
+* Added jetbrains annotations & fixes
+* Reduced size of the API
+* Shadow HikariCP into Jar
+* Fixes to LogFilter
+* Fixes to random string generator
+```
+
 ## v5.3.0 Changelog:
 ```
 * Added GroupeZ API Support
