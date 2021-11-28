@@ -6,6 +6,7 @@ xyz.theprogramsrc.supercoreapi.bungee.storage
 xyz.theprogramsrc.supercoreapi.bungee.utils
 xyz.theprogramsrc.supercoreapi.bungee.utils.tasks
 xyz.theprogramsrc.supercoreapi.global
+xyz.theprogramsrc.supercoreapi.global.apis.groupez
 xyz.theprogramsrc.supercoreapi.global.apis.songoda
 xyz.theprogramsrc.supercoreapi.global.apis.spigot
 xyz.theprogramsrc.supercoreapi.global.data
