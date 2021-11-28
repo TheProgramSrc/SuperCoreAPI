@@ -173,14 +173,14 @@ publishing {
             credentials.password = System.getenv('NEXUS_PASSWORD')
             url = uri(version.contains('-SNAPSHOT') ? 'https://repo.theprogramsrc.xyz/repository/maven-snapshots/' : 'https://repo.theprogramsrc.xyz/repository/maven-releases/')
         }
-        maven {
-            name = 'GitHubPackages'
-            url = 'https://maven.pkg.github.com/TheProgramSrc/SuperCoreAPI'
-            credentials {
-                username = System.getenv('GITHUB_ACTOR')
-                password = System.getenv('GITHUB_TOKEN')
-            }
-        }
+//         maven {
+//             name = 'GitHubPackages'
+//             url = 'https://maven.pkg.github.com/TheProgramSrc/SuperCoreAPI'
+//             credentials {
+//                 username = System.getenv('GITHUB_ACTOR')
+//                 password = System.getenv('GITHUB_TOKEN')
+//             }
+//         }
     }
 }
 
