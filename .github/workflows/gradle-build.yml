@@ -6,9 +6,13 @@ jobs:
   build:
     # Setup the OS
     runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write 
     env:
       NEXUS_USERNAME: '${{ secrets.NEXUS_USERNAME }}'
       NEXUS_PASSWORD: '${{ secrets.NEXUS_PASSWORD }}'
+      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
     steps:
     # Checkout the code
     - name: Ceckout the Code
@@ -19,6 +23,9 @@ jobs:
       with:
         distribution: adopt
         java-version: 8
+    # Validate Gradle Wrapper
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
     # Test and deploy
     - name: Make gradle executable
       run: chmod +x gradlew

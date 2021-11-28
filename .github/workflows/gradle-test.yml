@@ -21,6 +21,9 @@ jobs:
       with:
         distribution: adopt
         java-version: ${{ matrix.java-version }}
+    # Validate Gradle Wrapper
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
     # Setup executable gradle
     - name: Make Gradle executable
       run: chmod +x gradlew
