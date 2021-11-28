@@ -156,14 +156,13 @@ public class Utils {
      * @return Randomized string
      */
     public static String randomString(int length, String available){
-        StringBuilder builder = new StringBuilder();
+        char[] chars = new char[length];
 
-        while(length-- != 0) {
-            int character = random.nextInt() * available.length();
-            builder.append(available.charAt(character));
+        for(int i = 0; i < length; i++){
+            chars[i] = available.charAt(this.random.nextInt(available.length()));
         }
 
-        return builder.toString();
+        return new String(chars);
     }
 
     /**
