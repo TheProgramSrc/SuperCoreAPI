@@ -1,7 +1,13 @@
 package xyz.theprogramsrc.supercoreapi.spigot.dialog;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import com.cryptomorin.xseries.messages.ActionBar;
 import com.cryptomorin.xseries.messages.Titles;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,19 +16,16 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import xyz.theprogramsrc.supercoreapi.Recall;
+
 import xyz.theprogramsrc.supercoreapi.global.objects.RecurringTask;
 import xyz.theprogramsrc.supercoreapi.global.translations.Base;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotModule;
 
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
-
 public abstract class Dialog extends SpigotModule {
 
     private final Player player;
-    private Recall<Player> recall;
+    private Consumer<Player> recall;
     private final HashMap<String, String> placeholders;
     private RecurringTask task;
 
@@ -79,7 +82,7 @@ public abstract class Dialog extends SpigotModule {
             });
             this.onDialogClose();
             if(this.recall != null){
-                this.recall.run(this.getPlayer());
+                this.recall.accept(this.player);
             }
         });
     }
@@ -89,16 +92,14 @@ public abstract class Dialog extends SpigotModule {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onMove(final PlayerMoveEvent event){
         this.getSpigotTasks().runAsyncTask(() -> {
-            if(this.canClose()){
-                if(this.getPlayer().equals(event.getPlayer())){
-                    if(this.lastMoved == 0){
-                        this.lastMoved = System.currentTimeMillis();
-                    }
+            if(this.canClose() && this.getPlayer().equals(event.getPlayer())){
+                if(this.lastMoved == 0){
+                    this.lastMoved = System.currentTimeMillis();
+                }
 
-                    if((System.currentTimeMillis() - this.lastMoved) >= 5000){
-                        this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
-                        this.lastMoved = System.currentTimeMillis();
-                    }
+                if((System.currentTimeMillis() - this.lastMoved) >= 5000){
+                    this.getSuperUtils().sendMessage(this.getPlayer(), Base.DIALOG_HOW_TO_CLOSE.toString());
+                    this.lastMoved = System.currentTimeMillis();
                 }
             }
         });
@@ -107,13 +108,9 @@ public abstract class Dialog extends SpigotModule {
     @EventHandler(priority = EventPriority.LOW)
     public void onClick(PlayerInteractEvent event){
         this.getSpigotTasks().runAsyncTask(() -> {
-            if(this.getPlayer().equals(event.getPlayer())){
-                if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
-                    if(this.canClose()){
-                        this.getSuperUtils().sendMessage(event.getPlayer(), Base.DIALOG_CLOSED.toString());
-                        this.close();
-                    }
-                }
+            if(this.getPlayer().equals(event.getPlayer()) && this.canClose() && (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)){
+                this.getSuperUtils().sendMessage(event.getPlayer(), Base.DIALOG_CLOSED.toString());
+                this.close();
             }
         });
     }
@@ -145,7 +142,7 @@ public abstract class Dialog extends SpigotModule {
      * @param recall The recall
      * @return This dialog
      */
-    public Dialog setRecall(Recall<Player> recall){
+    public Dialog setRecall(Consumer<Player> recall){
         this.recall = recall;
         return this;
     }
@@ -155,7 +152,7 @@ public abstract class Dialog extends SpigotModule {
      * @param placeholders The placeholders
      * @return This dialog
      */
-    public Dialog addPlaceholders(HashMap<String, String> placeholders){
+    public Dialog addPlaceholders(Map<String, String> placeholders){
         this.placeholders.putAll(placeholders);
         return this;
     }

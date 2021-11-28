@@ -1,9 +1,16 @@
 package xyz.theprogramsrc.supercoreapi.spigot.items;
 
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
+
 import com.cryptomorin.xseries.XMaterial;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.apache.commons.codec.binary.Base64;
+
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
@@ -12,14 +19,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+
 import xyz.theprogramsrc.supercoreapi.global.utils.StringUtils;
 import xyz.theprogramsrc.supercoreapi.global.utils.Utils;
 import xyz.theprogramsrc.supercoreapi.spigot.SpigotPlugin;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.SpigotUtils;
 import xyz.theprogramsrc.supercoreapi.spigot.utils.skintexture.SkinTexture;
-
-import java.lang.reflect.Field;
-import java.util.*;
 
 /**
  * SimpleItem is a representation of a ItemStack with more options in one class.
@@ -212,7 +217,7 @@ public class SimpleItem {
         SkullMeta meta = ((SkullMeta)this.item.getItemMeta());
         if(meta != null){
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "");
-            byte[] skinBytes = Base64.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinTexture.getUrl()).getBytes());
+            byte[] skinBytes = Utils.encodeBase64(String.format("{textures:{SKIN:{url:\"%s\"}}}", skinTexture.getUrl())).getBytes();
             gameProfile.getProperties().put("textures", new Property("textures", new String(skinBytes)));
 
             try {

@@ -1,15 +1,16 @@
 package xyz.theprogramsrc.supercoreapi;
 
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import xyz.theprogramsrc.supercoreapi.global.data.PluginDataStorage;
 import xyz.theprogramsrc.supercoreapi.global.dependencies.DependencyManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationDownloader;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationManager;
 import xyz.theprogramsrc.supercoreapi.global.translations.TranslationPack;
-
-import javax.annotation.Nullable;
-import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Representation of a Plugin
@@ -214,8 +215,9 @@ public interface SuperPlugin<PLUGIN> {
     /**
      * Configures the plugin to automatically
      * download the plugin translations from GitHub
+     * @deprecated
      */
-    default void setupGithubTranslationDownloader(String githubUser, String githubRepo, String folder){
+    @Deprecated default void setupGithubTranslationDownloader(String githubUser, String githubRepo, String folder){
         this.getPluginDataStorage().add("TranslationDownloader", true);
         if(this.getPluginDataStorage().getBoolean("TranslationDownloader")){
             TranslationDownloader.downloadFromGitHub(this, githubUser, githubRepo, folder);
@@ -225,8 +227,9 @@ public interface SuperPlugin<PLUGIN> {
     /**
      * Configures the plugin to automatically
      * download the plugin translations from GitHub
+     * @deprecated
      */
-    default void setupRawTranslationDownloader(String url, String filename){
+    @Deprecated default void setupRawTranslationDownloader(String url, String filename){
         this.getPluginDataStorage().add("TranslationDownloader", true);
         if(this.getPluginDataStorage().getBoolean("TranslationDownloader")){
             TranslationDownloader.downloadTranslation(this, url, filename);

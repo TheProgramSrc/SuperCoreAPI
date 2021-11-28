@@ -1,0 +1,181 @@
+plugins { 
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+}
+
+group 'xyz.theprogramsrc'
+version '5.3.1-SNAPSHOT'
+description 'The best way to create a plugin'
+
+repositories{
+    mavenCentral()
+    mavenLocal()
+
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://repo.theprogramsrc.xyz/repository/maven-public/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://repo.codemc.org/repository/maven-public' }
+    maven { url 'https://repo.codemc.org/repository/nms' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
+
+    implementation 'com.github.cryptomorin:XSeries:8.4.0'
+    implementation 'org.slf4j:slf4j-nop:1.7.32'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'
+    implementation 'com.zaxxer:HikariCP:3.3.1'
+    compileOnly 'org.xerial:sqlite-jdbc:3.25.2'
+    implementation 'org.apache.logging.log4j:log4j-api:2.13.2'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.13.2'
+    implementation 'net.lingala.zip4j:zip4j:2.9.0'
+    compileOnly 'me.clip:placeholderapi:2.10.9'
+    implementation 'org.jetbrains:annotations:23.0.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+java.withJavadocJar()
+java.withSourcesJar()
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    failOnError false
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+tasks.withType(Copy) {
+    duplicatesStrategy = 'include'
+    exclude 'META-INF/**'
+}
+
+tasks.withType(Jar) {
+    duplicatesStrategy = 'include'
+    exclude 'META-INF/**'
+}
+
+shadowJar { 
+    relocate 'com.google', 'xyz.theprogramsrc.supercoreapi.libs.google'
+    relocate 'org.apache.commons', 'xyz.theprogramsrc.supercoreapi.libs.apache.commons'
+    relocate 'com.cryptomorin.xseries', 'xyz.theprogramsrc.supercoreapi.libs.xseries'
+    relocate 'org.simpleyaml', 'xyz.theprogramsrc.supercoreapi.libs.simpleyaml'
+    relocate 'org.yaml.snakeyaml', 'xyz.theprogramsrc.supercoreapi.libs.snakeyaml'
+    relocate 'org.slf4j', 'xyz.theprogramsrc.supercoreapi.libs.slf4j'
+    relocate 'net.lingala.zip4j', 'xyz.theprogramsrc.supercoreapi.libs.zip4j'
+    relocate 'org.checkerframework', 'xyz.theprogramsrc.supercoreapi.libs.checkerframework'
+    relocate 'org.intellij', 'xyz.theprogramsrc.supercoreapi.libs.intellij'
+    relocate 'org.jetbrains', 'xyz.theprogramsrc.supercoreapi.libs.jetbrains'
+    relocate 'javax.annotation', 'xyz.theprogramsrc.supercoreapi.libs.annotation'
+    relocate 'com.zaxxer.hikari', 'xyz.theprogramsrc.supercoreapi.libs.hikari'
+
+    archiveBaseName.set('SuperCoreAPI')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    minimize()
+}
+
+configurations {
+    testImplementation {
+        extendsFrom(compileOnly)
+    }
+}
+
+sourceSets.main.java.srcDir 'src/main/java'
+sourceSets.test.java.srcDir 'src/test/java'
+
+def repos = repositories
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'SuperCoreAPI'
+
+            artifact(tasks["shadowJar"])
+
+            pom.withXml {
+                def root = asNode()
+
+                root.appendNode('description', description)
+                root.appendNode('packaging', 'jar')
+                root.appendNode('url', 'https://github.com/TheProgramsrc/SuperCoreAPI')
+
+                final repositoriesNode = root.appendNode('repositories')
+                repos.each {
+                    if(it.name == 'MavenLocal'){
+                        return
+                    }
+                    def repositoryNode = repositoriesNode.appendNode('repository')
+                    repositoryNode.appendNode('id', it.name)
+                    repositoryNode.appendNode('url', it.url)
+                }
+
+                final dependenciesNode = root.appendNode('dependencies')
+                ext.addDependency = { dep, String scope ->
+                    if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
+                        return // ignore invalid dependencies
+
+                    final dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dep.group)
+                    dependencyNode.appendNode('artifactId', dep.name)
+                    dependencyNode.appendNode('version', dep.version)
+                    dependencyNode.appendNode('scope', scope)
+
+                    if (!dep.transitive) {
+                        // If this dependency is not transitive, we should force exclude all its dependencies from the POM
+                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                        exclusionNode.appendNode('groupId', '*')
+                        exclusionNode.appendNode('artifactId', '*')
+                    } else if (!dep.properties.excludeRules.empty) {
+                        // Otherwise add specified exclude rules
+                        final exclusionsNode = dependencyNode.appendNode('exclusions')
+                        dep.properties.excludeRules.each { rule ->
+                            final exclusionNode = exclusionsNode.appendNode('exclusion')
+                            exclusionNode.appendNode('groupId', rule.group ?: '*')
+                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
+                        }
+                    }
+                }
+
+                configurations.compileOnly.getDependencies().each { dep -> addDependency(dep, "provided") }
+                configurations.implementation.getDependencies().each { dep -> addDependency(dep, "compile") }
+                configurations.testImplementation.getDependencies().each { dep -> addDependency(dep, "test") }
+            }
+        }
+    }
+    repositories {
+        maven {
+            credentials.username = System.getenv('NEXUS_USERNAME') 
+            credentials.password = System.getenv('NEXUS_PASSWORD')
+            url = uri(version.contains('-SNAPSHOT') ? 'https://repo.theprogramsrc.xyz/repository/maven-snapshots/' : 'https://repo.theprogramsrc.xyz/repository/maven-releases/')
+        }
+    }
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+publish.dependsOn clean, test, jar
