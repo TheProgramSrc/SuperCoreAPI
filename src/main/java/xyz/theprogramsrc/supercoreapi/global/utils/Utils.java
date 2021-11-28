@@ -159,7 +159,7 @@ public class Utils {
         char[] chars = new char[length];
 
         for(int i = 0; i < length; i++){
-            chars[i] = available.charAt(this.random.nextInt(available.length()));
+            chars[i] = available.charAt(random.nextInt(available.length()));
         }
 
         return new String(chars);
