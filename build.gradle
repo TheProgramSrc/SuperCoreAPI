@@ -35,24 +35,27 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'me.carleslc.Simple-YAML:Simple-Yaml:1.7.2'
     implementation 'com.zaxxer:HikariCP:3.3.1'
-    compileOnly 'org.xerial:sqlite-jdbc:3.25.2'
-    implementation 'org.apache.logging.log4j:log4j-api:2.13.2'
-    compileOnly 'org.apache.logging.log4j:log4j-core:2.13.2'
+    compileOnly 'org.xerial:sqlite-jdbc:3.36.0.2'
+    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    compileOnly 'org.apache.logging.log4j:log4j-core:2.14.1'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
     compileOnly 'me.clip:placeholderapi:2.10.9'
     implementation 'org.jetbrains:annotations:23.0.0'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
 test {
     useJUnitPlatform()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-java.withJavadocJar()
-java.withSourcesJar()
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withJavadocJar()
+    withSourcesJar()
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -66,16 +69,19 @@ tasks.withType(Javadoc) {
 }
 
 tasks.withType(Copy) {
-    duplicatesStrategy = 'include'
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     exclude 'META-INF/**'
 }
 
 tasks.withType(Jar) {
-    duplicatesStrategy = 'include'
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     exclude 'META-INF/**'
 }
 
-shadowJar { 
+shadowJar {
+    archiveBaseName.set('SuperCoreAPI')
+    archiveClassifier.set('')
+
     relocate 'com.google', 'xyz.theprogramsrc.supercoreapi.libs.google'
     relocate 'org.apache.commons', 'xyz.theprogramsrc.supercoreapi.libs.apache.commons'
     relocate 'com.cryptomorin.xseries', 'xyz.theprogramsrc.supercoreapi.libs.xseries'
@@ -89,14 +95,8 @@ shadowJar {
     relocate 'javax.annotation', 'xyz.theprogramsrc.supercoreapi.libs.annotation'
     relocate 'com.zaxxer.hikari', 'xyz.theprogramsrc.supercoreapi.libs.hikari'
 
-    archiveBaseName.set('SuperCoreAPI')
-    archiveClassifier.set('')
-    archiveVersion.set('')
     minimize()
 }
-
-shadowJar.finalizedBy javadocJar
-shadowJar.finalizedBy sourcesJar
 
 configurations {
     testImplementation {
@@ -107,80 +107,40 @@ configurations {
 sourceSets.main.java.srcDir 'src/main/java'
 sourceSets.test.java.srcDir 'src/test/java'
 
-def repos = repositories
-
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId 'SuperCoreAPI'
-
-            artifact(tasks["shadowJar"])
-
-            pom.withXml {
-                def root = asNode()
-
-                root.appendNode('description', description)
-                root.appendNode('packaging', 'jar')
-                root.appendNode('url', 'https://github.com/TheProgramsrc/SuperCoreAPI')
-
-                final repositoriesNode = root.appendNode('repositories')
-                repos.each {
-                    if(it.name == 'MavenLocal'){
-                        return
-                    }
-                    def repositoryNode = repositoriesNode.appendNode('repository')
-                    repositoryNode.appendNode('id', it.name)
-                    repositoryNode.appendNode('url', it.url)
-                }
-
-                final dependenciesNode = root.appendNode('dependencies')
-                ext.addDependency = { dep, String scope ->
-                    if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
-                        return // ignore invalid dependencies
-
-                    final dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', dep.group)
-                    dependencyNode.appendNode('artifactId', dep.name)
-                    dependencyNode.appendNode('version', dep.version)
-                    dependencyNode.appendNode('scope', scope)
-
-                    if (!dep.transitive) {
-                        // If this dependency is not transitive, we should force exclude all its dependencies from the POM
-                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                        exclusionNode.appendNode('groupId', '*')
-                        exclusionNode.appendNode('artifactId', '*')
-                    } else if (!dep.properties.excludeRules.empty) {
-                        // Otherwise add specified exclude rules
-                        final exclusionsNode = dependencyNode.appendNode('exclusions')
-                        dep.properties.excludeRules.each { rule ->
-                            final exclusionNode = exclusionsNode.appendNode('exclusion')
-                            exclusionNode.appendNode('groupId', rule.group ?: '*')
-                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
-                        }
-                    }
-                }
-
-                configurations.compileOnly.getDependencies().each { dep -> addDependency(dep, "provided") }
-                configurations.implementation.getDependencies().each { dep -> addDependency(dep, "compile") }
-                configurations.testImplementation.getDependencies().each { dep -> addDependency(dep, "test") }
-            }
-        }
-    }
     repositories {
         maven {
             name = 'TheProgramSrcRepository'
-            credentials.username = System.getenv('NEXUS_USERNAME') 
+            credentials.username = System.getenv('NEXUS_USERNAME')
             credentials.password = System.getenv('NEXUS_PASSWORD')
             url = uri(version.contains('-SNAPSHOT') ? 'https://repo.theprogramsrc.xyz/repository/maven-snapshots/' : 'https://repo.theprogramsrc.xyz/repository/maven-releases/')
         }
-//         maven {
-//             name = 'GitHubPackages'
-//             url = 'https://maven.pkg.github.com/TheProgramSrc/SuperCoreAPI'
-//             credentials {
-//                 username = System.getenv('GITHUB_ACTOR')
-//                 password = System.getenv('GITHUB_TOKEN')
-//             }
-//         }
+        maven {
+            name = 'GitHubPackages'
+            url = 'https://maven.pkg.github.com/TheProgramSrc/SuperCoreAPI'
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'supercoreapi'
+
+            from components.java
+
+            pom.withXml {
+                asNode().appendNode('packaging', 'jar')
+                asNode().remove(asNode().get('dependencies'))
+
+                def dependenciesNode = asNode().appendNode('dependencies')
+                def jetbrainsAnnotations = dependenciesNode.appendNode('dependency')
+                jetbrainsAnnotations.appendNode('groupId', 'org.jetbrains')
+                jetbrainsAnnotations.appendNode('artifactId', 'annotations')
+                jetbrainsAnnotations.appendNode('version', '19.0.0')
+            }
+        }
     }
 }
 
@@ -191,3 +151,4 @@ javadoc {
 }
 
 publish.dependsOn clean, test, jar
+
