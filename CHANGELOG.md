@@ -1,3 +1,8 @@
+## v5.3.2 Changelog:
+```
+* Updated Dependencies
+```
+
 ## v5.3.1 Changelog:
 ```
 * Migration to Gradle
