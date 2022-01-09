@@ -1,3 +1,9 @@
+## v5.3.3 Changelog:
+```
+* Updated Relocations
+* Now apache logger is compile only
+```
+
 ## v5.3.2 Changelog:
 ```
 * Updated Dependencies
