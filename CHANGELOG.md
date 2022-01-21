@@ -1,3 +1,9 @@
+## v5.3.4 Changelog:
+```
+* Fixed Random Number Generator
+* Updated Dependencies
+```
+
 ## v5.3.3 Changelog:
 ```
 * Updated Relocations
