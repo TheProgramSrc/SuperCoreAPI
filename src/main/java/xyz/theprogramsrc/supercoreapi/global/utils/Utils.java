@@ -439,7 +439,7 @@ public class Utils {
      * @return Random double number
      */
     public static double random(double min, double max) {
-        return Math.random() * (max - min) + min;
+        return Math.random() * (max - min + 1) + min;
     }
 
     /**
@@ -449,12 +449,7 @@ public class Utils {
      * @return Random integer number
      */
     public static int random(int min, int max) {
-        int num;
-        do {
-            num = (random.nextInt() * (max - min) + min);
-        } while(num > max - 1);
-
-        return num;
+        return ((int) random(Double.valueOf(min), Double.valueOf(max)));
     }
 
     /**
