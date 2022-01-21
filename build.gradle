@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'xyz.theprogramsrc'
-version '5.3.3-SNAPSHOT'
+version '5.3.4-SNAPSHOT'
 description 'The best way to create a plugin'
 
 repositories{
@@ -24,11 +24,11 @@ repositories{
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
     compileOnly 'org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT'
-    compileOnly 'net.md-5:bungeecord-api:1.17-R0.1-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT'
 
-    implementation 'com.github.cryptomorin:XSeries:8.6.0'
+    implementation 'com.github.cryptomorin:XSeries:8.6.0.0.1'
     implementation 'org.slf4j:slf4j-nop:1.7.32'
     implementation 'org.slf4j:slf4j-api:1.7.32'
     implementation 'commons-io:commons-io:2.11.0'
