@@ -36,4 +36,34 @@ public class SongodaAPI {
         }
         return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("downloads").getAsInt();
     }
+    
+    
+    /**
+     * Gets the amount of views of a plugin
+     * @param pluginId The id of the plugin
+     * @return The amount of views
+     */
+        public static int getViews(String pluginId){
+        String content = utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
+        if(content == null) {
+            return 0;
+        }
+        return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("views").getAsInt();
+    }
+
+    
+    /**
+     * Gets the amount of ratings of a plugin
+     * @param pluginId The id of the plugin
+     * @return The amount of ratings
+     */
+    public static int rating(String pluginId){
+        String content = utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
+        if(content == null) {
+            return 0;
+        }
+        return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("rating").getAsInt();
+    }
+
+    
 }
