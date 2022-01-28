@@ -57,12 +57,12 @@ public class SongodaAPI {
      * @param pluginId The id of the plugin
      * @return The amount of ratings
      */
-    public static int rating(String pluginId){
+    public static String rating(String pluginId){
         String content = utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
         if(content == null) {
-            return 0;
+            return "null;
         }
-        return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("rating").getAsInt();
+        return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("rating").getAsString();
     }
 
     
