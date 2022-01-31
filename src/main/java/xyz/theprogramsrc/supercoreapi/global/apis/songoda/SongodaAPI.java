@@ -44,7 +44,7 @@ public class SongodaAPI {
      * @return The amount of views
      */
         public static int getViews(String pluginId){
-        String content = utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
+        String content = Utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
         if(content == null) {
             return 0;
         }
@@ -57,10 +57,10 @@ public class SongodaAPI {
      * @param pluginId The id of the plugin
      * @return The amount of ratings
      */
-    public static String rating(String pluginId){
-        String content = utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
+    public static String getRating(String pluginId){
+        String content = Utils.readWithInputStream("https://songoda.com/api/v2/products/id/" + pluginId);
         if(content == null) {
-            return "null;
+            return "null";
         }
         return new JsonParser().parse(content).getAsJsonObject().get("data").getAsJsonObject().get("rating").getAsString();
     }
